@@ -8,3 +8,4 @@ Over time this will take over from the https://github.com/bbc/childrens-games-st
 
 - 3rd Part NFR requirements
 https://confluence.dev.bbc.co.uk/pages/viewpage.action?pageId=142192603 (move into this repo)
+- [Pick 'n' Mix documentation](docs/pick-n-mix.md)
