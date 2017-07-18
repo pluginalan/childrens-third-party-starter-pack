@@ -1,0 +1,101 @@
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+        <script src="js/require.js"></script>
+        <script>
+            // stub functions for apps that don't support native settings
+            window.gmiCallbacks = {
+                "onSettingChanged": function(){},
+                "onSettingsClosed": function(){}
+            }
+
+            // GMI Configuration setttings
+            window.gmiConfiguration = {
+                "embedVars" : {
+                    "statsAppName" : "",
+                    "statsCounterName" : "",
+                    "version" : ""
+                },
+                "environment" : "",
+                "gameContainerId" : "childrens-bbc-game-holder",
+                "gameUrl" : "main.js",
+                "gameDir" : "./menu/"
+            };
+
+            window._experience = {};
+            window._experience.config = {};
+
+            // GMI *default* Game settings
+            window.gmiSettings = {};
+            window.gmiSettings.debugEnabled = false;  // If testing locally this will cause errors
+
+            function launchGame() {
+                require.config({
+                    baseUrl: window.gmiConfiguration.gameDir,
+                    paths: {
+                        "js": '../js',
+                        "selectedGame": window.gmiConfiguration.gameUrl.replace('.js', '')
+                    }
+                });
+
+                var body = document.createElement('div');
+                body.id = window.gmiConfiguration.gameContainerId;
+                body.style = 'width:100%; height:100%; overflow:hidden;';
+                document.body.appendChild(body);
+                require(['js/gmi-mobile'], function(gmi){
+                    window.getGMI = gmi.getGMI;
+                    require(["selectedGame"], function(game) {});
+                });
+            }
+
+            if(typeof GameInterface != "undefined") {  // Android
+                GameInterface.indexLoaded();
+            } else if (window.webkit) {  // Apple
+                window.webkit.messageHandlers.gmi.postMessage({ "name" : "indexLoaded" });
+            } else {  // Other
+                console.warn("Was not able to detect either Android or iOS platform.");
+            }
+
+
+            // frame rate monitoring
+            var frameRateMonitoringEnabled = window.performance ? true : false;
+
+            if( frameRateMonitoringEnabled ) {
+                var now, elapsed, frameRate, frameRates;
+                var then = window.performance.now();
+                resetFrameRates();
+                window.requestAnimationFrame( monitorFrameRate );
+            }
+
+            function resetFrameRates()
+            {
+                if( frameRateMonitoringEnabled ) {
+                    frameRates = [];
+                    for( i=0; i<181; i++ ) {
+                        frameRates[i] = 0;
+                    }
+                }
+            }
+
+            function monitorFrameRate()
+            {
+                now = window.performance.now();
+                if( window.gmiSettings.stats ) {
+                    elapsed = now - then;
+                    frameRate = (1000 / elapsed).toFixed();
+
+                    if( frameRate > 180 ) {
+                        frameRate = 180
+                    }
+
+                    frameRates[frameRate] = frameRates[frameRate] + 1;
+                }
+                then = now;
+                window.requestAnimationFrame( monitorFrameRate )
+            }
+        </script>
+    </head>
+    <body>
+    </body>
+</html>
