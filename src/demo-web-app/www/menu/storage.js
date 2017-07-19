@@ -19,13 +19,14 @@ define(function(){
 
     // ---------- Implementation ----------
     function saveData(gmi, data) {
-        gmi.setGameData("data-key", data);
-    } 
+        var dataString = JSON.stringify(data);
+        gmi.setGameData("data-key", dataString);
+    }
 
     function loadData(gmi) {
-        var savedData = gmi.getAllSettings().gameData["data-key"];
-        if (savedData) {
-            return savedData
+        var dataString = gmi.getAllSettings().gameData["data-key"];
+        if (dataString) {
+            return JSON.parse(dataString);
         }
         return {};
     }

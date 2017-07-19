@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <LINK href="menu/brim.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+    <div id="og-game-holder"></div>
+
+    <!--script src="http://static.bbci.co.uk/playpen/1.2.3/script/require/require.js"></script-->
+    <script src="/js/require.js"></script>
+    <script>
+
+
+        window._experience =
+            {
+                config:             {
+                    downloadablePackages: [
+                        {
+                            "packageId": "test-package-1",
+                            "url": "https://s3-eu-west-1.amazonaws.com/childrens-data-public-int/apps/cbeebies-picknmix-dev/downloads/demo-examples/test-package-1.zip",
+                            "version": 1,
+                            "title": "Test Package 1"
+                        },
+                        {
+                            "packageId": "test-package-2",
+                            "url": "https://s3-eu-west-1.amazonaws.com/childrens-data-public-int/apps/cbeebies-picknmix-dev/downloads/demo-examples/test-package-2.zip",
+                            "version": 1,
+                            "title": "Test Package 2"
+                        }
+                    ],
+                    available: []
+                }
+            };
+
+        // GMI *default* Game settings
+        window.gmiSettings = {};
+        window.gmiSettings.debugEnabled = false;  // If testing locally this will cause errors
+
+
+        (function(){
+            window.og = {
+                gid: "countdown-test",
+                gameDir: "menu/",
+                gameContainerId: "og-game-holder",
+                isFullScreen: window.self === window.top,
+                exitGameUrl: "http://bbc.co.uk/",
+                environment: "test",
+                embedVars: {
+                    statsCounterName: "testCounterName",
+                    statsAppName: "TestAppName"
+                }
+            };
+
+            console.warn("Using mocked bbccookies");
+            bbccookies = {
+                isAllowed: function() {
+                    return true;
+                },
+
+                cookiesEnabled: function() {
+                    return true;
+                },
+
+                set: function() {
+                },
+
+                get: function() {
+                    return "";
+                    // set this to force audience segment
+                    // return "ckns_mandolin_setSegments={'hiScores':'yes'};";
+                }
+            };
+
+
+            requirejs.config({
+                paths: {
+                    "Game": "main",
+                    "echo": "http://static.bbci.co.uk/nkdata/echoclient/2.0.0/sharedmodules/echo"
+                }
+            });
+
+
+            require(['js/gmi-platform', 'js/ami-desktop'], function(gmi, ami){
+                requirejs.config({
+                    baseUrl: "menu",
+                    paths: {
+                        "Game": "main",
+                        "echo": "http://static.bbci.co.uk/nkdata/echoclient/2.0.0/sharedmodules/echo"
+                    }
+                });
+
+                window.getGMI = gmi.getGMI;
+                window.getAMI = ami.getAMI;
+                require(["Game"], function() {
+                });
+            });
+
+
+        })();
+    </script>
+</body>
+</html>

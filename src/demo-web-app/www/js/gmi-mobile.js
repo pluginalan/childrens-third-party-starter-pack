@@ -259,7 +259,7 @@ define(function(require) {
        };
 
        AppleGMI.prototype.showPrompt = function( text ) {
-            console.error( "Pick n Mix Message: Not implemented on iOS" )
+            console.error( "Not implemented on iOS" )
        };
 
         function AndroidGMI(options) {

@@ -43,9 +43,11 @@
                 body.id = window.gmiConfiguration.gameContainerId;
                 body.style = 'width:100%; height:100%; overflow:hidden;';
                 document.body.appendChild(body);
-                require(['js/gmi-mobile'], function(gmi){
+                require(['js/gmi-mobile', 'js/ami-mobile'], function(gmi, ami){
                     window.getGMI = gmi.getGMI;
-                    require(["selectedGame"], function(game) {});
+                    window.getAMI = ami.getAMI;
+                    require(["selectedGame"], function(game) {
+                    });
                 });
             }
 
