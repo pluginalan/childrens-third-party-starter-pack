@@ -231,8 +231,8 @@ define(['gmi-platform', 'storage', 'brim', 'downloads/package-manager'], functio
      */
     function addInstalledPackageUI(pkg) {
         var div = appendDiv(installedPackagesContainer);
-        div.style="background: #cccccc";
-
+        div.style.backgroundColor = "#cccccc"
+       
         // Add a delete button for this package.
         // this invokes the delete API call and, upon receiving a response updates the installed packages UI.
         appendBtn("delete ", function (pkgInfo) {
@@ -505,7 +505,7 @@ define(['gmi-platform', 'storage', 'brim', 'downloads/package-manager'], functio
      */
     function addDownloadingUI(packageId, message) {
         var div = appendDiv(downloadStatusContainer);
-        div.style="background: #cccccc";
+        div.style.backgroundColor = "#cccccc"
         var para = appendParagraph(message, div);
 
         var btn = appendBtn("cancel",
