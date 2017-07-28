@@ -1,11 +1,8 @@
 define(function(require) {
     "use strict";
 
-    /*
-     * Generic function which will return the correct AMI for the current platform
-     * that the game is being run on.
-     *
-     */
+
+
     var getAMI = function() {
 
         var BaseAMI = function() {
@@ -57,15 +54,5 @@ define(function(require) {
         }
     }
 
-    var amiInstance;
-
-    return {
-        getAMI: function() {
-            if(amiInstance) {
-                console.warn("Attempted to create multiple copies of the AMI. Only a single instance should be created");
-            }
-
-            return amiInstance = getAMI();
-        }
-    }
+    return this.getAMI();
 });

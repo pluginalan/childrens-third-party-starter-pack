@@ -398,7 +398,13 @@ define(function(require) {
                 }
             }
 
-            return gmiInstance = getGMI(options);
+            var gmiInstance = getGMI(options);
+
+            require(['js/gmi-extensions/ami-mobile', 'js/gmi-extensions/media-player.js'], function( ami, mediaPlayer ) {
+                gmiInstance = Object.assign( gmiInstance, ami, mediaPlayer );
+            });
+
+            return gmiInstance
         }
     }
 });
