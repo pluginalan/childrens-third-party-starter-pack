@@ -400,7 +400,11 @@ define(function(require) {
 
             var gmiInstance = getGMI(options);
 
-            require(['js/gmi-extensions/ami-mobile', 'js/gmi-extensions/media-player.js'], function( ami, mediaPlayer ) {
+            // require(['/js/gmi-extensions/ami-mobile.js', '/js/gmi-extensions/media-player.js'], function( ami, mediaPlayer ) {
+            //     gmiInstance = Object.assign( gmiInstance, ami, mediaPlayer );
+            // });
+
+            require(['/js/gmi-extensions/media-player.js'], function( mediaPlayer ) {
                 gmiInstance = Object.assign( gmiInstance, ami, mediaPlayer );
             });
 

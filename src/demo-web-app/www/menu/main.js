@@ -1,4 +1,4 @@
-define(['gmi-platform', 'storage', 'brim', 'downloads/package-manager'], function(gmi_platform, storage, brim, PackageManager) {
+define(['libs/js/gmi-platform.js', './storage.js', './brim.js', './downloads/package-manager.js'], function(gmi_platform, storage, brim, PackageManager) {
     "use strict";
 
     var settingsConfig = {
@@ -48,7 +48,6 @@ define(['gmi-platform', 'storage', 'brim', 'downloads/package-manager'], functio
     // already got the gmi library from the server, then this will be used over
     // the local one.
     var gmi = gmi_platform.getGMI({settingsConfig: settingsConfig});
-    var ami = window.getAMI();
     var numberOfStatsButtonClicks = 0;
     var packageManager = new PackageManager();
 
@@ -198,9 +197,9 @@ define(['gmi-platform', 'storage', 'brim', 'downloads/package-manager'], functio
 
     appendSubtitle("Game menu");
 
-    ami.config.available.forEach(function(element) {
+    gmi.config.available.forEach(function(element) {
             appendBtn(element.title, function(){
-                ami.openExperience(element.key);
+                gmi.openExperience(element.key);
         });
     });
 
@@ -422,8 +421,8 @@ define(['gmi-platform', 'storage', 'brim', 'downloads/package-manager'], functio
             downloadButtonsContainer.removeChild(downloadButtonsContainer.children[0]);
         }
 
-        if (ami.config.downloadablePackages) {
-            ami.config.downloadablePackages.forEach(function(element) {
+        if (gmi.config.downloadablePackages) {
+            gmi.config.downloadablePackages.forEach(function(element) {
                 appendBtn("Download "+element.title + " - (V"+element.version+")", downloadPackageFn.bind(null, element.packageId,element.url), "", downloadButtonsContainer);
                 appendBreak(downloadButtonsContainer);
                 appendBreak(downloadButtonsContainer);

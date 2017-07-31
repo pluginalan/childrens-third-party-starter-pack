@@ -54,5 +54,5 @@ define(function(require) {
         }
     }
 
-    return this.getAMI();
+    return getAMI()
 });
