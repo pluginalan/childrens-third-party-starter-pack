@@ -1,4 +1,4 @@
-define(['libs/js/gmi-platform.js', './storage.js', './brim.js', './downloads/package-manager.js'], function(gmi_platform, storage, brim, PackageManager) {
+define(['libs/js/gmi-mobile.js', './storage.js', './brim.js', './downloads/package-manager.js'], function(gmi_platform, storage, brim, PackageManager) {
     "use strict";
 
     var settingsConfig = {
