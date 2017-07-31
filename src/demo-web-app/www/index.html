@@ -33,9 +33,6 @@
             function launchGame() {
                 require.config({
                     baseUrl: window.gmiConfiguration.gameDir,
-
-                    // package/downloadId/vdufghd/dsfin/game.js
-                    // package/downloadId/vdufghd/js/gmi-mobile ????
                     paths: {
                         "js": '/js',
                         "selectedGame": window.gmiConfiguration.gameUrl.replace('.js', '')
@@ -46,7 +43,7 @@
                 body.id = window.gmiConfiguration.gameContainerId;
                 body.style = 'width:100%; height:100%; overflow:hidden;';
                 document.body.appendChild(body);
-                require(['/js/gmi-mobile', '/js/ami-mobile'], function(gmi, ami){
+                require(['js/gmi-mobile', 'js/ami-mobile'], function(gmi, ami){
                     window.getGMI = gmi.getGMI;
                     window.getAMI = ami.getAMI;
                     require(["selectedGame"], function(game) {
