@@ -232,7 +232,7 @@ define(['gmi-platform', 'storage', 'brim', 'downloads/package-manager'], functio
     function addInstalledPackageUI(pkg) {
         var div = appendDiv(installedPackagesContainer);
         div.style.backgroundColor = "#cccccc"
-       
+
         // Add a delete button for this package.
         // this invokes the delete API call and, upon receiving a response updates the installed packages UI.
         appendBtn("delete ", function (pkgInfo) {
@@ -245,8 +245,14 @@ define(['gmi-platform', 'storage', 'brim', 'downloads/package-manager'], functio
             div);
 
         // Add an image for this package. This illustrates how to access content within the package.
-        appendImage("/package/"+pkg.packageInfo.packageId+"/gameLogo.png", div);
-        appendBreak(div);
+        if(pkg.packageInfo.packageId == 'gnomes'){
+            appendBtn("Open RED", function () { ami.openExperience('red_gnome') }, div);
+            appendBtn("Open BLUE", function () { ami.openExperience('blue_gnome') }, div);
+            appendBreak(div);
+        }else{
+            appendImage("/package/"+pkg.packageInfo.packageId+"/gameLogo.png", div);
+            appendBreak(div);
+        }
 
         // Display some package specific info, read from the packageInfo data.
         appendSpan("PackageID: "+pkg.packageInfo.packageId, div);
