@@ -248,11 +248,9 @@ define(['gmi-platform', 'storage', 'brim', 'downloads/package-manager'], functio
         if(pkg.packageInfo.packageId == 'gnomes'){
             appendBtn("Open RED", function () { ami.openExperience('red_gnome') }, div);
             appendBtn("Open BLUE", function () { ami.openExperience('blue_gnome') }, div);
-            appendBreak(div);
-        }else{
-            appendImage("/package/"+pkg.packageInfo.packageId+"/gameLogo.png", div);
-            appendBreak(div);
         }
+        appendImage("/packages/"+pkg.packageInfo.packageId+"/gameLogo.png", div);
+        appendBreak(div);
 
         // Display some package specific info, read from the packageInfo data.
         appendSpan("PackageID: "+pkg.packageInfo.packageId, div);
