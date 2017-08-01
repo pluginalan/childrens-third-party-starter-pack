@@ -14,6 +14,7 @@ aws --profile "$PROFILE"                   \
     s3 sync                                \
     "$LOCAL"                               \
     "$REMOTE"                              \
+    --delete                               \
     --exclude             "*.DS_Store*"    \
     --exclude             "*.git*"         \
     --exclude             "*.gitkeep*"     \
