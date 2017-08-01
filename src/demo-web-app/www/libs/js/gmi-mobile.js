@@ -1,4 +1,10 @@
-define(function(require) {
+define([
+    'libs/js/gmi-extensions/media-player',
+    'libs/js/gmi-extensions/experiences',
+], function( mediaPlayer, experiences ) {
+
+
+//define(function(require) {
 
     /*
      * Generic function which will return the correct GMI for the current platform
@@ -398,17 +404,8 @@ define(function(require) {
                 }
             }
 
-            var gmiInstance = getGMI(options);
-
-            // require(['/js/gmi-extensions/ami-mobile.js', '/js/gmi-extensions/media-player.js'], function( ami, mediaPlayer ) {
-            //     gmiInstance = Object.assign( gmiInstance, ami, mediaPlayer );
-            // });
-
-            require(['/js/gmi-extensions/media-player.js'], function( mediaPlayer ) {
-                gmiInstance = Object.assign( gmiInstance, ami, mediaPlayer );
-            });
-
-            return gmiInstance
+            var gmiInstance = getGMI(options)
+            return Object.assign( gmiInstance, mediaPlayer, experiences )
         }
     }
 });
