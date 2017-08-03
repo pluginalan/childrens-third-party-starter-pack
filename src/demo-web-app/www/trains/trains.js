@@ -1,4 +1,4 @@
-define(['gmi-platform', 'brim'], function(gmi_platform, brim) {
+define(['libs/js/gmi-mobile'], function(gmi_platform) {
     "use strict";
 
     var settingsConfig = {
