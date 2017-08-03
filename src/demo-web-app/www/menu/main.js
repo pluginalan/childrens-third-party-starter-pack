@@ -98,7 +98,7 @@ define(['libs/js/gmi-mobile', './storage.js', 'libs/js/downloads/package-manager
     appendSubtitle("GMI Exit Example");
     appendParagraph("Android only: at this level in the experience stack, exit will quit the app.");
     appendParagraph("Exit at this level is not supported on iOS as you can't exit an app in this manner.");
-    appendBtn("Exit game", function() { gmi.exit(); });
+    appendBtn("Exit", function() { gmi.exit(); });
     appendHorizontalRule();
 
 

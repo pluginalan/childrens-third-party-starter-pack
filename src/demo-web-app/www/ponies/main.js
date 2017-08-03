@@ -45,7 +45,6 @@ define(['libs/js/gmi-mobile'], function(gmi_platform) {
         };
 
     var gmi = gmi_platform.getGMI({settingsConfig: settingsConfig});
-    var ami = window.getAMI();
 
     addStylesheet();
 
@@ -57,7 +56,7 @@ define(['libs/js/gmi-mobile'], function(gmi_platform) {
     wrapper.className = "wrapper";
     inner.className = "inner";
 
-    wrapper.style.backgroundColor = ami.config.background;
+    wrapper.style.backgroundColor = gmi.config.background;
 
     appendTitle("Ponies");
     container.appendChild(wrapper);
@@ -127,7 +126,7 @@ define(['libs/js/gmi-mobile'], function(gmi_platform) {
     appendHorizontalRule();
     
     appendBtn("back", function(){
-        ami.openParentExperience();
+        gmi.openParentExperience();
     });
 
     // ---------- Helper Functions ----------
