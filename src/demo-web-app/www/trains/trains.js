@@ -48,7 +48,6 @@ define(['libs/js/gmi-mobile'], function(gmi_platform) {
         };
 
     var gmi = gmi_platform.getGMI({settingsConfig: settingsConfig});
-    var ami = window.getAMI();
 
     addStylesheet();
 
@@ -75,7 +74,7 @@ define(['libs/js/gmi-mobile'], function(gmi_platform) {
     gmi.gameLoaded();
 
     appendBtn("back", function(){
-        ami.openParentExperience();
+        gmi.openParentExperience();
     });
 
     // ---------- Helper Functions ----------
