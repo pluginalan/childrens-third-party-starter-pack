@@ -1,4 +1,4 @@
-define(['libs/js/gmi-mobile', './storage.js', './brim.js', 'libs/js/downloads/package-manager'], function(gmi_platform, storage, brim, PackageManager) {
+define(['libs/js/gmi-mobile', './storage.js', 'libs/js/downloads/package-manager'], function(gmi_platform, storage, PackageManager) {
     "use strict";
 
     var settingsConfig = {
@@ -66,37 +66,6 @@ define(['libs/js/gmi-mobile', './storage.js', './brim.js', 'libs/js/downloads/pa
     container.appendChild(wrapper);
     wrapper.appendChild(inner);
 
-    // --------- Debug Mode Example ---------
-
-    appendSubtitle("Is Debug Mode Enabled?");
-    gmi.isDebugMode ? appendSpan("True") : appendSpan("False");
-    appendHorizontalRule();
-
-    // --------- Allow Debugging ---------
-
-    window.gameSettings = { debugEnabled: true };
-
-
-    // --------- Brim Usage Example ---------
-
-    brim.create(gmi.gameContainerId, "This text will be displayed when Brim appears");
-
-    // ---------- GMI Stats Example----------
-
-    appendSubtitle("GMI Stats Example");
-    var gmiStatsParagraph = appendParagraph();
-
-    appendSpan("Open ", gmiStatsParagraph);
-    appendLink("iStats Chrome Extension", "https://chrome.google.com/webstore/detail/dax-istats-log/jgkkagdpkhpdpddcegfcahbakhefbbga", gmiStatsParagraph);
-    appendSpan(" or see network calls prefixed with 'sa.bbc.co.uk' and" + " click the button to fire a stat.", gmiStatsParagraph);
-    appendSpacer();
-    appendBtn("Log Action Event (Button Clicked)", function(event) {
-        numberOfStatsButtonClicks++;
-        gmi.sendStatsEvent("button_click", event.target.innerHTML, {"num_btn_clicks": numberOfStatsButtonClicks});
-    });
-    appendHorizontalRule();
-
-
     // ---------- GMI Storage Example----------
 
     appendSubtitle("GMI Storage Example");
@@ -127,31 +96,11 @@ define(['libs/js/gmi-mobile', './storage.js', './brim.js', 'libs/js/downloads/pa
 
     // ---------- GMI Exit Example -----------
     appendSubtitle("GMI Exit Example");
+    appendParagraph("Android only: at this level in the experience stack, exit will quit the app.");
+    appendParagraph("Exit at this level is not supported on iOS as you can't exit an app in this manner.");
     appendBtn("Exit game", function() { gmi.exit(); });
     appendHorizontalRule();
 
-    // ---------- GMI Debug Example ----------
-
-    appendSubtitle("GMI Debug Example");
-    appendParagraph("The message input in the box below will be sent to gmi.debug when the submit button is hit.");
-    appendTextInput("debug-input");
-    appendSpacer();
-    appendBtn("Submit", function() { gmi.debug(document.getElementById("debug-input").value); });
-    appendHorizontalRule();
-
-
-    // --------- Prompt Button --------------
-
-    appendSubtitle("Prompt Button");
-    appendBtn("Trigger Prompt", function() {
-      gmi.showPrompt(resumeGame);
-    });
-    var promptParagraph = appendParagraph();
-    appendHorizontalRule();
-
-    function resumeGame() {
-      appendSpan("There are no prompts for this platform, resuming game... ", promptParagraph);
-    }
 
     // --------- Call Settings Function --------------
 
@@ -204,11 +153,6 @@ define(['libs/js/gmi-mobile', './storage.js', './brim.js', 'libs/js/downloads/pa
     });
 
     appendHorizontalRule();
-
-
-
-
-
 
 
     // ---------- Package Manager: Fetch Installed Package List ------------
