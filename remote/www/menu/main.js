@@ -63,7 +63,7 @@ define(['gmi-platform', 'storage', 'brim', 'downloads/package-manager'], functio
     var inner = document.createElement("div");
     wrapper.className = "wrapper";
     inner.className = "inner";
-    appendTitle("Games Messaging Interface Examples");
+    appendTitle("Games Messaging Interface Examples (Remote)");
     container.appendChild(wrapper);
     wrapper.appendChild(inner);
 

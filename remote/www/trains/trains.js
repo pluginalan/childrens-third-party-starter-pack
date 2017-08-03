@@ -62,7 +62,7 @@ define(['gmi-platform', 'brim'], function(gmi_platform, brim) {
 
     wrapper.style.backgroundColor = window.experience.config.background;
 
-    appendTitle("Trains");
+    appendTitle("Trains (Remote)");
     container.appendChild(wrapper);
     wrapper.appendChild(inner);
 

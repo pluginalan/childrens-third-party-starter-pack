@@ -59,7 +59,7 @@ define(['gmi-platform', 'brim'], function(gmi_platform, brim) {
 
     wrapper.style.backgroundColor = ami.config.background;
 
-    appendTitle("Ponies");
+    appendTitle("Ponies (Remote)");
     container.appendChild(wrapper);
     wrapper.appendChild(inner);
 
