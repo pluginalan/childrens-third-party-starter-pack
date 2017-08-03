@@ -61,16 +61,12 @@
         ],
         "available": [
           {
-            "title": "Tanks Game",
+            "title": "Tanks Game (Remote)",
             "key": "tanks"
           },
           {
-            "title": "Ponies",
+            "title": "Ponies Game (Remote)",
             "key": "ponies"
-          },
-          {
-            "title": "Trains",
-            "key": "trains"
           }
         ]
       }
@@ -101,19 +97,6 @@
         "custom-config-N": "{}"
       }
     },
-    {
-      "key": "trains",
-      "game_dir": "trains/",
-      "game_url": "main.js",
-      "parent": "menu",
-      "config": {
-        "title": "Trains Game",
-        "description": "This is the Trains game",
-        "background": "yellow",
-        "custom-config-1": "{}",
-        "custom-config-N": "{}"
-      }
-    },    
     {
       "key": "red_gnome",
       "game_dir": "packages/gnomes/",
