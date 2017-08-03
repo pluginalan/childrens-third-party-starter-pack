@@ -40,10 +40,28 @@
         "description": "This is the game menu",
         "path": "menu/index.html",
         "downloadablePackages": [
+          {
+            "packageId": "test-package-1",
+            "url": "https://s3-eu-west-1.amazonaws.com/childrens-data-public-int/apps/cbeebies-picknmix-dev/downloads/demo-examples/test-package-1.zip",
+            "version": 1,
+            "title": "Test Package 1"
+          },
+          {
+            "packageId": "test-package-2",
+            "url": "https://s3-eu-west-1.amazonaws.com/childrens-data-public-int/apps/cbeebies-picknmix-dev/downloads/demo-examples/test-package-2.zip",
+            "version": 1,
+            "title": "Test Package 2"
+          },
+          {
+            "packageId": "gnomes",
+            "url": "https://s3-eu-west-1.amazonaws.com/childrens-data-public-int/apps/cbeebies-picknmix-dev/downloads/demo-examples/gnomes.zip",
+            "version": 1,
+            "title": "Gnomes"
+          }
         ],
         "available": [
           {
-            "title": "Tanks",
+            "title": "Tanks Game",
             "key": "tanks"
           },
           {
@@ -53,7 +71,7 @@
           {
             "title": "Trains",
             "key": "trains"
-          }          
+          }
         ]
       }
     },
@@ -86,12 +104,38 @@
     {
       "key": "trains",
       "game_dir": "trains/",
-      "game_url": "trains.js",
+      "game_url": "main.js",
       "parent": "menu",
       "config": {
         "title": "Trains Game",
         "description": "This is the Trains game",
         "background": "yellow",
+        "custom-config-1": "{}",
+        "custom-config-N": "{}"
+      }
+    },    
+    {
+      "key": "red_gnome",
+      "game_dir": "packages/gnomes/",
+      "game_url": "gnomes.js",
+      "parent": "menu",
+      "config": {
+        "title": "Gnomes",
+        "description": "RED HATS FTW",
+        "background": "red",
+        "custom-config-1": "{}",
+        "custom-config-N": "{}"
+      }
+    },
+    {
+      "key": "blue_gnome",
+      "game_dir": "packages/gnomes/",
+      "game_url": "gnomes.js",
+      "parent": "menu",
+      "config": {
+        "title": "Gnomes",
+        "description": "Blue Hats Are The Best",
+        "background": "blue",
         "custom-config-1": "{}",
         "custom-config-N": "{}"
       }
