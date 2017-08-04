@@ -1,0 +1,8 @@
+{
+  "packageId": "gnomes",
+  "version": 1,
+  "spaceRequired": 4096,
+  "userData": {
+    "title": "Gnomes"
+  }
+}

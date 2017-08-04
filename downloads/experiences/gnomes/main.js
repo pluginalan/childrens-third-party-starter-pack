@@ -58,7 +58,7 @@ define(['libs/js/gmi-mobile'], function(gmi_platform) {
 
     wrapper.style.backgroundColor = gmi.config.background;
 
-    appendTitle("Ponies");
+    appendTitle("Gnomes");
     container.appendChild(wrapper);
     wrapper.appendChild(inner);
 
@@ -112,7 +112,7 @@ define(['libs/js/gmi-mobile'], function(gmi_platform) {
 
     appendSpacer();
     appendBtn("Save", function() { 
-        var dummySetting = "{\"setting_string\" : \"pony setting\", \"setting_number\": 100}";
+        var dummySetting = "{\"setting_string\" : \"gnomes setting\", \"setting_number\": 100}";
 
         gmi.setGameData("test", dummySetting)
         settingsParagraph.innerHTML = "Settings saved: " + dummySetting;
@@ -126,7 +126,7 @@ define(['libs/js/gmi-mobile'], function(gmi_platform) {
     appendHorizontalRule();
     
     appendBtn("back", function(){
-        gmi.exit();
+        gmi.openParentExperience();
     });
 
     // ---------- Helper Functions ----------
