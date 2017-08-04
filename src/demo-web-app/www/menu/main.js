@@ -1,4 +1,4 @@
-define(['gmi-platform', 'storage', 'brim', 'downloads/package-manager'], function(gmi_platform, storage, brim, PackageManager) {
+define(['libs/js/gmi-mobile', './storage.js', 'libs/js/downloads/package-manager'], function(gmi_platform, storage, PackageManager) {
     "use strict";
 
     var settingsConfig = {
@@ -48,7 +48,6 @@ define(['gmi-platform', 'storage', 'brim', 'downloads/package-manager'], functio
     // already got the gmi library from the server, then this will be used over
     // the local one.
     var gmi = gmi_platform.getGMI({settingsConfig: settingsConfig});
-    var ami = window.getAMI();
     var numberOfStatsButtonClicks = 0;
     var packageManager = new PackageManager();
 
@@ -66,37 +65,6 @@ define(['gmi-platform', 'storage', 'brim', 'downloads/package-manager'], functio
     appendTitle("Games Messaging Interface Examples");
     container.appendChild(wrapper);
     wrapper.appendChild(inner);
-
-    // --------- Debug Mode Example ---------
-
-    appendSubtitle("Is Debug Mode Enabled?");
-    gmi.isDebugMode ? appendSpan("True") : appendSpan("False");
-    appendHorizontalRule();
-
-    // --------- Allow Debugging ---------
-
-    window.gameSettings = { debugEnabled: true };
-
-
-    // --------- Brim Usage Example ---------
-
-    brim.create(gmi.gameContainerId, "This text will be displayed when Brim appears");
-
-    // ---------- GMI Stats Example----------
-
-    appendSubtitle("GMI Stats Example");
-    var gmiStatsParagraph = appendParagraph();
-
-    appendSpan("Open ", gmiStatsParagraph);
-    appendLink("iStats Chrome Extension", "https://chrome.google.com/webstore/detail/dax-istats-log/jgkkagdpkhpdpddcegfcahbakhefbbga", gmiStatsParagraph);
-    appendSpan(" or see network calls prefixed with 'sa.bbc.co.uk' and" + " click the button to fire a stat.", gmiStatsParagraph);
-    appendSpacer();
-    appendBtn("Log Action Event (Button Clicked)", function(event) {
-        numberOfStatsButtonClicks++;
-        gmi.sendStatsEvent("button_click", event.target.innerHTML, {"num_btn_clicks": numberOfStatsButtonClicks});
-    });
-    appendHorizontalRule();
-
 
     // ---------- GMI Storage Example----------
 
@@ -128,31 +96,11 @@ define(['gmi-platform', 'storage', 'brim', 'downloads/package-manager'], functio
 
     // ---------- GMI Exit Example -----------
     appendSubtitle("GMI Exit Example");
-    appendBtn("Exit game", function() { gmi.exit(); });
+    appendParagraph("Android only: at this level in the experience stack, exit will quit the app.");
+    appendParagraph("Exit at this level is not supported on iOS as you can't exit an app in this manner.");
+    appendBtn("Exit", function() { gmi.exit(); });
     appendHorizontalRule();
 
-    // ---------- GMI Debug Example ----------
-
-    appendSubtitle("GMI Debug Example");
-    appendParagraph("The message input in the box below will be sent to gmi.debug when the submit button is hit.");
-    appendTextInput("debug-input");
-    appendSpacer();
-    appendBtn("Submit", function() { gmi.debug(document.getElementById("debug-input").value); });
-    appendHorizontalRule();
-
-
-    // --------- Prompt Button --------------
-
-    appendSubtitle("Prompt Button");
-    appendBtn("Trigger Prompt", function() {
-      gmi.showPrompt(resumeGame);
-    });
-    var promptParagraph = appendParagraph();
-    appendHorizontalRule();
-
-    function resumeGame() {
-      appendSpan("There are no prompts for this platform, resuming game... ", promptParagraph);
-    }
 
     // --------- Call Settings Function --------------
 
@@ -198,18 +146,13 @@ define(['gmi-platform', 'storage', 'brim', 'downloads/package-manager'], functio
 
     appendSubtitle("Game menu");
 
-    ami.config.available.forEach(function(element) {
+    gmi.config.available.forEach(function(element) {
             appendBtn(element.title, function(){
-                ami.openExperience(element.key);
+                gmi.openExperience(element.key);
         });
     });
 
     appendHorizontalRule();
-
-
-
-
-
 
 
     // ---------- Package Manager: Fetch Installed Package List ------------
@@ -426,8 +369,8 @@ define(['gmi-platform', 'storage', 'brim', 'downloads/package-manager'], functio
             downloadButtonsContainer.removeChild(downloadButtonsContainer.children[0]);
         }
 
-        if (ami.config.downloadablePackages) {
-            ami.config.downloadablePackages.forEach(function(element) {
+        if (gmi.config.downloadablePackages) {
+            gmi.config.downloadablePackages.forEach(function(element) {
                 appendBtn("Download "+element.title + " - (V"+element.version+")", downloadPackageFn.bind(null, element.packageId,element.url), "", downloadButtonsContainer);
                 appendBreak(downloadButtonsContainer);
                 appendBreak(downloadButtonsContainer);
