@@ -23,5 +23,5 @@ aws --profile "$PROFILE"                   \
     --exclude             "*.sh*"          \
     --acl                 public-read      \
     --cache-control       "$CACHE_CONTROL" \
-    --no-follow-symlinks                   \
+    --follow-symlinks                      \
     --metadata-directive  REPLACE
