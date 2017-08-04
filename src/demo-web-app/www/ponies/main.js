@@ -126,7 +126,7 @@ define(['libs/js/gmi-mobile'], function(gmi_platform) {
     appendHorizontalRule();
     
     appendBtn("back", function(){
-        gmi.openParentExperience();
+        gmi.exit();
     });
 
     // ---------- Helper Functions ----------
