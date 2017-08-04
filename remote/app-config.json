@@ -87,7 +87,7 @@
     {
       "key": "ponies",
       "game_dir": "ponies/",
-      "game_url": "ponies.js",
+      "game_url": "main.js",
       "parent": "menu",
       "config": {
         "title": "Ponies Game",

@@ -1,4 +1,4 @@
-define(['gmi-platform', 'brim'], function(gmi_platform, brim) {
+define(['libs/js/gmi-mobile'], function(gmi_platform) {
     "use strict";
 
     var settingsConfig = {
@@ -45,7 +45,6 @@ define(['gmi-platform', 'brim'], function(gmi_platform, brim) {
         };
 
     var gmi = gmi_platform.getGMI({settingsConfig: settingsConfig});
-    var ami = window.getAMI();
 
     addStylesheet();
 
@@ -57,9 +56,9 @@ define(['gmi-platform', 'brim'], function(gmi_platform, brim) {
     wrapper.className = "wrapper";
     inner.className = "inner";
 
-    wrapper.style.backgroundColor = ami.config.background;
+    wrapper.style.backgroundColor = gmi.config.background;
 
-    appendTitle("Tanks (Remote)");
+    appendTitle("Tanks");
     container.appendChild(wrapper);
     wrapper.appendChild(inner);
 
@@ -126,7 +125,7 @@ define(['gmi-platform', 'brim'], function(gmi_platform, brim) {
     appendHorizontalRule();
 
     appendBtn("back", function(){
-        ami.openParentExperience();
+        gmi.openParentExperience();
     });
 
     gmi.gameLoaded();
