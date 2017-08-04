@@ -103,6 +103,13 @@ button:hover {
     text-transform:capitalize;
 }
 
+.setting {
+    font-size:1.3rem;
+    font-weight:bold;
+    color:#e6711b;
+    text-transform:capitalize;
+}
+
 #debug-input {
     width: 300px;
     margin-bottom:1.1rem;

@@ -10,20 +10,17 @@ define(['gmi-platform', 'brim'], function(gmi_platform, brim) {
                             "key": "audio",
                             "type": "toggle",
                             "title": "Audio",
-                            "description": "Turn audio on or off",
-                            "defaultValue": false
+                            "description": "Turn audio on or off"
                         },{
                             "key": "motion",
                             "type": "toggle",
                             "title": "Motion",
-                            "description": "Reduce background animation",
-                             "defaultValue": false
+                            "description": "Reduce background animation"
                         },{
                             "key": "subtitles",
                             "type": "toggle",
                             "title": "Subtitles",
-                            "description": "Show on screen subtitles",
-                             "defaultValue": false
+                            "description": "Show on screen subtitles"
                         },
                     ]
                 }, {
@@ -60,23 +57,79 @@ define(['gmi-platform', 'brim'], function(gmi_platform, brim) {
     wrapper.className = "wrapper";
     inner.className = "inner";
 
-    wrapper.style.backgroundColor = window.experience.config.background;
+    wrapper.style.backgroundColor = ami.config.background;
 
-    appendTitle("Trains (Remote)");
+    appendTitle("Tanks (Remote)");
     container.appendChild(wrapper);
     wrapper.appendChild(inner);
 
     appendHorizontalRule()
 
-    appendSubtitle("Love Steam");
+    // Audio
+    appendSubtitle("Audio");
+    var audioParagraph = appendParagraph();
 
-    appendHorizontalRule()
+    appendSpan("Game audio value: ", audioParagraph);
+    audioParagraph.appendChild(createLabel(gmi.getAllSettings().audio, "audio-label"));
 
-    gmi.gameLoaded();
+    appendSpacer();
+    appendBtn("Toggle audio", function() {
+        gmi.setAudio(!gmi.getAllSettings().audio);
+        document.getElementById("audio-label").innerHTML = gmi.getAllSettings().audio;
+    });
+
+    // Motion
+    appendSubtitle("Motion");
+    var motionParagraph = appendParagraph();
+
+    appendSpan("Game motion value: ", motionParagraph);
+    motionParagraph.appendChild(createLabel(gmi.getAllSettings().motion, "motion-label"));
+
+    appendSpacer();
+    appendBtn("Toggle motion", function() {
+        gmi.setMotion(!gmi.getAllSettings().motion);
+        document.getElementById("motion-label").innerHTML = gmi.getAllSettings().motion;
+    });
+
+    // Subtitles
+    appendSubtitle("Subtitles");
+    var paragraph = appendParagraph();
+
+    appendSpan("Game subtitles value: ", paragraph);
+    paragraph.appendChild(createLabel(gmi.getAllSettings().subtitles, "subtitles-label"));
+
+    appendSpacer();
+    appendBtn("Toggle subtitles", function() {
+        gmi.setSubtitles(!gmi.getAllSettings().subtitles);
+        document.getElementById("subtitles-label").innerHTML = gmi.getAllSettings().subtitles;
+    });
+
+    // ---------- GMI Settings Example----------
+
+    appendSubtitle("GMI Settings Example");
+    var settingsParagraph = appendParagraph();
+    settingsParagraph.appendChild(createLabel("", "settings-label"));
+
+    appendSpacer();
+    appendBtn("Save", function() { 
+        var dummySetting = "{\"setting\" : \"tanks setting\"}";
+
+        gmi.setGameData("test", dummySetting)
+        settingsParagraph.innerHTML = "Settings saved: " + dummySetting;
+     });
+    appendBtn("Load", function() { 
+        settingsParagraph.innerHTML = "Settings loaded: " + gmiSettings.gameData.test;
+    });
+
+    settingsParagraph.innerHTML = "Test setting: " + gmiSettings.gameData.test;
+   
+    appendHorizontalRule();
 
     appendBtn("back", function(){
         ami.openParentExperience();
     });
+
+    gmi.gameLoaded();
 
     // ---------- Helper Functions ----------
 
@@ -184,6 +237,14 @@ define(['gmi-platform', 'brim'], function(gmi_platform, brim) {
         audioLabel.innerHTML = gmi.getAllSettings().audio;
         audioLabel.id = "audio-label";
         return audioLabel;
+    }
+
+     function createLabel(text, id) {
+        var label = document.createElement("span");
+        label.innerHTML = text;
+        label.id = id;
+        label.className = "setting";
+        return label;
     }
 
 
