@@ -100,7 +100,7 @@
     {
       "key": "red_gnome",
       "game_dir": "packages/gnomes/",
-      "game_url": "gnomes.js",
+      "game_url": "main.js",
       "parent": "menu",
       "config": {
         "title": "Gnomes",
@@ -113,7 +113,7 @@
     {
       "key": "blue_gnome",
       "game_dir": "packages/gnomes/",
-      "game_url": "gnomes.js",
+      "game_url": "main.js",
       "parent": "menu",
       "config": {
         "title": "Gnomes",

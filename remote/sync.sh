@@ -5,7 +5,7 @@ if [ -z `which aws` ]; then
   exit 1
 fi
 
-LOCAL="remote"
+LOCAL="sync"
 REMOTE="s3://childrens-data-public-int/apps/cbeebies-picknmix-dev/remote/"
 PROFILE="childrens-data-int"
 CACHE_CONTROL="max-age=60, must-revalidate"
