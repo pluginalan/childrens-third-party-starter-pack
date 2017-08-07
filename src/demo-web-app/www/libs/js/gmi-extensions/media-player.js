@@ -1,9 +1,9 @@
 define(function(require) {
-    "use strict";
+    "use strict"
 
     return {
-    	mediaPlayerFunctionOne: function() {
-    		console.log( "this is mediaPlayerFunctionOne" );
+    	playMedia: function( vPID ) {
+    		
     	}
     }
 });
