@@ -1,8 +1,7 @@
 define([
     'libs/js/gmi-extensions/media-player',
-    'libs/js/gmi-extensions/experiences',
-    'libs/js/gmi-extensions/image-capture'
-], function( mediaPlayer, experiences, imageCapture ) {
+    'libs/js/gmi-extensions/experiences'
+], function( mediaPlayer, experiences ) {
 
 
 //define(function(require) {
@@ -406,7 +405,7 @@ define([
             }
 
             var gmiInstance = getGMI(options)
-            return Object.assign( gmiInstance, mediaPlayer, experiences, imageCapture )
+            return Object.assign( gmiInstance, mediaPlayer, experiences )
         }
     }
 });
