@@ -155,6 +155,23 @@ define(['libs/js/gmi-mobile', './storage.js', 'libs/js/downloads/package-manager
     appendHorizontalRule();
 
 
+    // ---------- Media Playback -------------
+
+appendSubtitle("Media Playback");
+
+appendBtn("Play Video", function() {
+  var playMedia = gmi.playMedia();
+  appendSpan("Media playback requested...", playbackParagraph);
+  if (!playMedia) {
+    appendSpan("Media playback failed.", playbackParagraph);
+  }
+});
+var playbackParagraph = appendParagraph();
+
+appendHorizontalRule();
+
+
+
     // ---------- Package Manager: Fetch Installed Package List ------------
 
     /**
