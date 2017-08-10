@@ -373,10 +373,6 @@ define([
             return true;
         };
 
-        AndroidGMI.prototype.playMedia = function() {
-            GameInterface.playMedia();
-        }
-
         if(window.gmiSettings.platform === 'apple') {
             return new AppleGMI(options);
         } else if(window.gmiSettings.platform === 'android') {
