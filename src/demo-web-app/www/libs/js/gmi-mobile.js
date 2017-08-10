@@ -373,7 +373,7 @@ define([
             return true;
         };
 
-        AndroidGMI.prototype.playMedia = function(onSettingChangedCb, onSettingsClosed) {
+        AndroidGMI.prototype.playMedia = function() {
             GameInterface.playMedia();
         }
 
