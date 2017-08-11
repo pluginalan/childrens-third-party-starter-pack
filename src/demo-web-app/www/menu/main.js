@@ -351,6 +351,15 @@ define(['libs/js/gmi-mobile', './storage.js', 'libs/js/downloads/package-manager
 
         packageManager.download(packageId, url, metaData).then(function(response) {
             if (response.status === PackageManager.Status_Downloading) {
+
+                var idx = findDownloadingUI(packageId);
+                
+                if (idx != -1) {
+                        var ui = downloadingUIs[idx];
+                        ui.container.parentNode.removeChild(ui.container);
+                        downloadingUIs.splice(idx,1);
+                }
+
                 updateDownloadUI(packageId, "started", false);
                 monitorDownloadingFn(packageId);
             }
