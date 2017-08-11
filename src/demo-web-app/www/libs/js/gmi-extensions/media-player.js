@@ -2,8 +2,9 @@ define(function(require) {
     "use strict"
 
     return {
-    	playMedia: function( vPID ) {
-    		
+    	playMedia: function(VPID) {
+        GameInterface.playMedia(VPID);
+        return true;
     	}
     }
 });

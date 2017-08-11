@@ -155,6 +155,27 @@ define(['libs/js/gmi-mobile', './storage.js', 'libs/js/downloads/package-manager
     appendHorizontalRule();
 
 
+    // ---------- Media Playback -------------
+
+    appendSubtitle("Media Playback");
+
+    appendTextInput("vPIDinput");
+    var vPIDcontainer = document.getElementById("vPIDinput");
+    vPIDcontainer.value = "Enter VPID";
+
+    appendBtn("Play Video", function() {
+      var playMedia = gmi.playMedia("p04ls4bl");
+      appendSpan("Media playback requested...", playbackParagraph);
+      if (!playMedia) {
+        appendSpan("Media playback failed.", playbackParagraph);
+      }
+    });
+    var playbackParagraph = appendParagraph();
+
+    appendHorizontalRule();
+
+
+
     // ---------- Package Manager: Fetch Installed Package List ------------
 
     /**
