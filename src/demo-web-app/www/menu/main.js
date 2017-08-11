@@ -200,10 +200,10 @@ define(['libs/js/gmi-mobile', './storage.js', 'libs/js/downloads/package-manager
 
         // Add an image for this package. This illustrates how to access content within the package.
         if(pkg.packageInfo.packageId == 'gnomes'){
-            appendBtn("Open RED", function () {
+            appendBtn("open red_gnome", function () {
                 gmi.openExperience('red_gnome')
             }, div);
-            appendBtn("Open BLUE", function () {
+            appendBtn("open blue_gnome", function () {
                 gmi.openExperience('blue_gnome')
             }, div);
         }
