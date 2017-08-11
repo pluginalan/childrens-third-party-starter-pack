@@ -2,8 +2,8 @@ define(function(require) {
     "use strict"
 
     return {
-    	playMedia: function() {
-        GameInterface.playMedia();
+    	playMedia: function(VPID) {
+        GameInterface.playMedia(VPID);
         return true;
     	}
     }

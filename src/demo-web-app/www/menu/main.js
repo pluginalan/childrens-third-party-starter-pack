@@ -164,7 +164,7 @@ define(['libs/js/gmi-mobile', './storage.js', 'libs/js/downloads/package-manager
     vPIDcontainer.value = "Enter VPID";
 
     appendBtn("Play Video", function() {
-      var playMedia = gmi.playMedia();
+      var playMedia = gmi.playMedia("p04ls4bl");
       appendSpan("Media playback requested...", playbackParagraph);
       if (!playMedia) {
         appendSpan("Media playback failed.", playbackParagraph);
