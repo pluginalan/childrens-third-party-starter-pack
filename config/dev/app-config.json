@@ -104,8 +104,8 @@
       "parent": "menu",
       "config": {
         "title": "Gnomes",
-        "description": "RED HATS FTW",
-        "background": "red",
+        "description": "These gnomes prefer tomatoes",
+        "background": "tomato",
         "custom-config-1": "{}",
         "custom-config-N": "{}"
       }
@@ -117,8 +117,8 @@
       "parent": "menu",
       "config": {
         "title": "Gnomes",
-        "description": "Blue Hats Are The Best",
-        "background": "blue",
+        "description": "These gnomes prefer cornflowers",
+        "background": "cornflowerblue",
         "custom-config-1": "{}",
         "custom-config-N": "{}"
       }

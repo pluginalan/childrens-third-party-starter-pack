@@ -96,17 +96,10 @@ button:hover {
     background-color:#dcdcdc;
 }
 
-#audio-label {
-    font-size:1.3rem;
-    font-weight:bold;
-    color:#e6711b;
-    text-transform:capitalize;
-}
-
 .setting {
     font-size:1.3rem;
     font-weight:bold;
-    color:#e6711b;
+    color: #000000;
     text-transform:capitalize;
 }
 

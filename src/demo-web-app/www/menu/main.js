@@ -11,33 +11,44 @@ define(['libs/js/gmi-mobile', './storage.js', 'libs/js/downloads/package-manager
                         "type": "toggle",
                         "title": "Audio",
                         "description": "Turn audio on or off"
-                    },{
+                    },
+                    {
                         "key": "motion",
                         "type": "toggle",
                         "title": "Motion",
                         "description": "Reduce background animation"
-                    },{
+                    },
+                    {
                         "key": "subtitles",
                         "type": "toggle",
                         "title": "Subtitles",
                         "description": "Show on screen subtitles"
-                    },
+                    }
                 ]
-            }, {
+            }, 
+            {
                 title: "Game Settings",
                 settings: [
                     {
-                        "key": "hard_mode",
-                        "type": "toggle",
-                        "title": "Hard Mode",
-                        "description": "Turn hard mode on/off",
-                        "defaultValue": false
-                    },{
-                        "key": "night_mode",
-                        "type": "toggle",
-                        "title": "Night Mode",
-                        "description": "Turn night mode on/off",
-                         "defaultValue": false
+                        "key"          : "hard_mode",
+                        "type"         : "toggle",
+                        "title"        : "Hard Mode",
+                        "description"  : "Turn hard mode on/off",
+                        "defaultValue" : false
+                    },
+                    {
+                        "key"          : "night_mode",
+                        "type"         : "toggle",
+                        "title"        : "Night Mode",
+                        "description"  : "Turn night mode on/off",
+                        "defaultValue" : false
+                    },
+                    {
+                        "key"          : "wibbleMode",
+                        "type"         : "toggle",
+                        "title"        : "Wibble Mode",
+                        "description"  : "this should only affect the wibble mode setting in this experience",
+                        "defaultValue" : false
                     }
                 ]
             }

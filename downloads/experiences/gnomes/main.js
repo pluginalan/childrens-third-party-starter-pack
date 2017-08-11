@@ -7,37 +7,48 @@ define(['libs/js/gmi-mobile'], function(gmi_platform) {
                     title: "Global Settings",
                     settings: [
                        {
-                            "key": "audio",
-                            "type": "toggle",
-                            "title": "Audio",
-                            "description": "Turn audio on or off"
-                        },{
-                            "key": "motion",
-                            "type": "toggle",
-                            "title": "Motion",
-                            "description": "Reduce background animation"
-                        },{
-                            "key": "subtitles",
-                            "type": "toggle",
-                            "title": "Subtitles",
-                            "description": "Show on screen subtitles"
+                            "key"         : "audio",
+                            "type"        : "toggle",
+                            "title"       : "Audio",
+                            "description" : "Turn audio on or off"
                         },
+                        {
+                            "key"         : "motion",
+                            "type"        : "toggle",
+                            "title"       : "Motion",
+                            "description" : "Reduce background animation"
+                        },
+                        {
+                            "key"         : "subtitles",
+                            "type"        : "toggle",
+                            "title"       : "Subtitles",
+                            "description" : "Show on screen subtitles"
+                        }
                     ]
-                }, {
+                },
+                {
                     title: "Game Settings",
                     settings: [
                         {
-                            "key": "hard_mode",
-                            "type": "toggle",
-                            "title": "Hard Mode",
-                            "description": "Turn hard mode on/off",
-                            "defaultValue": false
-                        },{
-                            "key": "night_mode",
-                            "type": "toggle",
-                            "title": "Night Mode",
-                            "description": "Turn night mode on/off",
-                             "defaultValue": false
+                            "key"          : "hard_mode",
+                            "type"         : "toggle",
+                            "title"        : "Hard Mode",
+                            "description"  : "Turn hard mode on/off",
+                            "defaultValue" : false
+                        },
+                        {
+                            "key"          : "night_mode",
+                            "type"         : "toggle",
+                            "title"        : "Night Mode",
+                            "description"  : "Turn night mode on/off",
+                            "defaultValue" : false
+                        },
+                        {
+                            "key"          : "wibble_mode",
+                            "type"         : "toggle",
+                            "title"        : "Wibble Mode",
+                            "description"  : "this should only affect the wibble mode setting in this experience",
+                            "defaultValue" : false
                         }
                     ]
                 }
@@ -61,6 +72,11 @@ define(['libs/js/gmi-mobile'], function(gmi_platform) {
     appendTitle("Gnomes");
     container.appendChild(wrapper);
     wrapper.appendChild(inner);
+
+    // ---------- Global Settings Example ----------
+
+    appendSubtitle("Global Settings Example");
+    appendParagraph("<em>Global settings are set across all experiences.</em>");
 
     // Audio
     appendSubtitle("Audio");
@@ -98,16 +114,49 @@ define(['libs/js/gmi-mobile'], function(gmi_platform) {
         document.getElementById("subtitles-label").innerHTML = gmi.getAllSettings().subtitles;
     });
 
-    appendHorizontalRule()
+    appendHorizontalRule();
 
-    // Game loaded
+    // ---------- Game Settings ----------
 
-    gmi.gameLoaded();
+    appendSubtitle("Native Settings Screen");
+    appendBtn("Show Settings", function() {
+        function closed() {
+        }
+        function change(key, value) {
+            var element = document.getElementById(key + "-label");
+            if (element) {
+                element.innerHTML = value;
+            }
+        }
+        if (! gmi.showSettings(change, closed)) {
+            // error
+        }
+    });
 
-    // ---------- GMI Settings Example----------
+    appendHorizontalRule();    
+
+    // ---------- Game Data Example (Settings) ----------
+
+    appendSubtitle("Game Settings Example");
+    appendParagraph("<em>Game settings are sandboxed to the current experience.</em>");
+
+    var wibbleParagraph = appendParagraph();
+    appendSpan("Wibble Mode value: ", wibbleParagraph);
+    var wibbleMode = undefined;
+    function updateWibbleMode() {        
+        if (gmiSettings.gameData.hasOwnProperty("wibble_mode")) {
+            wibbleMode = gmiSettings.gameData.wibble_mode;
+        }
+    }
+    updateWibbleMode();
+    wibbleParagraph.appendChild(createLabel(wibbleMode, "wibble_mode-label"));
+
+    appendHorizontalRule();
+
+    // ---------- Game Data Example ----------
 
     appendSubtitle("Game Data Example");
-    appendParagraph("<em>Game data is sandboxed to the current running experience.</em>");
+    appendParagraph("<em>Game settings are sandboxed to the current experience.</em>");
 
     var settingsParagraph = appendParagraph();
     settingsParagraph.appendChild(createLabel("", "settings-label"));
@@ -166,6 +215,10 @@ define(['libs/js/gmi-mobile'], function(gmi_platform) {
     appendBtn("back", function(){
         gmi.openParentExperience();
     });
+
+    // Game loaded
+
+    gmi.gameLoaded();
 
     // ---------- Helper Functions ----------
 
