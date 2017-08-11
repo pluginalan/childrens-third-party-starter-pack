@@ -159,6 +159,10 @@ define(['libs/js/gmi-mobile', './storage.js', 'libs/js/downloads/package-manager
 
     appendSubtitle("Media Playback");
 
+    appendTextInput("vPIDinput");
+    var vPIDcontainer = document.getElementById("vPIDinput");
+    vPIDcontainer.value = "Enter VPID";
+
     appendBtn("Play Video", function() {
       var playMedia = gmi.playMedia();
       appendSpan("Media playback requested...", playbackParagraph);
