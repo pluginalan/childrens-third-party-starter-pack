@@ -106,23 +106,61 @@ define(['libs/js/gmi-mobile'], function(gmi_platform) {
 
     // ---------- GMI Settings Example----------
 
-    appendSubtitle("GMI Settings Example");
+    appendSubtitle("Game Data Example");
+    appendParagraph("<em>Game data is sandboxed to the current running experience.</em>");
+
     var settingsParagraph = appendParagraph();
     settingsParagraph.appendChild(createLabel("", "settings-label"));
 
     appendSpacer();
-    appendBtn("Save", function() { 
-        var dummySetting = "{\"setting_string\" : \"gnomes setting\", \"setting_number\": 100}";
 
-        gmi.setGameData("test", dummySetting)
-        settingsParagraph.innerHTML = "Settings saved: " + dummySetting;
-     });
-    appendBtn("Load", function() { 
-        settingsParagraph.innerHTML = "Settings loaded: " + gmiSettings.gameData.test;
+    var counter = undefined;
+
+    function loadCounter() {
+        var existing = gmiSettings.gameData.counter;
+        if (typeof existing === "number") {
+            counter = existing;
+        } else {
+            counter = undefined;
+        }
+    }
+
+    function outputCounter(suffix) {
+        settingsParagraph.innerHTML = "Counter: " + counter + (suffix ? suffix : "");
+    }
+
+    outputCounter();
+
+    appendBtn("+", function () {
+        if (counter == undefined) {
+            counter = 0;
+        } else {
+            counter += 1;
+        }        
+        outputCounter();
     });
 
-    settingsParagraph.innerHTML = "Test setting: " + gmiSettings.gameData.test;
-   
+    appendBtn("-", function () {
+        if (counter == undefined) {
+            counter = 0;
+        } else {
+            counter -= 1;
+        }        
+        outputCounter();
+    });    
+
+    appendBtn("Save", function() { 
+        gmi.setGameData("counter", counter);
+        outputCounter(" (save)");
+        setTimeout(outputCounter, 1000);
+     });
+
+    appendBtn("Load", function() {
+        loadCounter();
+        outputCounter(" (load)");
+        setTimeout(outputCounter, 1000);
+    });
+
     appendHorizontalRule();
     
     appendBtn("back", function(){
