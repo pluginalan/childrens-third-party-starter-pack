@@ -1,10 +1,7 @@
 define([
-    'libs/js/gmi-extensions/media-player',
-    'libs/js/gmi-extensions/experiences'
-], function( mediaPlayer, experiences ) {
-
-
-//define(function(require) {
+    'libs/js/gmi-extensions/experiences',
+    'libs/js/gmi-extensions/media-player'
+], function( experiences, mediaPlayer  ) {
 
     /*
      * Generic function which will return the correct GMI for the current platform
@@ -405,7 +402,7 @@ define([
             }
 
             var gmiInstance = getGMI(options)
-            return Object.assign( gmiInstance, mediaPlayer, experiences )
+            return Object.assign( gmiInstance, experiences, mediaPlayer )
         }
     }
 });
