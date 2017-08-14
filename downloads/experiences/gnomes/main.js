@@ -217,6 +217,14 @@ define(['libs/js/gmi-mobile'], function(gmi_platform) {
         gmi.exit();
     });
 
+    appendBtn("open tanks", function(){
+        gmi.openExperience("tanks");
+    });
+
+    appendBtn("open ponies", function(){
+        gmi.openExperience("ponies");
+    });
+
     // Game loaded
 
     gmi.gameLoaded();
