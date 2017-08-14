@@ -152,6 +152,18 @@ define(['libs/js/gmi-mobile', './storage.js', 'libs/js/downloads/package-manager
         }
     }
 
+    appendSubtitle("Update Connectivity");
+    var connectivityP = appendParagraph()
+    updateConnectivity(connectivityP)
+    appendBtn("Check Connection", function() {
+        updateConnectivity(connectivityP)
+    });
+
+    function updateConnectivity(paragraph){
+    packageManager.connectivity().then(function(response){
+               paragraph.innerHTML = response.connectionType;
+            })
+    }
 
     // ---------- Menu Demo -------------
 
