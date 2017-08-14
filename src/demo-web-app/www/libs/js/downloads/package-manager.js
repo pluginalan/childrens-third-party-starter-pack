@@ -7,6 +7,7 @@ define(function (require, exports, module) {
 
 
     function PackageManager() {
+
     }
 
 
@@ -43,6 +44,10 @@ define(function (require, exports, module) {
     PackageManager.NetworkType_Offline           = "offline"
     PackageManager.NetworkType_Mobile            = "mobile"
     PackageManager.NetworkType_Wifi              = "wifi"
+
+
+    PackageManager.connectivityTimer = null;
+    PackageManager.connectivityCallback = null;
 
     /**
      * Gets a list of the currently installed packages
@@ -185,11 +190,11 @@ define(function (require, exports, module) {
      * Gets the current connectivity status
      * @returns {Promise}
      */
-    PackageManager.prototype.connectivity = function() {
+    PackageManager.prototype.getConnectivity = function() {
         // A safe, empty object to return in the event of a catastrophic failure
         var failureReturnObject = {
             status: PackageManager.Status_ErrorUnknown,
-            networkType: PackageManager.NetworkType_Offline,
+            connectionType: PackageManager.NetworkType_Offline,
             captivePortal: false
         };
 
@@ -220,6 +225,26 @@ define(function (require, exports, module) {
         return rv;
     }
 
+    PackageManager.prototype.connectivityTimerFunction = function(){
+        PackageManager.prototype.getConnectivity().then(function (response){
+            if(PackageManager.connectivityCallback){
+                PackageManager.connectivityCallback(response);
+                PackageManager.connectivityTimer = setTimeout(PackageManager.prototype.connectivityTimerFunction,PackageManager.ConnectivityDelay);
+            } else{
+                PackageManager.connectivityTimer = 0;
+            }
+        });
+    }
+
+    PackageManager.ConnectivityDelay = 2000;
+
+    PackageManager.prototype.setConnectivityCallback = function(callback){
+        if (!PackageManager.connectivityTimer) {
+            PackageManager.connectivityTimer = setTimeout(PackageManager.prototype.connectivityTimerFunction,1000);
+        }
+        PackageManager.connectivityCallback =  callback;
+
+    }
 
     /**
      * Attempts to cancel the in flight download. This will return an immediate failure status if;
