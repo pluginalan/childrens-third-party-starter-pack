@@ -13,7 +13,7 @@ define(function(require) {
 
         openExperience: function( experienceKey ) {
             if( window.webkit ) {
-                window.webkit.messageHandlers.ami.postMessage({ "name" : "openExperience",  "body" : experienceKey });
+                window.webkit.messageHandlers.gmi.postMessage({ "name" : "openExperience",  "body" : experienceKey });
             } else {
                 GameInterface.openExperience(experienceKey);
             }
@@ -22,7 +22,7 @@ define(function(require) {
         openParentExperience: function() {
             if( typeof window._experience !== 'undefined' && typeof window._experience.parent !== 'undefined') {
                 if( window.webkit ) {
-                    window.webkit.messageHandlers.ami.postMessage({ "name" : "openExperience",  "body" : window._experience.parent });
+                    window.webkit.messageHandlers.gmi.postMessage({ "name" : "openExperience",  "body" : window._experience.parent });
                 } else {
                     GameInterface.openExperience(window._experience.parent);
                 }
