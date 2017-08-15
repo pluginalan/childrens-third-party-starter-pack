@@ -2,9 +2,9 @@ define(function(require) {
     "use strict"
 
     return {
-    	playMedia: function( vpid, onMediaPlayerClosed ) {
+    	playMedia: function( vpid, onMediaPlayerClosedCallback ) {
 
-            window.gmiCallbacks.onMediaPlayerClosed = onMediaPlayerClosed
+            window.gmiCallbacks.onMediaPlayerClosed = onMediaPlayerClosedCallback
 
     		if( window.webkit ) {
     			window.webkit.messageHandlers.gmi.postMessage({ "name": "playMedia",  "vpid": vpid })
