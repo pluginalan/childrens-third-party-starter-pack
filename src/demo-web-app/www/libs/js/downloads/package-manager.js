@@ -48,6 +48,7 @@ define(function (require, exports, module) {
 
     PackageManager.connectivityTimer = null;
     PackageManager.connectivityCallback = null;
+    PackageManager.connectivityState = null;
 
     /**
      * Gets a list of the currently installed packages
@@ -228,7 +229,11 @@ define(function (require, exports, module) {
     PackageManager.prototype.connectivityTimerFunction = function(){
         PackageManager.prototype.getConnectivity().then(function (response){
             if(PackageManager.connectivityCallback){
-                PackageManager.connectivityCallback(response);
+                var nextState = JSON.stringify(response);
+                if(PackageManager.connectivityState !== nextState){
+                    PackageManager.connectivityState = nextState;
+                    PackageManager.connectivityCallback(response);
+                }                
                 PackageManager.connectivityTimer = setTimeout(PackageManager.prototype.connectivityTimerFunction,PackageManager.ConnectivityDelay);
             } else{
                 PackageManager.connectivityTimer = 0;
