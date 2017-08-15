@@ -7,6 +7,7 @@ define(function (require, exports, module) {
 
 
     function PackageManager() {
+
     }
 
 
@@ -39,9 +40,15 @@ define(function (require, exports, module) {
     PackageManager.Status_ErrorLocked            = "errorLocked";
     PackageManager.Status_ErrorDisallowed        = "errorDisallowed";
 
+    // Network types
+    PackageManager.NetworkType_Offline           = "offline"
+    PackageManager.NetworkType_Mobile            = "mobile"
+    PackageManager.NetworkType_Wifi              = "wifi"
 
 
-
+    PackageManager.connectivityTimer = null;
+    PackageManager.connectivityCallback = null;
+    PackageManager.connectivityState = null;
 
     /**
      * Gets a list of the currently installed packages
@@ -180,6 +187,69 @@ define(function (require, exports, module) {
     }
 
 
+    /**
+     * Gets the current connectivity status
+     * @returns {Promise}
+     */
+    PackageManager.prototype.getConnectivity = function() {
+        // A safe, empty object to return in the event of a catastrophic failure
+        var failureReturnObject = {
+            status: PackageManager.Status_ErrorUnknown,
+            connectionType: PackageManager.NetworkType_Offline,
+            captivePortal: false
+        };
+
+
+        var requestString = PackageManager.CommandBase+"connectivity";
+
+        var rv = new Promise(function (resolve, reject) {
+
+            Networking.sendQuery(requestString).then(function(response) {
+                var resultObj;
+
+                try {
+                    resultObj = JSON.parse(response);
+                    resolve(resultObj);
+                }
+                catch(e) {
+                    // broken response
+                    console.log("** Catastrophic failure: connectivity - could not parse response");
+                    reject(failureReturnObject);
+                }
+
+            }).catch(function (error) {
+                console.log("** Catastrophic failure: connectivity - received error:"+error);
+                reject(failureReturnObject);
+            });
+        });
+
+        return rv;
+    }
+
+    PackageManager.prototype.connectivityTimerFunction = function(){
+        PackageManager.prototype.getConnectivity().then(function (response){
+            if(PackageManager.connectivityCallback){
+                var nextState = JSON.stringify(response);
+                if(PackageManager.connectivityState !== nextState){
+                    PackageManager.connectivityState = nextState;
+                    PackageManager.connectivityCallback(response);
+                }                
+                PackageManager.connectivityTimer = setTimeout(PackageManager.prototype.connectivityTimerFunction,PackageManager.ConnectivityDelay);
+            } else{
+                PackageManager.connectivityTimer = 0;
+            }
+        });
+    }
+
+    PackageManager.ConnectivityDelay = 2000;
+
+    PackageManager.prototype.setConnectivityCallback = function(callback){
+        if (!PackageManager.connectivityTimer) {
+            PackageManager.connectivityTimer = setTimeout(PackageManager.prototype.connectivityTimerFunction,1000);
+        }
+        PackageManager.connectivityCallback =  callback;
+
+    }
 
     /**
      * Attempts to cancel the in flight download. This will return an immediate failure status if;
