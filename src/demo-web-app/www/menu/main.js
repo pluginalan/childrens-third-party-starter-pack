@@ -168,22 +168,20 @@ define(['libs/js/gmi-mobile', './storage.js', 'libs/js/downloads/package-manager
 
     // ---------- Media Playback -------------
 
-    appendSubtitle("Media Playback");
+    appendSubtitle("Media Playback")
 
-    // appendTextInput("vPIDinput");
-    // var vPIDcontainer = document.getElementById("vPIDinput");
-    // vPIDcontainer.value = "Enter VPID";
+    var mediaPlayerClosedCallback = function() {
+        appendSpan( "Media playback finished...", playbackParagraph )
+    }
 
     appendBtn( "Play Video", function() {
-      gmi.playMedia("p02mpl5y")
-      // appendSpan("Media playback requested...", playbackParagraph);
-      // if (!playMedia) {
-      //   appendSpan("Media playback failed.", playbackParagraph);
-      // }
+      gmi.playMedia( "p02mpl5y", mediaPlayerClosedCallback )
+      appendSpan( "Media playback requested...", playbackParagraph )
     })
-    //var playbackParagraph = appendParagraph();
 
-    appendHorizontalRule();
+    var playbackParagraph = appendParagraph();
+
+    appendHorizontalRule()
 
 
 

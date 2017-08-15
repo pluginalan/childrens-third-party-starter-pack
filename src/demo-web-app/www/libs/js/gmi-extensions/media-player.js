@@ -11,7 +11,6 @@ define(function(require) {
     		} else {
         		GameInterface.playMedia( vpid )
     		}
-        	return true
     	}
     }
 })
