@@ -299,77 +299,35 @@ define(['libs/js/gmi-mobile', './storage.js', 'libs/js/downloads/package-manager
     // ---------- Package Manager: Download Package ------------
 
 
-    /**
-     * Checks for any pre-existing downloads and if any are found updates the UI accordingly and begins tracking them if
-     * they are still in-flight.
-     */
-    function checkResumeDownloads() {
-        packageManager.downloading().then(function(response) {
-
-            if (response.packages) {
-                response.packages.forEach(function(pkg) {
-                    switch(pkg.status) {
-                        case PackageManager.Status_Downloading:
-                            // downloading, update progress indicator and check again in a second.
-                            updateDownloadUI(pkg.packageId, "Downloading - "+pkg.packageId+" "+pkg.progress+"%", false);
-                            setTimeout(monitorDownloadingFn.bind(null, pkg.packageId), 1000);
-                            break;
-
-                        case PackageManager.Status_Installing:
-                            // still installing, update progress indicator and check again in a second.
-                            updateDownloadUI(pkg.packageId, "Installing - "+pkg.packageId+" "+pkg.progress+"%", false);
-                            setTimeout(monitorDownloadingFn.bind(null, pkg.packageId), 1000);
-                            break;
-
-                        case PackageManager.Status_Installed:
-                            updateDownloadUI(pkg.packageId, "Downloading; complete", true);
-                            // refresh the installed list
-                            getInstalledPackagesFn();
-                            break;
-
-                        default:
-                            // something went wrong, show the relevant UI
-                            updateDownloadUI(pkg.packageId,"Downloading: error="+pkg.status, true);
-                            break;
-                    }
-
-                });
-            }
-        });
-    }
-
-
-
-
 
     /**
-     * Function to track a download. Call it once and it will query the downloading status with
-     * the downloading API call, update the UI and then reschedule itself every second for as long
-     * as the download is active.
+     * Function to track a download.
+     *
+     *
      * @param packageId
      */
-    var monitorDownloadingFn = function trackDownload(packageId) {
+    var monitorDownloadingFn = function trackDownloads() {
         packageManager.downloading().then(function(response) {
 
-            var pkg = response.packages.find(function(object) {
-                return object.packageId === packageId;
-            });
+            // for every package listed in the response, update our UI representation.
+            for (var ix = 0; ix < response.packages.length; ix++) {
+                var pkg = response.packages[ix];
 
-            if (pkg) {
-                switch(pkg.status) {
+                switch (pkg.status) {
                     case PackageManager.Status_Downloading:
                         // downloading, update progress indicator and check again in a second.
-                        updateDownloadUI(pkg.packageId, "Downloading - "+pkg.packageId+" "+pkg.progress+"%", false);
-                        setTimeout(monitorDownloadingFn.bind(null, packageId), 1000);
+                        updateDownloadUI(pkg.packageId, "Downloading - " + pkg.packageId + " " + pkg.progress + "%", false);
                         break;
 
                     case PackageManager.Status_Installing:
                         // still installing, update progress indicator and check again in a second.
-                        updateDownloadUI(pkg.packageId, "Installing - "+pkg.packageId+" "+pkg.progress+"%", false);
-                        setTimeout(monitorDownloadingFn.bind(null, packageId), 1000);
+                        updateDownloadUI(pkg.packageId, "Installing - " + pkg.packageId + " " + pkg.progress + "%", false);
                         break;
 
                     case PackageManager.Status_Installed:
+                        // The download has successfully completed download and installation.
+                        // this status will only appear once when we first poll after the download has completed.
+                        // from this point on the download will no longer appear in the response.
                         updateDownloadUI(pkg.packageId, "Downloading; complete", true);
                         // refresh the installed list
                         getInstalledPackagesFn();
@@ -377,37 +335,60 @@ define(['libs/js/gmi-mobile', './storage.js', 'libs/js/downloads/package-manager
 
                     default:
                         // something went wrong, show the relevant UI
-                        updateDownloadUI(pkg.packageId,"Downloading: error="+pkg.status, true);
+                        // this status will only appear once when we first poll after the download has failed.
+                        // from this point on the download will no longer appear in the response.
+                        updateDownloadUI(pkg.packageId, "Downloading: error=" + pkg.status, true);
                         break;
                 }
             }
+
+            // reschedule this function to poll again in a second.
+            setTimeout(monitorDownloadingFn.bind(null), 1000);
         });
     }
 
 
+
+
     /**
-     * Initiates the download for the requested package
+     * Initiates the download for the requested package. Guards against requests to donwload a package that is already in-flight (downloading or installing).
      * @param packageId - the package to download, this will be used to derive the folder it will be installed into
      * @param metaData - data captured at the time of the download request that we want to permanently associate with the download
      * @param url - URL to download the package from.
      */
     var downloadPackageFn = function(packageId, metaData, url) {
 
+        // check if we're already downloading this package.
+        // we're using our download UI list to track the state here
+        var idx = findDownloadingUI(packageId);
+        if (idx != -1) {
+            var ui = downloadingUIs[idx];
+            if (!ui.finished) {
+                return;
+            }
+        }
+
+        // not already in-flight so attempt to start the download
+
+
+        // remove any leftover UI from a previous attempt to download this package.
+        var idx = findDownloadingUI(packageId);
+
+        if (idx != -1) {
+            var ui = downloadingUIs[idx];
+            ui.container.parentNode.removeChild(ui.container);
+            downloadingUIs.splice(idx,1);
+        }
+
+        // create a new UI to track this download
+        updateDownloadUI(packageId, "starting...", false);
+
         packageManager.download(packageId, url, metaData).then(function(response) {
             if (response.status === PackageManager.Status_Downloading) {
-
-                var idx = findDownloadingUI(packageId);
-                
-                if (idx != -1) {
-                        var ui = downloadingUIs[idx];
-                        ui.container.parentNode.removeChild(ui.container);
-                        downloadingUIs.splice(idx,1);
-                }
-
-                updateDownloadUI(packageId, "started", false);
-                monitorDownloadingFn(packageId);
+                // successfully started, so nothing to do, the tracker will update the UI.
             }
             else {
+                // failed to start, so indicate this in the UI as it will not be returned in the tracker
                 updateDownloadUI(packageId, "Downloading: error="+response.status, true);
             }
         });
@@ -458,7 +439,11 @@ define(['libs/js/gmi-mobile', './storage.js', 'libs/js/downloads/package-manager
 
 
 
-    checkResumeDownloads();
+    /**
+     * Start tracking downloads.
+     */
+    monitorDownloadingFn();
+
 
 
 
@@ -522,7 +507,8 @@ define(['libs/js/gmi-mobile', './storage.js', 'libs/js/downloads/package-manager
             packageId: packageId,
             container: div,
             paragraph: para,
-            button: btn
+            button: btn,
+            finished: false
         }
 
         var idx = downloadingUIs.length;
@@ -550,9 +536,10 @@ define(['libs/js/gmi-mobile', './storage.js', 'libs/js/downloads/package-manager
         if (idx != -1) {
             var ui = downloadingUIs[idx];
 
-            ui.paragraph.innerText = message;
+            ui.paragraph.innerText = "PKG: "+ packageId + " - " + message;
 
             if (finished) {
+                ui.finished = true;
                 // change cancel button to a "remove" button
                 ui.button.innerHTML = "remove";
                 ui.button.onclick = function(ui) {
