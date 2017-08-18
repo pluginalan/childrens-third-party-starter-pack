@@ -25,7 +25,7 @@ define(['libs/js/gmi-mobile', './storage.js', 'libs/js/downloads/package-manager
                         "description": "Show on screen subtitles"
                     }
                 ]
-            }, 
+            },
             {
                 title: "Game Settings",
                 settings: [
@@ -258,13 +258,14 @@ define(['libs/js/gmi-mobile', './storage.js', 'libs/js/downloads/package-manager
      */
     var getInstalledPackagesFn = function () {
 
-        // clear list, delete all of the document elements within the root div of the installed packages list.
-        while(installedPackagesContainer.children.length) {
-            installedPackagesContainer.removeChild(installedPackagesContainer.children[0]);
-        }
-
         // invoke the installed API command and for each entry add some UI for it.
         packageManager.installed().then(function (response) {
+
+            // clear list, delete all of the document elements within the root div of the installed packages list.
+            while(installedPackagesContainer.children.length) {
+                installedPackagesContainer.removeChild(installedPackagesContainer.children[0]);
+            }
+
             if (response.status === PackageManager.Status_Ok) {
                 for (var ix = 0; ix < response.packages.length; ix++) {
                     var pkg = response.packages[ix];
