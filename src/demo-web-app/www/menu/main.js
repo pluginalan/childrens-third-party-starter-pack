@@ -188,9 +188,10 @@ define(['libs/js/gmi-mobile', './storage.js', 'libs/js/downloads/package-manager
         appendSpan( "Media playback finished...", playbackParagraph )
     }
 
+    appendTextInput( "vPID" )
     appendBtn( "Play Video", function() {
-      gmi.playMedia( "p02mpl5y", mediaPlayerClosedCallback )
-      appendSpan( "Media playback requested...", playbackParagraph )
+        gmi.playMedia( "p02mpl5y", mediaPlayerClosedCallback )
+        appendSpan( "Media playback requested...", playbackParagraph )
     })
 
     var playbackParagraph = appendParagraph();
