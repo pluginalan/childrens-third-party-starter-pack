@@ -188,9 +188,10 @@ define(['libs/js/gmi-mobile', './storage.js', 'libs/js/downloads/package-manager
         appendSpan( "Media playback finished...", playbackParagraph )
     }
 
-    appendTextInput( "vPID" )
+    appendTextInput( "vPID", "p02mpl5y" )
     appendBtn( "Play Video", function() {
-        gmi.playMedia( "p02mpl5y", mediaPlayerClosedCallback )
+        var vPID = document.getElementById( "vPID" ).value
+        gmi.playMedia( vPID, mediaPlayerClosedCallback )
         appendSpan( "Media playback requested...", playbackParagraph )
     })
 
@@ -697,11 +698,11 @@ define(['libs/js/gmi-mobile', './storage.js', 'libs/js/downloads/package-manager
         }
     }
 
-    function appendTextInput(elementID) {
+    function appendTextInput( elementID, defaultValue = undefined ) {
         var input = document.createElement("input");
         input.type = "text";
         input.id = elementID;
-        input.value = 'Enter a message here';
+        input.value = defaultValue ? defaultValue : 'Enter a message here';
         input.onclick = inputOnlick;
         input.onblur = inputOnBlur;
         inner.appendChild(input);
