@@ -77,6 +77,19 @@ define(['libs/js/gmi-mobile', './storage.js', 'libs/js/downloads/package-manager
     container.appendChild(wrapper);
     wrapper.appendChild(inner);
 
+    // ---------- Media Access ----------
+
+    var stuff = window.mediaAccessStuff;
+    if (Array.isArray(stuff)) {
+        var div = appendDiv(inner);
+        for (var i = 0; i < stuff.length; i++) {
+            var next = stuff[i];
+            if (next.hasOwnProperty("url") && typeof next.url === "string") {
+                appendImage(next.url, div);
+            }            
+        }
+    }
+
     // ---------- GMI Storage Example----------
 
     appendSubtitle("GMI Storage Example");
