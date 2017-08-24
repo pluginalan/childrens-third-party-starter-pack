@@ -90,6 +90,7 @@ define(['libs/js/gmi-mobile', './storage.js', 'libs/js/downloads/package-manager
             }            
         }
     }
+    appendHorizontalRule();
 
     // ---------- GMI Storage Example----------
 
