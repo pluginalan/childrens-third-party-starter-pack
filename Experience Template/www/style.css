@@ -14,3 +14,9 @@ h1 {
 	font-size: 20px;
 	font-style: italic;
 }
+
+div.line {
+	height: 1px;
+	background-color: #DF4F95;
+	overflow: hidden;
+}

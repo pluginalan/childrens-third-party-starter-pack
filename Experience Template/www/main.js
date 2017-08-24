@@ -71,6 +71,15 @@ define(['libs/js/gmi-mobile'], function(gmi_platform) {
 
     document.getElementsByTagName( "body" )[0].appendChild( h1 )
 
-    gmi.gameLoaded();
+    addLine()
+
+    gmi.gameLoaded()
+
+
+    var addLine = function() {
+        var line = document.createElement( "div" )
+        line.setAttribute( "class", "line" )
+        document.getElementsByTagName( "body" )[0].appendChild( line )
+    }
 
 });
