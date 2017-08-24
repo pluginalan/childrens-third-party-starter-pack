@@ -79,6 +79,7 @@ define(['libs/js/gmi-mobile', './storage.js', 'libs/js/downloads/package-manager
 
     // ---------- Media Access ----------
 
+    appendSubtitle("Media Access Stuff");
     var stuff = window.mediaAccessStuff;
     if (Array.isArray(stuff)) {
         var div = appendDiv(inner);
