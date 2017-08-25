@@ -28,11 +28,22 @@
     "terms_conditions": "https://www.bbc.co.uk/terms/",
     "contact_us": "https://www.bbc.co.uk/cbeebies/grownups/faqs"
   },
-  "experiences": [{
+  "experiences": [
+    {
       "key": "menu",
       "base": "./",
       "launch": "main.js",
-      "config": {}
-  }],
+      "config": {
+        "title": "Pick 'n' Mix Demonstrations"
+      }
+    }, {
+      "key": "downloads",
+      "base": "demos/",
+      "launch": "downloads.js",
+      "config": {
+        "title": "Pick 'n' Mix Downloads"
+      }
+    }
+  ],
   "init": "menu"
 }

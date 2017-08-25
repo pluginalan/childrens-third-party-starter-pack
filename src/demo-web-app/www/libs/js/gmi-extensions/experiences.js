@@ -17,16 +17,6 @@ define(function(require) {
             } else {
                 GameInterface.openExperience(experienceKey);
             }
-        },
-
-        openParentExperience: function() {
-            if( typeof window._experience !== 'undefined' && typeof window._experience.parent !== 'undefined') {
-                if( window.webkit ) {
-                    window.webkit.messageHandlers.gmi.postMessage({ "name" : "openExperience",  "body" : window._experience.parent });
-                } else {
-                    GameInterface.openExperience(window._experience.parent);
-                }
-            }
         }
     }
 

@@ -1,22 +1,42 @@
 html * {
 	border: 0px;
 	margin: 0px;
+	font-size: 18px;
 }
 
 body {
 	background-color: white;
 	margin: 20px;
 	color: black;
+	font-family: -apple-system, Roboto, Helvetica, Sans-Serif;
 }
 
 h1 {
-	font-family: Helvetica, Sans-Serif;
 	font-size: 20px;
-	font-style: italic;
+	color: #1D3F89;
+	font-weight: normal;
+}
+
+h1.title {
+	width: 100%;
+	text-align: center;
+	padding: 10px 0;
 }
 
 div.line {
 	height: 1px;
-	background-color: #DF4F95;
+	background-color: #1D3F89;
 	overflow: hidden;
+	margin: 15px 0;
+}
+
+button {
+	padding: 10px 20px;
+	background-color: #DF4F95;
+	color: white;
+} button.back {
+	float: left;
+	background-color: white;
+	color: #DF4F95;
+	font-size: 20px;
 }
