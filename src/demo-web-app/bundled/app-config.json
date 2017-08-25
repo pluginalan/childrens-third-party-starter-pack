@@ -1,0 +1,122 @@
+{
+  "init": "menu",
+  "ios": {
+    "more_apps": "https://childrens-data.api.bbci.co.uk/apps/more-apps-page/more-apps.html?platform=ios&product=cbbc&app=cbbcdangermouse",
+    "app_store": "http://appstore.com/dangermouseultimate",
+    "kill_app": "false",
+    "kill_app_message": "Sorry, Danger Mouse is no longer available for use. Check the store listing for more information.",
+    "force_update_version": "0.0",
+    "force_update_version_message": "Danger Mouse needs to be updated. Visit the store to get the latest version."
+  },
+  "android": {
+    "more_apps": "https://childrens-data.api.bbci.co.uk/apps/more-apps-page/more-apps.html?platform=android&product=cbbc&app=cbbcdangermouse",
+    "app_store": "market://details?id=uk.co.bbc.cbbc.danger_mouse_ultimate",
+    "kill_app": "false",
+    "kill_app_message": "Sorry, Danger Mouse is no longer available for use. Check the store listing for more information.",
+    "force_update_version": "0.0",
+    "force_update_version_message": "Danger Mouse needs to be updated. Visit the store to get the latest version."
+  },
+  "kindle": {
+    "more_apps": "https://childrens-data.api.bbci.co.uk/apps/more-apps-page/more-apps.html?platform=kindle&product=cbbc&app=cbbcdangermouse",
+    "app_store": "https://www.amazon.com/gp/mas/dl/android?p=uk.co.bbc.cbbc.danger_mouse_ultimate",
+    "kill_app": "false",
+    "kill_app_message": "Sorry, Danger Mouse is no longer available for use. Check the store listing for more information.",
+    "force_update_version": "0.0",
+    "force_update_version_message": "Danger Mouse needs to be updated. Visit the store to get the latest version."
+  },
+  "common": {
+    "privacy_policy": "http://www.bbc.co.uk/usingthebbc/privacy-policy/",
+    "terms_conditions": "https://www.bbc.co.uk/terms/",
+    "contact_us": "https://www.bbc.co.uk/cbeebies/grownups/faqs"
+  },
+  "experiences": [
+    {
+      "key": "menu",
+      "base": "menu/",
+      "launch": "main.js",
+      "config": {
+        "title": "Game Menu",
+        "description": "This is the game menu",
+        "path": "menu/index.html",
+        "downloadablePackages": [
+          {
+            "packageId": "test-package-1",
+            "url": "https://s3-eu-west-1.amazonaws.com/childrens-data-public-int/apps/cbeebies-picknmix-dev/downloads/demo-examples/test-package-1.zip",
+            "version": 1,
+            "title": "Test Package 1"
+          },
+          {
+            "packageId": "test-package-2",
+            "url": "https://s3-eu-west-1.amazonaws.com/childrens-data-public-int/apps/cbeebies-picknmix-dev/downloads/demo-examples/test-package-2.zip",
+            "version": 1,
+            "title": "Test Package 2"
+          },
+          {
+            "packageId": "gnomes",
+            "url": "https://s3-eu-west-1.amazonaws.com/childrens-data-public-int/apps/cbeebies-picknmix-dev/downloads/demo-examples/gnomes.zip",
+            "version": 1,
+            "title": "Gnomes"
+          }
+        ],
+        "available": [
+          {
+            "title": "Tanks Game",
+            "key": "tanks"
+          },
+          {
+            "title": "Ponies",
+            "key": "ponies"
+          }
+        ]
+      }
+    },
+    {
+      "key": "tanks",
+      "base": "tanks/",
+      "launch": "main.js",
+      "config": {
+        "title": "Tanks Game",
+        "description": "This is the Tanks game",
+        "background": "lightblue",
+        "custom-config-1": "{}",
+        "custom-config-N": "{}"
+      }
+    },
+    {
+      "key": "ponies",
+      "base": "ponies/",
+      "launch": "main.js",
+      "config": {
+        "title": "Ponies Game",
+        "description": "This is the Ponies game",
+        "background": "pink",
+        "custom-config-1": "{}",
+        "custom-config-N": "{}"
+      }
+    },
+    {
+      "key": "red_gnome",
+      "base": "packages/gnomes/",
+      "launch": "main.js",
+      "config": {
+        "title": "Gnomes",
+        "description": "These gnomes prefer tomatoes",
+        "background": "tomato",
+        "custom-config-1": "{}",
+        "custom-config-N": "{}"
+      }
+    },
+    {
+      "key": "blue_gnome",
+      "base": "packages/gnomes/",
+      "launch": "main.js",
+      "config": {
+        "title": "Gnomes",
+        "description": "These gnomes prefer cornflowers",
+        "background": "cornflowerblue",
+        "custom-config-1": "{}",
+        "custom-config-N": "{}"
+      }
+    }    
+  ]
+}
