@@ -86,7 +86,7 @@ define(['libs/js/gmi-mobile', './storage.js', 'libs/js/downloads/package-manager
         for (var i = 0; i < stuff.length; i++) {
             var next = stuff[i];
             if (next.hasOwnProperty("url") && typeof next.url === "string") {
-                appendImage(next.url + "?size=200", div);
+                appendImage(next.url + "?size=480", div);
             }
         }
     }
