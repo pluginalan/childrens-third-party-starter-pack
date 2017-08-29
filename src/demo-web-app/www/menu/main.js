@@ -1,4 +1,4 @@
-define(['libs/js/gmi-mobile', './storage.js', 'libs/js/downloads/package-manager'], function(gmi_platform, storage, PackageManager) {
+define(['libs/js/gmi-mobile', './storage.js', 'libs/js/downloads/package-manager', 'libs/js/downloads/networking.js'], function(gmi_platform, storage, PackageManager, Networking) {
     "use strict";
 
     var settingsConfig = {
@@ -77,41 +77,146 @@ define(['libs/js/gmi-mobile', './storage.js', 'libs/js/downloads/package-manager
     container.appendChild(wrapper);
     wrapper.appendChild(inner);
 
-    // ---------- Media Access ----------
+    // ---------- Media Access (Upload) ----------
 
-    var Networking = require('./libs/js/downloads/networking.js');
+    appendSubtitle("Media Upload");
+
+    var canvas  = document.createElement("canvas");
+    var context = canvas.getContext("2d");
+    var size    = 240;
+
+    canvas.width  = size;
+    canvas.height = size;
+
+    function drawTree(context, x1, y1, angle, first, next, width, ratio, clear) {
+        function radians(degrees) {
+            return degrees * (Math.PI / 180.0);
+        }
+
+        function random(min, max) {
+            return min + Math.floor(Math.random() * (max + 1 - min));
+        }
+
+        if (next == 0) {
+            if (random(1, 6) <= 3) {
+                return;
+            }
+            context.fillStyle = "#FFF";
+            context.beginPath();
+            context.arc(x1, y1, 4, radians(0), radians(360));
+            context.fill();
+            context.fillStyle = "#FAD";
+            context.beginPath();
+            context.arc(x1, y1, 2, radians(0), radians(360));
+            context.fill();
+            return;
+        }        
+
+        var length = random(1, 4) * ratio;
+
+        var x2 = x1 + (Math.cos(radians(angle)) * next * length);
+        var y2 = y1 + (Math.sin(radians(angle)) * next * length);
+        
+        if (clear) {
+            var gradient = context.createLinearGradient(0, 0, 0, clear.height);
+            gradient.addColorStop(0, "#8AF");
+            gradient.addColorStop(1, "#DDF");
+            context.fillStyle = gradient;
+
+            context.clearRect(0, 0, clear.width, clear.height);
+            context.rect(0, 0, clear.width, clear.height);
+            context.fill();
+        }
+
+        context.fillStyle   = "#000";
+        context.strokeStyle = "#0A0";
+        context.lineWidth   = (width * next / first) * ratio;
+
+        context.beginPath();
+        context.moveTo(x1, y1);
+        context.lineTo(x2, y2);
+        context.closePath();
+        context.stroke();
+
+        drawTree(context, x2, y2, angle - random(15, 25), first, next - 1, width, ratio);
+        drawTree(context, x2, y2, angle + random(15, 25), first, next - 1, width, ratio);
+    }
+
+    function updateCanvas(canvas) {
+        var iterations = 10;
+        var ratio      = canvas.height / 240;
+        var width      = 3;
+
+        drawTree(context, canvas.width / 2, canvas.height, -90, iterations, iterations, width, ratio, canvas);
+    }
+
+    updateCanvas(canvas);
+
+    inner.appendChild(canvas);
+
+    appendBreak(inner);
+    appendBreak(inner);
+
+    appendBtn("Generate", function () {
+        updateCanvas(canvas);
+    }, inner);    
+
+    appendBtn("Upload", function () {
+        var data        = canvas.toDataURL();
+        var title       = "canvas title";
+        var description = "canvas description";
+        var string      = JSON.stringify({data: data, title: title, description: description});
+        Networking.postString("media", string).then(function () {
+            updateThumbnails(thumbnails);
+        });
+    }, inner);
+
+    appendHorizontalRule();    
+
+    // ---------- Media Access (Thumbnails) ----------
+
     appendSubtitle("Media Thumbnails");
     var thumbnails = appendDiv(inner);
-    var request = Networking.sendQuery("media").then(function (response) {
-        try {
-            var assets = JSON.parse(response);
-            if (Array.isArray(assets)) {
-                for (var i = 0; i < assets.length; i++) {
-                    appendImage(assets[i].url + "?width=320", thumbnails);
-                    appendBreak(thumbnails);
-                }
-            }
-        }
-        catch (e) {
-            appendSpan("parse error:" + e);
-        }
-    }).catch(function (error) {
-        console.log("networking error:" + error);
-    });
     appendHorizontalRule();
 
-    // appendSubtitle("Media Access Stuff");
-    // var stuff = window.mediaAccessStuff;
-    // if (Array.isArray(stuff)) {
-    //     var div = appendDiv(inner);
-    //     for (var i = 0; i < stuff.length; i++) {
-    //         var next = stuff[i];
-    //         if (next.hasOwnProperty("url") && typeof next.url === "string") {
-    //             appendImage(next.url + "?width=240", div);
-    //         }
-    //     }
-    // }
-    // appendHorizontalRule();
+    function updateThumbnails(container) {
+        while (container.firstChild) {
+            container.removeChild(container.firstChild);
+        }
+
+        appendBtn("Refresh", function () {
+            updateThumbnails(container);
+        }, container);
+
+        appendBreak(container);
+        appendBreak(container);
+
+        var subContainer = appendDiv(container);
+
+        var request = Networking.sendQuery("media").then(function (response) {
+            try {
+                var assets = JSON.parse(response);
+                if (Array.isArray(assets)) {
+                    if (assets.length > 0) {
+                        for (var i = 0; i < assets.length; i++) {
+                            appendImage(assets[i].url + "?width=120", subContainer);
+                        }
+                    } else {
+                        appendParagraph("There are no images", subContainer);
+                    }
+                } else {
+                    throw "not an array";
+                }
+            }
+            catch (e) {
+                appendSpan("parse error:" + e, subContainer);
+            }
+        }).catch(function (error) {
+            appendSpan("networking error:" + error, subContainer);
+        });
+    }
+
+    updateThumbnails(thumbnails);
 
     // ---------- GMI Storage Example----------
 
@@ -640,6 +745,7 @@ define(['libs/js/gmi-mobile', './storage.js', 'libs/js/downloads/package-manager
         var title = document.createElement("h2");
         title.innerHTML = titleStr;
         inner.appendChild(title);
+        return title;
     }
 
     function appendParagraph(text, parent) {

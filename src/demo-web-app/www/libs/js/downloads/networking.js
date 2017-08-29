@@ -94,5 +94,32 @@ define(function (require, exports, module) {
         return rv;
     }
 
+    Networking.postString = function (url, string) {
+        var rv = new Promise(function (resolve, reject) {
+            var xhr = new XMLHttpRequest();
+
+            xhr.addEventListener("load", function () {
+                if (this.status === 201) {
+                    resolve(this.responseText);
+                } else {
+                    reject("error-" + this.status);
+                }
+            });
+
+            xhr.addEventListener("error", function () {
+                reject("error");
+            });
+
+            xhr.addEventListener("abort", function () {
+                reject("abort");
+            });            
+
+            xhr.open("POST", url, true);
+            xhr.send(string);
+
+        });
+        return rv;
+    };    
+
     return Networking;
 });
