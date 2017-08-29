@@ -79,18 +79,39 @@ define(['libs/js/gmi-mobile', './storage.js', 'libs/js/downloads/package-manager
 
     // ---------- Media Access ----------
 
-    appendSubtitle("Media Access Stuff");
-    var stuff = window.mediaAccessStuff;
-    if (Array.isArray(stuff)) {
-        var div = appendDiv(inner);
-        for (var i = 0; i < stuff.length; i++) {
-            var next = stuff[i];
-            if (next.hasOwnProperty("url") && typeof next.url === "string") {
-                appendImage(next.url + "?width=240", div);
+    var Networking = require('./libs/js/downloads/networking.js');
+    appendSubtitle("Media Thumbnails");
+    var thumbnails = appendDiv(inner);
+    var request = Networking.sendQuery("media").then(function (response) {
+        try {
+            var assets = JSON.parse(response);
+            if (Array.isArray(assets)) {
+                for (var i = 0; i < assets.length; i++) {
+                    appendImage(assets[i].url + "?width=320", thumbnails);
+                    appendBreak(thumbnails);
+                }
             }
         }
-    }
+        catch (e) {
+            appendSpan("parse error:" + e);
+        }
+    }).catch(function (error) {
+        console.log("networking error:" + error);
+    });
     appendHorizontalRule();
+
+    // appendSubtitle("Media Access Stuff");
+    // var stuff = window.mediaAccessStuff;
+    // if (Array.isArray(stuff)) {
+    //     var div = appendDiv(inner);
+    //     for (var i = 0; i < stuff.length; i++) {
+    //         var next = stuff[i];
+    //         if (next.hasOwnProperty("url") && typeof next.url === "string") {
+    //             appendImage(next.url + "?width=240", div);
+    //         }
+    //     }
+    // }
+    // appendHorizontalRule();
 
     // ---------- GMI Storage Example----------
 
