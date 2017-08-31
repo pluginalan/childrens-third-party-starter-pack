@@ -152,6 +152,8 @@ define(['libs/js/gmi-mobile', './storage.js', 'libs/js/downloads/package-manager
         }
     }
 
+    // ---------- Connectivity -------------
+
     appendSubtitle("Connectivity");
     var connectivityP = appendParagraph();
 
@@ -166,6 +168,9 @@ define(['libs/js/gmi-mobile', './storage.js', 'libs/js/downloads/package-manager
     }
 
     packageManager.setConnectivityCallback(connectivityCallback);
+
+    appendHorizontalRule();
+
 
     // ---------- Menu Demo -------------
 
