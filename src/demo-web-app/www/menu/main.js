@@ -162,7 +162,10 @@ define(['libs/js/gmi-mobile', './storage.js', 'libs/js/downloads/package-manager
     }, inner);    
 
     appendBtn("Upload", function () {
-        var data        = canvas.toDataURL();
+        //
+        // note: "image/webp" doesn't show up in certain native android gallery apps
+        //
+        var data        = canvas.toDataURL("image/png", 1);
         var title       = "canvas title";
         var description = "canvas description";
         var string      = JSON.stringify({data: data, title: title, description: description});
@@ -199,6 +202,15 @@ define(['libs/js/gmi-mobile', './storage.js', 'libs/js/downloads/package-manager
                 if (Array.isArray(assets)) {
                     if (assets.length > 0) {
                         for (var i = 0; i < assets.length; i++) {
+                            //
+                            // querystring options:
+                            //
+                            // - width : <pixels>
+                            // - type  : image/png | image/jpeg | image/webp
+                            //
+                            //   no width implies return existing size
+                            //   no type  implies return whatever it was saved as
+                            //
                             appendImage(assets[i].url + "?width=120", subContainer);
                         }
                     } else {
