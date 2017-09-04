@@ -32,13 +32,13 @@
   "experiences": [
     {
       "key": "menu",
-      "game_dir": "menu/",
-      "game_url": "main.js",
-      "parent": "menu",
+      "base": "menu/",
+      "launch": "main.js",
       "config": {
         "title": "Game Menu",
         "description": "This is the game menu",
         "path": "menu/index.html",
+        "demo_vpid": "p02mpl5y",
         "downloadablePackages": [
           {
             "packageId": "test-package-1",
@@ -73,9 +73,8 @@
     },
     {
       "key": "tanks",
-      "game_dir": "tanks/",
-      "game_url": "main.js",
-      "parent": "menu",
+      "base": "tanks/",
+      "launch": "main.js",
       "config": {
         "title": "Tanks Game",
         "description": "This is the Tanks game",
@@ -86,9 +85,8 @@
     },
     {
       "key": "ponies",
-      "game_dir": "ponies/",
-      "game_url": "main.js",
-      "parent": "menu",
+      "base": "ponies/",
+      "launch": "main.js",
       "config": {
         "title": "Ponies Game",
         "description": "This is the Ponies game",
@@ -99,9 +97,8 @@
     },
     {
       "key": "red_gnome",
-      "game_dir": "packages/gnomes/",
-      "game_url": "main.js",
-      "parent": "menu",
+      "base": "packages/gnomes/",
+      "launch": "main.js",
       "config": {
         "title": "Gnomes",
         "description": "These gnomes prefer tomatoes",
@@ -112,9 +109,8 @@
     },
     {
       "key": "blue_gnome",
-      "game_dir": "packages/gnomes/",
-      "game_url": "main.js",
-      "parent": "menu",
+      "base": "packages/gnomes/",
+      "launch": "main.js",
       "config": {
         "title": "Gnomes",
         "description": "These gnomes prefer cornflowers",
