@@ -112,14 +112,15 @@ define(function (require, exports, module) {
 
             xhr.addEventListener("abort", function () {
                 reject("abort");
-            });            
+            });
 
             xhr.open("POST", url, true);
+            // xhr.setRequestHeader("Content-Type", "application/json");
             xhr.send(string);
 
         });
         return rv;
-    };    
+    };
 
     return Networking;
 });

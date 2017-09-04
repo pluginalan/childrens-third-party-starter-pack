@@ -110,13 +110,13 @@ define(['libs/js/gmi-mobile', './storage.js', 'libs/js/downloads/package-manager
             context.arc(x1, y1, 2, radians(0), radians(360));
             context.fill();
             return;
-        }        
+        }
 
         var length = random(1, 4) * ratio;
 
         var x2 = x1 + (Math.cos(radians(angle)) * next * length);
         var y2 = y1 + (Math.sin(radians(angle)) * next * length);
-        
+
         if (clear) {
             var gradient = context.createLinearGradient(0, 0, 0, clear.height);
             gradient.addColorStop(0, "#8AF");
@@ -159,7 +159,7 @@ define(['libs/js/gmi-mobile', './storage.js', 'libs/js/downloads/package-manager
 
     appendBtn("Generate", function () {
         updateCanvas(canvas);
-    }, inner);    
+    }, inner);
 
     appendBtn("Upload", function () {
         //
@@ -169,12 +169,12 @@ define(['libs/js/gmi-mobile', './storage.js', 'libs/js/downloads/package-manager
         var title       = "canvas title";
         var description = "canvas description";
         var string      = JSON.stringify({data: data, title: title, description: description});
-        Networking.postString("media", string).then(function () {
+        Networking.postString("media-access/post", string).then(function () {
             updateThumbnails(thumbnails);
         });
     }, inner);
 
-    appendHorizontalRule();    
+    appendHorizontalRule();
 
     // ---------- Media Access (Thumbnails) ----------
 
@@ -196,7 +196,7 @@ define(['libs/js/gmi-mobile', './storage.js', 'libs/js/downloads/package-manager
 
         var subContainer = appendDiv(container);
 
-        var request = Networking.sendQuery("media").then(function (response) {
+        var request = Networking.sendQuery("media-access/media").then(function (response) {
             try {
                 var assets = JSON.parse(response);
                 if (Array.isArray(assets)) {
@@ -211,7 +211,7 @@ define(['libs/js/gmi-mobile', './storage.js', 'libs/js/downloads/package-manager
                             //   no width implies return existing size
                             //   no type  implies return whatever it was saved as
                             //
-                            appendImage(assets[i].url + "?width=120", subContainer);
+                            appendImage(assets[i].url, subContainer);
                         }
                     } else {
                         appendParagraph("There are no images", subContainer);
