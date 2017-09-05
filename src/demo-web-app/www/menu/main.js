@@ -79,6 +79,23 @@ define(['libs/js/gmi-mobile', './storage.js', 'libs/js/downloads/package-manager
 
     // ---------- Media Access (Upload) ----------
 
+    appendSubtitle("Media Album");
+
+    var albums      = appendSelect(null, "albums", ["Album 1", "Album 2", "Album 3", "Invalid 1 /", "Invalid 2 @"]);
+    albums.onchange = function (event) {
+        updateThumbnails(thumbnails);
+    };
+
+    function selectedValue(element) {
+        var index = element.selectedIndex;
+        if (index == -1) {
+            return null;
+        }
+        return element.options[index].value;
+    }
+
+    appendHorizontalRule();
+
     appendSubtitle("Media Upload");
 
     var canvas  = document.createElement("canvas");
@@ -159,16 +176,17 @@ define(['libs/js/gmi-mobile', './storage.js', 'libs/js/downloads/package-manager
 
     appendBtn("Generate", function () {
         updateCanvas(canvas);
-    }, inner);    
+    }, inner);  
 
     appendBtn("Upload", function () {
         //
         // note: "image/webp" doesn't show up in certain native android gallery apps
         //
         var data        = canvas.toDataURL("image/png", 1);
-        var title       = "canvas title";
-        var description = "canvas description";
-        var string      = JSON.stringify({data: data, title: title, description: description});
+        var title       = "title";
+        var description = "description";
+        var album       = selectedValue(albums);
+        var string      = JSON.stringify({data: data, title: title, description: description, album: album});
         Networking.postString("media", string).then(function () {
             updateThumbnails(thumbnails);
         });
@@ -196,7 +214,9 @@ define(['libs/js/gmi-mobile', './storage.js', 'libs/js/downloads/package-manager
 
         var subContainer = appendDiv(container);
 
-        var request = Networking.sendQuery("media").then(function (response) {
+        var album   = selectedValue(albums);
+        var query   = "media?album=" + encodeURIComponent(album);
+        var request = Networking.sendQuery(query).then(function (response) {
             try {
                 var assets = JSON.parse(response);
                 if (Array.isArray(assets)) {
@@ -214,7 +234,7 @@ define(['libs/js/gmi-mobile', './storage.js', 'libs/js/downloads/package-manager
                             appendImage(assets[i].url + "?width=120", subContainer);
                         }
                     } else {
-                        appendParagraph("There are no images", subContainer);
+                        appendParagraph("There are no images for: " + album, subContainer);
                     }
                 } else {
                     throw "not an array";
@@ -858,6 +878,7 @@ define(['libs/js/gmi-mobile', './storage.js', 'libs/js/downloads/package-manager
         input.onclick = inputOnlick;
         input.onblur = inputOnBlur;
         inner.appendChild(input);
+        return input;
     }
 
     function createAudioLabel() {
@@ -867,6 +888,28 @@ define(['libs/js/gmi-mobile', './storage.js', 'libs/js/downloads/package-manager
         return audioLabel;
     }
 
+    function appendSelect(parent, id, options) {
+        if (! parent) {
+            parent = inner;
+        }
+
+        var element = document.createElement("select");
+        element.id  = id;
+
+        if (Array.isArray(options)) {
+            for (var i = 0; i < options.length; i++) {
+                var child   = document.createElement("option");
+                child.value = options[i];
+                child.text  = options[i];
+                element.appendChild(child);
+            }
+            element.multiple      = false;
+            element.selectedIndex = 0;
+        }
+
+        parent.appendChild(element);
+        return element;
+    }
 
     // --------- Settings ---------
 
