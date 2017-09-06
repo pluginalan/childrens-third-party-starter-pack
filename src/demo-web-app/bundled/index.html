@@ -2,7 +2,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
-        <script src="/www/libs/js/require.js"></script>
+        <script src="/bundled/libs/js/require.js"></script>
         <script>
             // stub functions for apps that don't support native settings
             window.gmiCallbacks = {
@@ -36,7 +36,7 @@
             function launchGame() {
                 require.config({
                     paths: {
-                        "libs": "/www/libs"
+                        "libs": "/bundled/libs"
                     }
                 });
                 var body = document.createElement('div');
