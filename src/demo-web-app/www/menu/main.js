@@ -1,4 +1,16 @@
-define(['libs/js/gmi-mobile', './storage.js', 'libs/js/downloads/package-manager', 'libs/js/downloads/networking.js'], function(gmi_platform, storage, PackageManager, Networking) {
+define([
+    'libs/js/gmi-mobile',
+    './storage.js',
+    'libs/js/downloads/package-manager',
+    'libs/js/downloads/networking.js',
+    'libs/js/media/gif'], 
+    function(
+        gmi_platform,
+        storage,
+        PackageManager,
+        Networking,
+        GIF) {
+
     "use strict";
 
     var settingsConfig = {
@@ -179,17 +191,57 @@ define(['libs/js/gmi-mobile', './storage.js', 'libs/js/downloads/package-manager
     }, inner);  
 
     appendBtn("Upload", function () {
-        //
-        // note: "image/webp" doesn't show up in certain native android gallery apps
-        //
-        var data        = canvas.toDataURL("image/png", 1);
+
+        var useGIF = true;
+
+        function uploadData(title, description, data) {
+            var album  = selectedValue(albums);
+            var string = JSON.stringify({data: data, title: title, description: description, album: album});
+            Networking.postString("media", string).then(function () {
+                updateThumbnails(thumbnails);
+            });            
+        }
+
         var title       = "title";
         var description = "description";
-        var album       = selectedValue(albums);
-        var string      = JSON.stringify({data: data, title: title, description: description, album: album});
-        Networking.postString("media", string).then(function () {
-            updateThumbnails(thumbnails);
-        });
+
+        if (useGIF) {
+
+            var encoder = new GIF({
+                repeat: 0,
+                transparent: 'rgba(0, 0, 0, 0)',
+                workers: 2,
+                workerScript: 'libs/js/media/gif.worker.js',
+                width: size,
+                height: size
+            });
+
+            encoder.on('finished', function(blob) {
+                var reader = new FileReader();
+                reader.onload = function (event) {
+                    uploadData(title, description, event.target.result);
+                };
+                reader.readAsDataURL(blob); 
+            });
+
+            updateCanvas(canvas);
+            encoder.addFrame(context, { delay: 100, copy: true });
+
+            updateCanvas(canvas);
+            encoder.addFrame(context, { delay: 100, copy: true });
+
+            updateCanvas(canvas);
+            encoder.addFrame(context, { delay: 100, copy: true });
+
+            encoder.render();
+
+        } else {
+            //
+            // note: "image/webp" doesn't show up in certain native android gallery apps
+            //
+            uploadData(title, description, canvas.toDataURL());
+        }
+
     }, inner);
 
     appendHorizontalRule();    
