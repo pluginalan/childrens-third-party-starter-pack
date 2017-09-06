@@ -192,14 +192,39 @@ define([
 
     appendBtn("Upload", function () {
 
-        var useGIF = true;
+        var useGIF        = true;
+        var useWebSockets = true;
 
         function uploadData(title, description, data) {
             var album  = selectedValue(albums);
             var string = JSON.stringify({data: data, title: title, description: description, album: album});
-            Networking.postString("media", string).then(function () {
-                updateThumbnails(thumbnails);
-            });            
+
+            if (useWebSockets) {
+                var socket = new WebSocket("ws://" + window.location.host + "/socket/media");
+
+                socket.onclose = function (event) {
+                    updateThumbnails(thumbnails);
+                };
+
+                socket.onopen = function (event) {
+                    socket.send(title);
+                    socket.send(description);
+                    socket.send(album);
+
+                    var cursor = 0, chunkSize = 1024;
+                    do {
+                        socket.send(data.substring(cursor, Math.min(data.length, cursor + chunkSize)));
+                        cursor += chunkSize;
+                    }
+                    while (cursor < data.length);
+
+                    socket.close();
+                };
+            } else {
+                Networking.postString("media", string).then(function () {
+                    updateThumbnails(thumbnails);
+                });
+            }
         }
 
         var title       = "title";
