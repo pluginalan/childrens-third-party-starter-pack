@@ -190,31 +190,22 @@ define([
         updateCanvas(canvas);
     }, inner); 
 
-    function upload(options) {
+    function upload(type, method) {
 
-        var useGIF        = false;
-        var useWebSockets = false;
+        var title       = "title";
+        var description = "description";
 
-        if (options !== undefined) {
-            if (options.useGIF !== undefined) {
-                useGIF = options.useGIF;
-            }
-            if (options.useWebSockets !== undefined) {
-                useWebSockets = options.useWebSockets;
-            }
-        }
-
-        var useDataURLs = ! useWebSockets;
-
-        function uploadData(title, description, data, type, width, height) {
+        function send(method, title, description, data, type, width, height) {
             var album = selectedValue(albums);
 
-            if (useWebSockets) {
-                var socket = new WebSocket("ws://" + window.location.host + "/socket/media");
+            if (method === "socket") {
 
-                socket.onclose = function (event) {
-                    updateThumbnails(thumbnails);
-                };
+                if (! (data instanceof ArrayBuffer)) {
+                    throw "socket expects arraybuffer";
+                }
+
+                var socket        = new WebSocket("ws://" + window.location.host + "/socket/media");
+                socket.binaryType = "arraybuffer";
 
                 socket.onopen = function (event) {
                     socket.send(title);
@@ -224,40 +215,52 @@ define([
                     socket.send(width);
                     socket.send(height);
 
-                    var cursor = 0, chunk, length, chunkSize = 1024;
-
-                    if (data instanceof ArrayBuffer) {
-                        length = data.byteLength;
-                    } else {
-                        length = data.length;
-                    }
-
-                    socket.binaryType = "arraybuffer";
+                    var cursor = 0, length = data.byteLength, chunkSize = 1024;
 
                     do {
-                        /* expects something slice-able, e.g. string or array buffer */
-
-                        chunk = data.slice(cursor, Math.min(length, cursor + chunkSize));
-                        socket.send(chunk);
-
+                        socket.send(data.slice(cursor, Math.min(length, cursor + chunkSize)));
                         cursor += chunkSize;
                     }
                     while (cursor < length);
 
                     socket.close();
                 };
-            } else {
-                var string = JSON.stringify({data: data, title: title, description: description, album: album});
+
+                socket.onclose = function (event) {
+                    updateThumbnails(thumbnails);
+                };
+
+            }
+
+            if (method === "http") {
+
+                var string = JSON.stringify({
+                    data: data, title: title, description: description, album: album
+                });
                 Networking.postString("media", string).then(function () {
                     updateThumbnails(thumbnails);
                 });
+
             }
         }
 
-        var title       = "title";
-        var description = "description";
+        function convert(blob, conversion, callback) {
+            var reader = new FileReader();
 
-        if (useGIF) {
+            reader.onload = function (event) {
+                callback(event.target.result);
+            };
+
+            if (conversion === "arraybuffer") {
+                reader.readAsArrayBuffer(blob);
+            }
+
+            if (conversion === "data-url") {
+                reader.readAsDataURL(blob);
+            }
+        }
+
+        if (type === "image/gif") {
 
             var encoder = new GIF({
                 repeat: 0,
@@ -269,17 +272,17 @@ define([
             });
 
             encoder.on('finished', function(blob, data) {
-                var type = "image/gif";
 
-                if (useDataURLs) {
-                    var reader = new FileReader();
-                    reader.onload = function (event) {
-                        uploadData(title, description, event.target.result, type, canvas.width, canvas.height);
-                    };
-                    reader.readAsDataURL(blob);
-                } else {
-                    uploadData(title, description, data.buffer, type, canvas.width, canvas.height);
+                if (method === "http") {
+                    convert(blob, "data-url", function (string) {
+                        send(method, title, description, string, type, canvas.width, canvas.height);
+                    });
+                } 
+
+                if (method === "socket") {
+                    send(method, title, description, data.buffer, type, canvas.width, canvas.height);
                 }
+
             });
 
             updateCanvas(canvas);
@@ -293,37 +296,40 @@ define([
 
             encoder.render();
 
-        } else {
-            var type = "image/png";
+        }
 
-            if (useDataURLs) {
-                //
-                // note: "image/webp" doesn't show up in certain native android gallery apps
-                //
-                uploadData(title, description, canvas.toDataURL(type), type, canvas.width, canvas.height);
-            } else {
+        if (type === "image/png" || type === "image/jpeg" || type === "image/webp") {
+
+            if (method === "http") {
+                send(method, title, description, canvas.toDataURL(type), type, canvas.width, canvas.height);
+            } 
+
+            if (method === "socket") {
                 canvas.toBlob(function (blob) {
-                    var reader = new FileReader();
-                    reader.onload = function (event) {
-                        uploadData(title, description, event.target.result, type, canvas.width, canvas.height);
-                    };
-                    reader.readAsArrayBuffer(blob);
+                    convert(blob, "arraybuffer", function (buffer) {
+                        send(method, title, description, buffer, type, canvas.width, canvas.height);
+                    });
                 }, type);
             }
+
         }
-    } 
+    }
 
-    appendBtn("Upload", function () {
-        upload();
-    }, inner);
+    appendBreak(inner);
+    appendBreak(inner);
 
-    appendBtn("Upload (GIF)", function () {
-        upload({ useGIF: true });
-    }, inner);    
+    appendBtn("gif  (http)", function () { upload("image/gif"  , "http"); }, inner);
+    appendBtn("png  (http)", function () { upload("image/png"  , "http"); }, inner);
+    appendBtn("jpeg (http)", function () { upload("image/jpeg" , "http"); }, inner);
+    appendBtn("webp (http)", function () { upload("image/webp" , "http"); }, inner);
 
-    appendBtn("Upload (Websocket)", function () {
-        upload({ useWebSockets: true });
-    }, inner);
+    appendBreak(inner);
+    appendBreak(inner);
+
+    appendBtn("gif  (socket)", function () { upload("image/gif"  , "socket"); }, inner);
+    appendBtn("png  (socket)", function () { upload("image/png"  , "socket"); }, inner);
+    appendBtn("jpeg (socket)", function () { upload("image/jpeg" , "socket"); }, inner);
+    appendBtn("webp (socket)", function () { upload("image/webp" , "socket"); }, inner);
 
     appendHorizontalRule();    
 
