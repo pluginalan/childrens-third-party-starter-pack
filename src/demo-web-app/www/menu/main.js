@@ -204,12 +204,10 @@ define([
             }
         }
 
-        console.log("useGIF = " + useGIF);
-        console.log("useWebSockets = " + useWebSockets);
+        var useDataURLs = ! useWebSockets;
 
-        function uploadData(title, description, data) {
-            var album  = selectedValue(albums);
-            var string = JSON.stringify({data: data, title: title, description: description, album: album});
+        function uploadData(title, description, data, type, width, height) {
+            var album = selectedValue(albums);
 
             if (useWebSockets) {
                 var socket = new WebSocket("ws://" + window.location.host + "/socket/media");
@@ -222,17 +220,34 @@ define([
                     socket.send(title);
                     socket.send(description);
                     socket.send(album);
+                    socket.send(type);
+                    socket.send(width);
+                    socket.send(height);
 
-                    var cursor = 0, chunkSize = 1024;
+                    var cursor = 0, chunk, length, chunkSize = 1024;
+
+                    if (data instanceof ArrayBuffer) {
+                        length = data.byteLength;
+                    } else {
+                        length = data.length;
+                    }
+
+                    socket.binaryType = "arraybuffer";
+
                     do {
-                        socket.send(data.substring(cursor, Math.min(data.length, cursor + chunkSize)));
+                        /* expects something slice-able, e.g. string or array buffer */
+
+                        chunk = data.slice(cursor, Math.min(length, cursor + chunkSize));
+                        socket.send(chunk);
+
                         cursor += chunkSize;
                     }
-                    while (cursor < data.length);
+                    while (cursor < length);
 
                     socket.close();
                 };
             } else {
+                var string = JSON.stringify({data: data, title: title, description: description, album: album});
                 Networking.postString("media", string).then(function () {
                     updateThumbnails(thumbnails);
                 });
@@ -254,11 +269,18 @@ define([
             });
 
             encoder.on('finished', function(blob) {
+                var type   = "image/gif";
                 var reader = new FileReader();
+
                 reader.onload = function (event) {
-                    uploadData(title, description, event.target.result);
+                    uploadData(title, description, event.target.result, type, canvas.width, canvas.height);
                 };
-                reader.readAsDataURL(blob); 
+
+                if (useDataURLs) {
+                    reader.readAsDataURL(blob);
+                } else {
+                    reader.readAsArrayBuffer(blob);
+                }
             });
 
             updateCanvas(canvas);
@@ -273,10 +295,22 @@ define([
             encoder.render();
 
         } else {
-            //
-            // note: "image/webp" doesn't show up in certain native android gallery apps
-            //
-            uploadData(title, description, canvas.toDataURL());
+            var type = "image/png";
+
+            if (useDataURLs) {
+                //
+                // note: "image/webp" doesn't show up in certain native android gallery apps
+                //
+                uploadData(title, description, canvas.toDataURL(type), type, canvas.width, canvas.height);
+            } else {
+                canvas.toBlob(function (blob) {
+                    var reader = new FileReader();
+                    reader.onload = function (event) {
+                        uploadData(title, description, event.target.result, type, canvas.width, canvas.height);
+                    };
+                    reader.readAsArrayBuffer(blob);
+                }, type);
+            }
         }
     } 
 
