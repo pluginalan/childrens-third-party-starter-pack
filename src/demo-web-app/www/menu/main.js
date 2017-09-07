@@ -268,18 +268,17 @@ define([
                 height: size
             });
 
-            encoder.on('finished', function(blob) {
-                var type   = "image/gif";
-                var reader = new FileReader();
-
-                reader.onload = function (event) {
-                    uploadData(title, description, event.target.result, type, canvas.width, canvas.height);
-                };
+            encoder.on('finished', function(blob, data) {
+                var type = "image/gif";
 
                 if (useDataURLs) {
+                    var reader = new FileReader();
+                    reader.onload = function (event) {
+                        uploadData(title, description, event.target.result, type, canvas.width, canvas.height);
+                    };
                     reader.readAsDataURL(blob);
                 } else {
-                    reader.readAsArrayBuffer(blob);
+                    uploadData(title, description, data.buffer, type, canvas.width, canvas.height);
                 }
             });
 
