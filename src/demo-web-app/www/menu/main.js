@@ -188,12 +188,24 @@ define([
 
     appendBtn("Generate", function () {
         updateCanvas(canvas);
-    }, inner);  
+    }, inner); 
 
-    appendBtn("Upload", function () {
+    function upload(options) {
 
-        var useGIF        = true;
-        var useWebSockets = true;
+        var useGIF        = false;
+        var useWebSockets = false;
+
+        if (options !== undefined) {
+            if (options.useGIF !== undefined) {
+                useGIF = options.useGIF;
+            }
+            if (options.useWebSockets !== undefined) {
+                useWebSockets = options.useWebSockets;
+            }
+        }
+
+        console.log("useGIF = " + useGIF);
+        console.log("useWebSockets = " + useWebSockets);
 
         function uploadData(title, description, data) {
             var album  = selectedValue(albums);
@@ -266,7 +278,18 @@ define([
             //
             uploadData(title, description, canvas.toDataURL());
         }
+    } 
 
+    appendBtn("Upload", function () {
+        upload();
+    }, inner);
+
+    appendBtn("Upload (GIF)", function () {
+        upload({ useGIF: true });
+    }, inner);    
+
+    appendBtn("Upload (Websocket)", function () {
+        upload({ useWebSockets: true });
     }, inner);
 
     appendHorizontalRule();    
