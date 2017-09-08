@@ -3,7 +3,7 @@ define([
     './storage.js',
     'libs/js/downloads/package-manager',
     'libs/js/downloads/networking.js',
-    'libs/js/media/gif'], 
+    'libs/js/media/gif'],
     function(
         gmi_platform,
         storage,
@@ -139,13 +139,13 @@ define([
             context.arc(x1, y1, 2, radians(0), radians(360));
             context.fill();
             return;
-        }        
+        }
 
         var length = random(1, 4) * ratio;
 
         var x2 = x1 + (Math.cos(radians(angle)) * next * length);
         var y2 = y1 + (Math.sin(radians(angle)) * next * length);
-        
+
         if (clear) {
             var gradient = context.createLinearGradient(0, 0, 0, clear.height);
             gradient.addColorStop(0, "#8AF");
@@ -188,7 +188,7 @@ define([
 
     appendBtn("Generate", function () {
         updateCanvas(canvas);
-    }, inner); 
+    }, inner);
 
     function upload(type, method) {
 
@@ -277,7 +277,7 @@ define([
                     convert(blob, "data-url", function (string) {
                         send(method, title, description, string, type, canvas.width, canvas.height);
                     });
-                } 
+                }
 
                 if (method === "socket") {
                     send(method, title, description, data.buffer, type, canvas.width, canvas.height);
@@ -302,7 +302,7 @@ define([
 
             if (method === "http") {
                 send(method, title, description, canvas.toDataURL(type), type, canvas.width, canvas.height);
-            } 
+            }
 
             if (method === "socket") {
                 canvas.toBlob(function (blob) {
@@ -331,7 +331,7 @@ define([
     appendBtn("jpeg (socket)", function () { upload("image/jpeg" , "socket"); }, inner);
     appendBtn("webp (socket)", function () { upload("image/webp" , "socket"); }, inner);
 
-    appendHorizontalRule();    
+    appendHorizontalRule();
 
     // ---------- Media Access (Thumbnails) ----------
 
@@ -350,8 +350,16 @@ define([
 
         appendBreak(container);
         appendBreak(container);
+        appendSpan("image", container)
+        appendBreak(container);
+        var imageContainer = appendDiv(container);
+        appendBreak(container);
+        appendBreak(container);
+        appendSpan("thumbnails", container)
+        appendBreak(container);
 
-        var subContainer = appendDiv(container);
+        var thumbContainer = appendDiv(container);
+
 
         var album   = selectedValue(albums);
         var query   = "media?album=" + encodeURIComponent(album);
@@ -370,10 +378,17 @@ define([
                             //   no width implies return existing size
                             //   no type  implies return whatever it was saved as
                             //
-                            appendImage(assets[i].url + "?width=120", subContainer);
+                            var img = appendImage(assets[i].url + "?width=120", thumbContainer);
+                            img.onclick = function(url) {
+                                console.log("clicked thumb div")
+                                while (imageContainer.firstChild) {
+                                    imageContainer.removeChild(imageContainer.firstChild);
+                                }
+                                appendImage(url, imageContainer);
+                            }.bind(null, assets[i].url);
                         }
                     } else {
-                        appendParagraph("There are no images for: " + album, subContainer);
+                        appendParagraph("There are no images for: " + album, thumbContainer);
                     }
                 } else {
                     throw "not an array";
