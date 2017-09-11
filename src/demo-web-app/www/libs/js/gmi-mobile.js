@@ -402,7 +402,9 @@ define([
             }
 
             var gmiInstance = getGMI(options)
-            return Object.assign( gmiInstance, experiences, mediaPlayer )
+            gmiInstance.experience = Object.assign({}, experiences)
+            gmiInstance.media = Object.assign({} , mediaPlayer)
+            return Object.assign( gmiInstance )
         }
     }
 });

@@ -56,7 +56,7 @@ define(['libs/js/gmi-mobile'], function(gmi_platform) {
     wrapper.className = "wrapper";
     inner.className = "inner";
 
-    wrapper.style.backgroundColor = gmi.config.background;
+    wrapper.style.backgroundColor = gmi.experience.getConfig().background;
 
     appendTitle("Ponies");
     container.appendChild(wrapper);
@@ -111,20 +111,20 @@ define(['libs/js/gmi-mobile'], function(gmi_platform) {
     settingsParagraph.appendChild(createLabel("", "settings-label"));
 
     appendSpacer();
-    appendBtn("Save", function() { 
+    appendBtn("Save", function() {
         var dummySetting = "{\"setting_string\" : \"pony setting\", \"setting_number\": 100}";
 
         gmi.setGameData("test", dummySetting)
         settingsParagraph.innerHTML = "Settings saved: " + dummySetting;
      });
-    appendBtn("Load", function() { 
+    appendBtn("Load", function() {
         settingsParagraph.innerHTML = "Settings loaded: " + gmiSettings.gameData.test;
     });
 
     settingsParagraph.innerHTML = "Test setting: " + gmiSettings.gameData.test;
-   
+
     appendHorizontalRule();
-    
+
     appendBtn("back", function(){
         gmi.exit();
     });

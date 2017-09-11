@@ -171,9 +171,9 @@ define(['libs/js/gmi-mobile', './storage.js', 'libs/js/downloads/package-manager
 
     appendSubtitle("Game menu");
 
-    gmi.config.available.forEach(function(element) {
+    gmi.experience.getConfig().available.forEach(function(element) {
             appendBtn(element.title, function(){
-                gmi.openExperience(element.key);
+                gmi.experience.openExperience(element.key);
         });
     });
 
@@ -189,7 +189,7 @@ define(['libs/js/gmi-mobile', './storage.js', 'libs/js/downloads/package-manager
     }
 
     appendBtn( "Play Video", function() {
-        gmi.playMedia( gmi.config.demo_vpid, mediaPlayerClosedCallback )
+        gmi.media.playMedia( gmi.experience.getConfig().demo_vpid, mediaPlayerClosedCallback )
         appendSpan( "Media playback requested... ", playbackParagraph )
     })
 
@@ -207,9 +207,6 @@ define(['libs/js/gmi-mobile', './storage.js', 'libs/js/downloads/package-manager
     appendTitle("Package Manager Examples", inner, true);
 
     appendSubtitle("Installed Packages");
-
-
-
 
     /**
      * Add some UI for an installed package. This consists of a div containing a delete button for the package
@@ -234,10 +231,10 @@ define(['libs/js/gmi-mobile', './storage.js', 'libs/js/downloads/package-manager
         // Add an image for this package. This illustrates how to access content within the package.
         if(pkg.packageInfo.packageId == 'gnomes'){
             appendBtn("open red_gnome", function () {
-                gmi.openExperience('red_gnome')
+                gmi.experience.openExperience('red_gnome')
             }, div);
             appendBtn("open blue_gnome", function () {
-                gmi.openExperience('blue_gnome')
+                gmi.experience.openExperience('blue_gnome')
             }, div);
         }
         appendImage("/packages/"+pkg.packageInfo.packageId+"/gameLogo.png", div);
@@ -270,7 +267,6 @@ define(['libs/js/gmi-mobile', './storage.js', 'libs/js/downloads/package-manager
                 for (var ix = 0; ix < response.packages.length; ix++) {
                     var pkg = response.packages[ix];
                     addInstalledPackageUI(pkg);
-
                 }
             }
 
@@ -282,24 +278,13 @@ define(['libs/js/gmi-mobile', './storage.js', 'libs/js/downloads/package-manager
     appendBreak();
     appendBtn("Refresh Installed Packages", getInstalledPackagesFn);
     appendBreak();
-    appendBreak();
     var installedPackagesContainer = appendDiv();
     appendBreak();
 
     // do this when the page first loads to initially populate the installed package list
     getInstalledPackagesFn();
 
-
-
-
-
-
-
-
-
     // ---------- Package Manager: Download Package ------------
-
-
 
     /**
      * Function to track a download.
@@ -408,8 +393,8 @@ define(['libs/js/gmi-mobile', './storage.js', 'libs/js/downloads/package-manager
             downloadButtonsContainer.removeChild(downloadButtonsContainer.children[0]);
         }
 
-        if (gmi.config.downloadablePackages) {
-            gmi.config.downloadablePackages.forEach(function(element) {
+        if (gmi.experience.getConfig().downloadablePackages) {
+            gmi.experience.getConfig().downloadablePackages.forEach(function(element) {
                 appendBtn("Download "+element.title + " - (V"+element.version+")", downloadPackageFn.bind(null, element.packageId,element.url), "", downloadButtonsContainer);
                 appendBreak(downloadButtonsContainer);
                 appendBreak(downloadButtonsContainer);
@@ -452,12 +437,6 @@ define(['libs/js/gmi-mobile', './storage.js', 'libs/js/downloads/package-manager
 
     gmi.gameLoaded();
     gmi.sendStatsEvent('game_loaded', true, {});
-
-
-
-
-
-
 
 
     //----------  Boiler plate UI code to assist downloads examples ----------
