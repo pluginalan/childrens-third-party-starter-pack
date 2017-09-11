@@ -336,6 +336,12 @@ define([
     // ---------- Media Access (Thumbnails) ----------
 
     appendSubtitle("Media Thumbnails");
+    appendBreak(inner)
+
+    appendSpan("Thumbnail width: ")
+    var thumbnailWidthInput = appendNumberInput(inner, "thumbnailWidthInput", 24, 512, 200)
+
+    appendBreak(inner);
     var thumbnails = appendDiv(inner);
     appendHorizontalRule();
 
@@ -350,12 +356,8 @@ define([
 
         appendBreak(container);
         appendBreak(container);
-        appendSpan("image", container)
-        appendBreak(container);
         var imageContainer = appendDiv(container);
         appendBreak(container);
-        appendBreak(container);
-        appendSpan("thumbnails", container)
         appendBreak(container);
 
         var thumbContainer = appendDiv(container);
@@ -378,7 +380,8 @@ define([
                             //   no width implies return existing size
                             //   no type  implies return whatever it was saved as
                             //
-                            var img = appendImage(assets[i].url + "?width=120", thumbContainer);
+                            var desiredWidth = thumbnailWidthInput.valueAsNumber
+                            var img = appendImage(assets[i].url + "?width=" + desiredWidth, thumbContainer);
                             img.onclick = function(url) {
                                 console.log("clicked thumb div")
                                 while (imageContainer.firstChild) {
@@ -395,10 +398,10 @@ define([
                 }
             }
             catch (e) {
-                appendSpan("parse error:" + e, subContainer);
+                appendSpan("parse error:" + e, thumbnails);
             }
         }).catch(function (error) {
-            appendSpan("networking error:" + error, subContainer);
+            appendSpan("networking error:" + error, thumbnails);
         });
     }
 
@@ -1063,6 +1066,20 @@ define([
 
         parent.appendChild(element);
         return element;
+    }
+
+    function appendNumberInput(parent, name, min, max, initValue) {
+        if (! parent) {
+            parent = inner;
+        }
+        var input = document.createElement("input");
+        input.setAttribute("type", "number");
+        input.setAttribute("name", name);
+        input.setAttribute("min", min);
+        input.setAttribute("max", max);
+        input.setAttribute("value", initValue || 0);
+        parent.appendChild(input);
+        return input;
     }
 
     // --------- Settings ---------
