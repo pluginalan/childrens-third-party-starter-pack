@@ -32,13 +32,12 @@
   "experiences": [
     {
       "key": "menu",
-      "base": "menu/",
-      "launch": "main.js",
+      "base": "/bundled/content/menu/",
+      "launch": "main",
       "config": {
         "title": "Game Menu",
         "description": "This is the game menu",
         "path": "menu/index.html",
-        "demo_vpid": "p02mpl5y",
         "downloadablePackages": [
           {
             "packageId": "test-package-1",
@@ -73,8 +72,8 @@
     },
     {
       "key": "tanks",
-      "base": "tanks/",
-      "launch": "main.js",
+      "base": "/bundled/content/tanks/",
+      "launch": "main",
       "config": {
         "title": "Tanks Game",
         "description": "This is the Tanks game",
@@ -85,8 +84,8 @@
     },
     {
       "key": "ponies",
-      "base": "ponies/",
-      "launch": "main.js",
+      "base": "/bundled/content/ponies/",
+      "launch": "main",
       "config": {
         "title": "Ponies Game",
         "description": "This is the Ponies game",
@@ -97,8 +96,8 @@
     },
     {
       "key": "red_gnome",
-      "base": "packages/gnomes/",
-      "launch": "main.js",
+      "base": "/packages/gnomes/",
+      "launch": "main",
       "config": {
         "title": "Gnomes",
         "description": "These gnomes prefer tomatoes",
@@ -109,8 +108,8 @@
     },
     {
       "key": "blue_gnome",
-      "base": "packages/gnomes/",
-      "launch": "main.js",
+      "base": "/packages/gnomes/",
+      "launch": "main",
       "config": {
         "title": "Gnomes",
         "description": "These gnomes prefer cornflowers",

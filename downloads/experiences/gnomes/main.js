@@ -1,4 +1,4 @@
-define(['libs/js/gmi-mobile'], function(gmi_platform) {
+define(['pnm-library/gmi-mobile'], function(gmi_platform) {
     "use strict";
 
     var settingsConfig = {
@@ -133,7 +133,7 @@ define(['libs/js/gmi-mobile'], function(gmi_platform) {
         }
     });
 
-    appendHorizontalRule();    
+    appendHorizontalRule();
 
     // ---------- Game Data Example (Settings) ----------
 
@@ -143,7 +143,7 @@ define(['libs/js/gmi-mobile'], function(gmi_platform) {
     var wibbleParagraph = appendParagraph();
     appendSpan("Wibble Mode value: ", wibbleParagraph);
     var wibbleMode = undefined;
-    function updateWibbleMode() {        
+    function updateWibbleMode() {
         if (gmiSettings.gameData.hasOwnProperty("wibble_mode")) {
             wibbleMode = gmiSettings.gameData.wibble_mode;
         }
@@ -186,7 +186,7 @@ define(['libs/js/gmi-mobile'], function(gmi_platform) {
             counter = 0;
         } else {
             counter += 1;
-        }        
+        }
         outputCounter();
     });
 
@@ -195,11 +195,11 @@ define(['libs/js/gmi-mobile'], function(gmi_platform) {
             counter = 0;
         } else {
             counter -= 1;
-        }        
+        }
         outputCounter();
-    });    
+    });
 
-    appendBtn("Save", function() { 
+    appendBtn("Save", function() {
         gmi.setGameData("counter", counter);
         outputCounter(" (save)");
         setTimeout(outputCounter, 1000);
@@ -212,7 +212,7 @@ define(['libs/js/gmi-mobile'], function(gmi_platform) {
     });
 
     appendHorizontalRule();
-    
+
     appendBtn("back", function(){
         gmi.exit();
     });
