@@ -16,10 +16,10 @@ define(function (require, exports, module) {
 
 
     // Base URL for accessing packages. This is a pre-defined route set up via config on our local proxy
-    PackageManager.PackageBase = "package/";
+    PackageManager.PackageBase = "/package/";
 
     // Base URL for accessing packages. This is a pre-defined route set up via config on our local proxy
-    PackageManager.CommandBase = "package-manager/";
+    PackageManager.CommandBase = "/package-manager/";
 
 
     // Status values returned by various Package-Manager methods.
@@ -233,7 +233,7 @@ define(function (require, exports, module) {
                 if(PackageManager.connectivityState !== nextState){
                     PackageManager.connectivityState = nextState;
                     PackageManager.connectivityCallback(response);
-                }                
+                }
                 PackageManager.connectivityTimer = setTimeout(PackageManager.prototype.connectivityTimerFunction,PackageManager.ConnectivityDelay);
             } else{
                 PackageManager.connectivityTimer = 0;
