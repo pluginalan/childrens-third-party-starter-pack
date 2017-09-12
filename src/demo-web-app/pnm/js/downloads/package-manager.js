@@ -3,7 +3,7 @@
  */
 define(function (require, exports, module) {
 
-    var Networking = require('./networking.js');
+    var Networking = require('./networking');
 
 
     function PackageManager() {

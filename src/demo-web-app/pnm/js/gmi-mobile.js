@@ -1,6 +1,6 @@
 define([
-    'libs/js/gmi-extensions/experiences',
-    'libs/js/gmi-extensions/media-player'
+    'pnm-library/gmi-extensions/experiences',
+    'pnm-library/gmi-extensions/media-player'
 ], function( experiences, mediaPlayer  ) {
 
     /*

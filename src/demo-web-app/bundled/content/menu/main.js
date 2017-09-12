@@ -1,4 +1,4 @@
-define(['libs/js/gmi-mobile', './storage.js', 'libs/js/downloads/package-manager'], function(gmi_platform, storage, PackageManager) {
+define(['pnm-library/gmi-mobile', './storage', 'pnm-library/downloads/package-manager'], function(gmi_platform, storage, PackageManager) {
     "use strict";
 
     var settingsConfig = {
