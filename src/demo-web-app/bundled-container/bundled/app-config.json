@@ -72,7 +72,7 @@
     },
     {
       "key": "tanks",
-      "base": "tanks/",
+      "base": "/bundled/content/tanks/",
       "launch": "main",
       "config": {
         "title": "Tanks Game",
@@ -84,7 +84,7 @@
     },
     {
       "key": "ponies",
-      "base": "ponies/",
+      "base": "/bundled/content/ponies/",
       "launch": "main",
       "config": {
         "title": "Ponies Game",
