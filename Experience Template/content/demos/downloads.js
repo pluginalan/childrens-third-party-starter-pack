@@ -1,4 +1,4 @@
-define(['libs/js/gmi-mobile', './dom.js', 'libs/js/downloads/package-manager'], function( gmi_platform, domUtils, packageManager ) {
+define(['pnm-library/gmi-mobile', './dom', 'pnm-library/downloads/package-manager'], function( gmi_platform, domUtils, packageManager ) {
     "use strict"
 
     var gmi = gmi_platform.getGMI( {settingsConfig: {}} )

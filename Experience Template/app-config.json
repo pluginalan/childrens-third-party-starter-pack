@@ -31,15 +31,15 @@
   "experiences": [
     {
       "key": "menu",
-      "base": "./",
-      "launch": "main.js",
+      "base": "/content/",
+      "launch": "main",
       "config": {
         "title": "Pick 'n' Mix Demonstrations"
       }
     }, {
       "key": "downloads",
-      "base": "demos/",
-      "launch": "downloads.js",
+      "base": "/content/demos/",
+      "launch": "downloads",
       "config": {
         "title": "Pick 'n' Mix Downloads"
       }

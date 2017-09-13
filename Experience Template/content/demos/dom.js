@@ -6,7 +6,7 @@ define( function() {
             var stylesheet  = document.createElement( "link" )
             stylesheet.rel  = "stylesheet"
             stylesheet.type = "text/css"
-            stylesheet.href = "style.css"
+            stylesheet.href = window.gmiConfiguration.gameDir + "style.css"
             stylesheet.media = "all"
             document.getElementsByTagName( "head" )[0].appendChild( stylesheet )
         },
