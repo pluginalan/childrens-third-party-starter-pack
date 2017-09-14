@@ -177,11 +177,7 @@ function(gmi_platform, storage, PackageManager, ui_helper) {
 
     gmi.experience.getConfig().available.forEach(function(element) {
             ui_helper.appendBtn(element.title, function(){
-<<<<<<< HEAD
                 gmi.experience.push(element.key);
-=======
-                gmi.experience.openExperience(element.key);
->>>>>>> develop
         });
     });
 
