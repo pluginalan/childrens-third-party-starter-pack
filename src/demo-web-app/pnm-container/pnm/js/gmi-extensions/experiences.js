@@ -17,6 +17,22 @@ define(function(require) {
             } else {
                 GameInterface.openExperience(experienceKey);
             }
+        },
+
+        push: function(experienceKey) {
+          if( window.webkit ) {
+              window.webkit.messageHandlers.gmi.postMessage({ "name" : "push",  "body" : experienceKey });
+          } else {
+              GameInterface.push(experienceKey);
+          }
+        },
+
+        pop: function() {
+          if( window.webkit ) {
+              window.webkit.messageHandlers.gmi.postMessage({ "name" : "pop",  "body" : "" });
+          } else {
+              GameInterface.pop();
+          }
         }
     }
 
