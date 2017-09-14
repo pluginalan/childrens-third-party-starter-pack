@@ -113,7 +113,12 @@ function(gmi_platform, storage, PackageManager, ui_helper) {
     ui_helper.appendSubtitle("GMI Exit Example");
     ui_helper.appendParagraph("Android only: at this level in the experience stack, exit will quit the app.");
     ui_helper.appendParagraph("Exit at this level is not supported on iOS as you can't exit an app in this manner.");
-    ui_helper.appendBtn("Exit", function() { gmi.exit(); });
+    ui_helper.appendBtn("Exit", function() {
+        gmi.exit();
+    });
+    ui_helper.appendBtn("Pop", function() {
+        gmi.experience.pop().catch(function(rejected){ console.log(rejected)});
+    });
     ui_helper.appendHorizontalRule();
 
 
@@ -177,8 +182,12 @@ function(gmi_platform, storage, PackageManager, ui_helper) {
 
     gmi.experience.getConfig().available.forEach(function(element) {
             ui_helper.appendBtn(element.title, function(){
-                gmi.experience.push(element.key);
-        });
+                gmi.experience.push(element.key).catch(function(rejected){ console.log(rejected)});
+            });
+    });
+
+    ui_helper.appendBtn("Unknown", function(){
+        gmi.experience.push("unknown").catch(function(rejected){ console.log(rejected)});
     });
 
     ui_helper.appendHorizontalRule();
