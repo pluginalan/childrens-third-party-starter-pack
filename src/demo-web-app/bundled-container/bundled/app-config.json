@@ -32,7 +32,7 @@
   "experiences": [
     {
       "key": "menu",
-      "base": "/bundled/content/menu/",
+      "base": "/content/menu/",
       "launch": "main",
       "config": {
         "title": "Game Menu",
@@ -72,7 +72,7 @@
     },
     {
       "key": "tanks",
-      "base": "/bundled/content/tanks/",
+      "base": "/content/tanks/",
       "launch": "main",
       "config": {
         "title": "Tanks Game",
@@ -84,7 +84,7 @@
     },
     {
       "key": "ponies",
-      "base": "/bundled/content/ponies/",
+      "base": "/content/ponies/",
       "launch": "main",
       "config": {
         "title": "Ponies Game",
@@ -96,7 +96,7 @@
     },
     {
       "key": "red_gnome",
-      "base": "packages/gnomes/",
+      "base": "/packages/gnomes/",
       "launch": "main",
       "config": {
         "title": "Gnomes",
@@ -108,7 +108,7 @@
     },
     {
       "key": "blue_gnome",
-      "base": "packages/gnomes/",
+      "base": "/packages/gnomes/",
       "launch": "main",
       "config": {
         "title": "Gnomes",
