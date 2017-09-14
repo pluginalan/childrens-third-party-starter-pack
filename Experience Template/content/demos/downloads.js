@@ -2,7 +2,7 @@ define(['pnm-library/gmi-mobile', './dom', 'pnm-library/downloads/package-manage
     "use strict"
 
     var gmi = gmi_platform.getGMI( {settingsConfig: {}} )
-    var experienceConfig = gmi.config
+    var experienceConfig = gmi.experience.getConfig()
 
     domUtils.addStylesheet()
     domUtils.addBackButton().onclick = function() {

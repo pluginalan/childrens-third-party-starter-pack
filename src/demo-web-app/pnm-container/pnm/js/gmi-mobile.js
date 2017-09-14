@@ -1,7 +1,7 @@
 define([
     'pnm-library/gmi-extensions/experiences',
     'pnm-library/gmi-extensions/media-player'
-], function( experiences, mediaPlayer  ) {
+], function( experience, mediaPlayer  ) {
 
     /*
      * Generic function which will return the correct GMI for the current platform
@@ -402,7 +402,8 @@ define([
             }
 
             var gmiInstance = getGMI(options)
-            return Object.assign( gmiInstance, experiences, mediaPlayer )
+            gmiInstance.experience = Object.assign( {} , experience )
+            return Object.assign( gmiInstance, mediaPlayer )
         }
     }
 });
