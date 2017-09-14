@@ -17,7 +17,7 @@ define(['pnm-library/gmi-mobile', '../js/ui-helper'], function(gmi_platform, ui_
     inner.className = "inner";
     inner.id = "inner";
 
-    wrapper.style.backgroundColor = gmi.config.background;
+    wrapper.style.backgroundColor = gmi.experience.getConfig().background;
 
     container.appendChild(wrapper);
     wrapper.appendChild(inner);

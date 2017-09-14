@@ -175,9 +175,13 @@ function(gmi_platform, storage, PackageManager, ui_helper) {
 
     ui_helper.appendSubtitle("Game menu");
 
-    gmi.config.available.forEach(function(element) {
+    gmi.experience.getConfig().available.forEach(function(element) {
             ui_helper.appendBtn(element.title, function(){
+<<<<<<< HEAD
                 gmi.experience.push(element.key);
+=======
+                gmi.experience.openExperience(element.key);
+>>>>>>> develop
         });
     });
 

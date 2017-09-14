@@ -61,10 +61,10 @@ function(gmi_platform, PackageManager, ui_helper) {
         // Add an image for this package. This illustrates how to access content within the package.
         if(pkg.packageInfo.packageId == 'gnomes'){
             ui_helper.appendBtn("open red_gnome", function () {
-                gmi.openExperience('red_gnome')
+                gmi.experience.openExperience('red_gnome')
             }, div);
             ui_helper.appendBtn("open blue_gnome", function () {
-                gmi.openExperience('blue_gnome')
+                gmi.experience.openExperience('blue_gnome')
             }, div);
         }
         ui_helper.appendImage("/packages/"+pkg.packageInfo.packageId+"/gameLogo.png", div);
@@ -214,8 +214,8 @@ function(gmi_platform, PackageManager, ui_helper) {
             downloadButtonsContainer.removeChild(downloadButtonsContainer.children[0]);
         }
 
-        if (gmi.config.downloadablePackages) {
-            gmi.config.downloadablePackages.forEach(function(element) {
+        if (gmi.experience.getConfig().downloadablePackages) {
+            gmi.experience.getConfig().downloadablePackages.forEach(function(element) {
                 ui_helper.appendBtn("Download "+element.title + " - (V"+element.version+")", downloadPackageFn.bind(null, element.packageId,element.url), "", downloadButtonsContainer);
                 ui_helper.appendBreak(downloadButtonsContainer);
                 ui_helper.appendBreak(downloadButtonsContainer);

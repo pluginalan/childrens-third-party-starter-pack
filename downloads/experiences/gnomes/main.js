@@ -67,7 +67,7 @@ define(['pnm-library/gmi-mobile'], function(gmi_platform) {
     wrapper.className = "wrapper";
     inner.className = "inner";
 
-    wrapper.style.backgroundColor = gmi.config.background;
+    wrapper.style.backgroundColor = gmi.experience.getConfig().background;
 
     appendTitle("Gnomes");
     container.appendChild(wrapper);
@@ -218,11 +218,11 @@ define(['pnm-library/gmi-mobile'], function(gmi_platform) {
     });
 
     appendBtn("open tanks", function(){
-        gmi.openExperience("tanks");
+        gmi.experience.openExperience("tanks");
     });
 
     appendBtn("open ponies", function(){
-        gmi.openExperience("ponies");
+        gmi.experience.openExperience("ponies");
     });
 
     // Game loaded
