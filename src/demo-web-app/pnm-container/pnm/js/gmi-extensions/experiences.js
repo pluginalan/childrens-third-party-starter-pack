@@ -2,12 +2,11 @@ define(function(require) {
     "use strict";
 
     var experiences = {
-        config: {},
         getConfig: function() {
             if( typeof window._experience !== 'undefined' && typeof window._experience.config !== 'undefined' ) {
-                return window._experience.config;
+                return Object.freeze(window._experience.config);
             } else {
-                return this.config
+                return {}
             }
         },
 
