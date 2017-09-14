@@ -38,7 +38,7 @@ define(['pnm-library/gmi-mobile', '../js/ui-helper'], function(gmi_platform, ui_
     }
 
     ui_helper.appendBtn( "Play Video", function() {
-        gmi.playMedia( gmi.config.demo_vpid, mediaPlayerClosedCallback )
+        gmi.playMedia( gmi.experience.getConfig().demo_vpid, mediaPlayerClosedCallback )
         ui_helper.appendSpan( "Media playback requested... ", playbackParagraph )
     })
 
