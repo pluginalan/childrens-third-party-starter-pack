@@ -117,7 +117,7 @@ function(gmi_platform, storage, PackageManager, ui_helper) {
         gmi.exit();
     });
     ui_helper.appendBtn("Pop", function() {
-        gmi.experience.pop().catch(function(rejected){ console.log(rejected)});
+        gmi.experience.pop().catch(function(rejected){ console.log(rejected.status)});
     });
     ui_helper.appendHorizontalRule();
 
@@ -182,12 +182,12 @@ function(gmi_platform, storage, PackageManager, ui_helper) {
 
     gmi.experience.getConfig().available.forEach(function(element) {
             ui_helper.appendBtn(element.title, function(){
-                gmi.experience.push(element.key).catch(function(rejected){ console.log(rejected)});
+                gmi.experience.push(element.key).catch(function(rejected){ console.log(rejected.status)});
             });
     });
 
     ui_helper.appendBtn("Unknown", function(){
-        gmi.experience.push("unknown").catch(function(rejected){ console.log(rejected)});
+        gmi.experience.push("unknown").catch(function(rejected){ console.log(rejected.status)});
     });
 
     ui_helper.appendHorizontalRule();
