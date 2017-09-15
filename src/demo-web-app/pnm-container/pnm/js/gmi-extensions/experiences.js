@@ -9,8 +9,8 @@ define(function(require) {
         notFoundReject({"status" : "errorNotFound"})
     }
 
-    var emptyStackReject = function(){};
-    var notFoundReject = function(){};
+    var emptyStackReject = function(){}
+    var notFoundReject = function(){}
 
     var experiences = {
         getConfig: function() {
@@ -33,22 +33,22 @@ define(function(require) {
             return new Promise((resolve, reject) => {
                 notFoundReject = reject
                 if( window.webkit ) {
-                    window.webkit.messageHandlers.gmi.postMessage({ "name" : "push",  "body" : experienceKey });
+                    window.webkit.messageHandlers.gmi.postMessage({ "name" : "push",  "body" : experienceKey })
                 } else {
-                    GameInterface.push(experienceKey);
+                    GameInterface.push(experienceKey)
                 }
-            });
+            })
         },
 
         pop: function() {
             return new Promise((resolve, reject) => {
                 emptyStackReject = reject
                 if( window.webkit ) {
-                    window.webkit.messageHandlers.gmi.postMessage({ "name" : "pop",  "body" : "" });
+                    window.webkit.messageHandlers.gmi.postMessage({ "name" : "pop",  "body" : "" })
                 } else {
-                    GameInterface.pop();
+                    GameInterface.pop()
                 }
-            });
+            })
         }
     }
 
