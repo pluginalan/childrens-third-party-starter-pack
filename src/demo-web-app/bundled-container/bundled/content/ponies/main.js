@@ -86,8 +86,12 @@ define(['pnm-library/gmi-mobile', '../js/ui-helper'], function(gmi_platform, ui_
 
     ui_helper.appendHorizontalRule();
 
-    ui_helper.appendBtn("back", function(){
-        gmi.exit();
+    ui_helper.appendBtn("Tanks", function(){
+        gmi.experience.push("tanks");
+    });
+
+    ui_helper.appendBtn("Back", function(){
+        gmi.experience.pop();
     });
 
 });
