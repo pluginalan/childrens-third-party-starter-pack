@@ -94,4 +94,8 @@ define(['pnm-library/gmi-mobile', '../js/ui-helper'], function(gmi_platform, ui_
         gmi.experience.pop();
     });
 
+    ui_helper.appendBtn("Home", function(){
+        gmi.experience.popToRoot();
+    });
+
 });

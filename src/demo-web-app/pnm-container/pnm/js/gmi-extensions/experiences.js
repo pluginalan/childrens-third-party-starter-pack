@@ -49,6 +49,14 @@ define(function(require) {
                     GameInterface.pop();
                 }
             });
+        },
+
+        popToRoot: function() {
+            if( window.webkit ) {
+                window.webkit.messageHandlers.gmi.popToRoot({ "name" : "openExperience",  "body" : "" });
+            } else {
+                GameInterface.popToRoot();
+            }
         }
     }
 
