@@ -116,9 +116,19 @@ function(gmi_platform, storage, PackageManager, ui_helper) {
     ui_helper.appendBtn("Exit", function() {
         gmi.exit();
     });
+
+
     ui_helper.appendBtn("Pop", function() {
-        gmi.experience.pop().catch(function(rejected){ console.log(rejected.status)});
+        gmi.experience.pop().catch(
+            function(rejected){
+                console.log(rejected.status)
+                ui_helper.appendSpan(rejected.status+ " ", popParagraph)
+            }
+        );
     });
+
+    var popParagraph = ui_helper.appendParagraph();
+
     ui_helper.appendHorizontalRule();
 
 
@@ -182,13 +192,25 @@ function(gmi_platform, storage, PackageManager, ui_helper) {
 
     gmi.experience.getConfig().available.forEach(function(element) {
             ui_helper.appendBtn(element.title, function(){
-                gmi.experience.push(element.key).catch(function(rejected){ console.log(rejected.status)});
+                gmi.experience.push(element.key).catch(
+                    function(rejected){
+                        console.log(rejected.status)
+                        ui_helper.appendSpan(rejected.status+ " ", pushParagraph)
+                    }
+                );
             });
     });
 
     ui_helper.appendBtn("Unknown", function(){
-        gmi.experience.push("unknown").catch(function(rejected){ console.log(rejected.status)});
+        gmi.experience.push("unknown").catch(
+            function(rejected){
+                console.log(rejected.status)
+                ui_helper.appendSpan(rejected.status + " ", pushParagraph)
+            }
+        );
     });
+
+    var pushParagraph = ui_helper.appendParagraph();
 
     ui_helper.appendHorizontalRule();
 
