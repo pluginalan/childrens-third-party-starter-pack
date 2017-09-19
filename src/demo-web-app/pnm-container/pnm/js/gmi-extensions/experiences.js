@@ -52,11 +52,13 @@ define(function(require) {
         },
 
         popToRoot: function() {
-            if( window.webkit ) {
-                window.webkit.messageHandlers.gmi.popToRoot({ "name" : "openExperience",  "body" : "" });
-            } else {
-                GameInterface.popToRoot();
-            }
+            return new Promise((resolve, reject) => {
+                if( window.webkit ) {
+                    window.webkit.messageHandlers.gmi.postMessage({ "name" : "popToRoot",  "body" : "" });
+                } else {
+                    GameInterface.popToRoot();
+                }
+            });
         }
     }
 
