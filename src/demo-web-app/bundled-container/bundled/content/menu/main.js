@@ -201,6 +201,8 @@ function(gmi_platform, storage, PackageManager, ui_helper) {
             });
     });
 
+    ui_helper.appendHorizontalRule();
+
     ui_helper.appendBtn("Unknown", function(){
         gmi.experience.push("unknown").catch(
             function(rejected){
@@ -210,8 +212,9 @@ function(gmi_platform, storage, PackageManager, ui_helper) {
         );
     });
 
-    var pushParagraph = ui_helper.appendParagraph();
-
+    ui_helper.appendBtn("Home", function(){
+        gmi.experience.popToRoot();
+    });    var pushParagraph = ui_helper.appendParagraph();
     ui_helper.appendHorizontalRule();
 
     // ---------- Notify App That Game Has Loaded And Send Stats ----------
