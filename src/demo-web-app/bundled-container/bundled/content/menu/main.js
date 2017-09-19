@@ -212,7 +212,7 @@ function(gmi_platform, storage, PackageManager, ui_helper) {
         );
     });
 
-    ui_helper.appendBtn("Home", function(){
+    ui_helper.appendBtn("Root", function(){
         gmi.experience.popToRoot();
     });    var pushParagraph = ui_helper.appendParagraph();
     ui_helper.appendHorizontalRule();

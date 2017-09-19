@@ -90,11 +90,11 @@ define(['pnm-library/gmi-mobile', '../js/ui-helper'], function(gmi_platform, ui_
         gmi.experience.push("tanks");
     });
 
-    ui_helper.appendBtn("Back", function(){
+    ui_helper.appendBtn("Pop", function(){
         gmi.experience.pop();
     });
 
-    ui_helper.appendBtn("Home", function(){
+    ui_helper.appendBtn("Root", function(){
         gmi.experience.popToRoot();
     });
 

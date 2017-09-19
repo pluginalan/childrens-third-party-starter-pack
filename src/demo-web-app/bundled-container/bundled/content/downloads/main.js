@@ -29,7 +29,7 @@ function(gmi_platform, PackageManager, ui_helper) {
     ui_helper.appendTitle(gmi.gameDir, "Package Downloader Exaples");
 
     // ---------- GMI Exit Example -----------
-    ui_helper.appendBtn("Back", function() {
+    ui_helper.appendBtn("Pop", function() {
       gmi.experience.pop();
     });
     ui_helper.appendHorizontalRule();
