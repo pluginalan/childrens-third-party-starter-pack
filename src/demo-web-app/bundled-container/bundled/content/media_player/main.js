@@ -25,7 +25,7 @@ define(['pnm-library/gmi-mobile', '../js/ui-helper'], function(gmi_platform, ui_
     ui_helper.appendTitle(gmi.gameDir, "Media Playback Examples");
 
     // ---------- GMI Exit Example -----------
-    ui_helper.appendBtn("Back", function() {
+    ui_helper.appendBtn("Pop", function() {
       gmi.experience.pop(); 
     });
 
