@@ -80,6 +80,13 @@ function(gmi_platform, storage, PackageManager, ui_helper) {
     container.appendChild(wrapper);
     ui_helper.appendTitle(gmi.gameDir, "Games Messaging Interface Examples");
 
+
+
+
+
+
+
+
     // ---------- GMI Storage Example----------
 
     ui_helper.appendSubtitle("GMI Storage Example");
@@ -185,6 +192,19 @@ function(gmi_platform, storage, PackageManager, ui_helper) {
     }
 
     packageManager.setConnectivityCallback(connectivityCallback);
+    
+    ui_helper.appendHorizontalRule();
+
+
+
+
+    // params
+    ui_helper.appendSubtitle("Params (Optional)");
+    ui_helper.appendSpacer();
+    ui_helper.appendParagraph( JSON.stringify(gmi.experience.getParams()) );
+    ui_helper.appendSpacer();
+    ui_helper.appendHorizontalRule();
+
 
     // ---------- Menu Demo -------------
 

@@ -91,7 +91,7 @@ define(['pnm-library/gmi-mobile', '../js/ui-helper'], function(gmi_platform, ui_
     });
 
     ui_helper.appendBtn("Pop", function(){
-        gmi.experience.pop();
+        gmi.experience.pop( {key1: "value1", key2: "value2"} );
     });
 
     ui_helper.appendBtn("Root", function(){

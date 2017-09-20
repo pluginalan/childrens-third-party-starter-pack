@@ -61,10 +61,10 @@ function(gmi_platform, PackageManager, ui_helper) {
         // Add an image for this package. This illustrates how to access content within the package.
         if(pkg.packageInfo.packageId == 'gnomes'){
             ui_helper.appendBtn("open red_gnome", function () {
-                gmi.experience.openExperience('red_gnome')
+                gmi.experience.push('red_gnome')
             }, div);
             ui_helper.appendBtn("open blue_gnome", function () {
-                gmi.experience.openExperience('blue_gnome')
+                gmi.experience.push('blue_gnome')
             }, div);
         }
         ui_helper.appendImage("/packages/"+pkg.packageInfo.packageId+"/gameLogo.png", div);

@@ -57,7 +57,10 @@ define(function(require) {
             return new Promise((resolve, reject) => {
                 emptyStackReject = reject
                 if( window.webkit ) {
-                    window.webkit.messageHandlers.gmi.postMessage({ "name" : "pop",  "body" : JSON.stringify(params) })
+                    var body = {
+                        "params" : JSON.stringify(params)
+                    }
+                    window.webkit.messageHandlers.gmi.postMessage({ "name" : "pop",  "body" : body })
                 } else {
                     GameInterface.pop(JSON.stringify(params))
                 }
