@@ -192,7 +192,7 @@ function(gmi_platform, storage, PackageManager, ui_helper) {
 
     gmi.experience.getConfig().available.forEach(function(element) {
             ui_helper.appendBtn(element.title, function(){
-                gmi.experience.push(element.key).catch(
+                gmi.experience.push(element.key, {"foo" : "bar"}).catch(
                     function(rejected){
                         console.log(rejected.status)
                         ui_helper.appendSpan(rejected.status+ " ", pushParagraph)

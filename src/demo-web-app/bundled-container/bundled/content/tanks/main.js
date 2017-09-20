@@ -23,6 +23,10 @@ define(['pnm-library/gmi-mobile', '../js/ui-helper'], function(gmi_platform, ui_
     wrapper.appendChild(inner);
     ui_helper.appendTitle(gmi.gameDir, "Tanks");
 
+    ui_helper.appendSpacer();
+    ui_helper.appendParagraph(gmi.experience.getParams().foo);
+    ui_helper.appendSpacer();
+
     // Audio
     ui_helper.appendSubtitle("Audio");
     var audioParagraph = ui_helper.appendParagraph();

@@ -1,5 +1,5 @@
 define([
-    'pnm-library/gmi-extensions/experiences',
+    'pnm-library/gmi-extensions/experience',
     'pnm-library/gmi-extensions/media-player'
 ], function( experience, mediaPlayer  ) {
 
