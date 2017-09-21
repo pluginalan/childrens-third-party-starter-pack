@@ -80,6 +80,17 @@ function(gmi_platform, storage, PackageManager, ui_helper) {
     container.appendChild(wrapper);
     ui_helper.appendTitle(gmi.gameDir, "Games Messaging Interface Examples");
 
+    // ---------- Params ----------
+
+    ui_helper.appendSubtitle("Experience params");
+    var params = gmi.experience.getParams();
+    if (Object.keys(params).length === 0 && params.constructor === Object) {
+        params = {"params": "no params defined"};
+    }
+    ui_helper.appendParagraph(JSON.stringify(params));
+    ui_helper.appendSpacer();
+    ui_helper.appendHorizontalRule();
+
     // ---------- GMI Storage Example----------
 
     ui_helper.appendSubtitle("GMI Storage Example");
@@ -190,9 +201,15 @@ function(gmi_platform, storage, PackageManager, ui_helper) {
 
     ui_helper.appendSubtitle("Game menu");
 
+    var pushParams = {
+        "last_experience": "menu",
+        "method": "push",
+        "theme": "christmas"
+    };
+
     gmi.experience.getConfig().available.forEach(function(element) {
             ui_helper.appendBtn(element.title, function(){
-                gmi.experience.push(element.key).catch(
+                gmi.experience.push(element.key, pushParams).catch(
                     function(rejected){
                         console.log(rejected.status)
                         ui_helper.appendSpan(rejected.status+ " ", pushParagraph)
@@ -213,7 +230,7 @@ function(gmi_platform, storage, PackageManager, ui_helper) {
     });
 
     ui_helper.appendBtn("Root", function(){
-        gmi.experience.popToRoot();
+        gmi.experience.popToRoot({"params": "root_params"});
     });    var pushParagraph = ui_helper.appendParagraph();
     ui_helper.appendHorizontalRule();
 
