@@ -80,12 +80,16 @@ function(gmi_platform, storage, PackageManager, ui_helper) {
     container.appendChild(wrapper);
     ui_helper.appendTitle(gmi.gameDir, "Games Messaging Interface Examples");
 
+    // ---------- Params ----------
 
-
-
-
-
-
+    ui_helper.appendSubtitle("Experience params");
+    var params = gmi.experience.getParams();
+    if (Object.keys(params).length === 0 && params.constructor === Object) {
+        params = {"params": "no params defined"};
+    }
+    ui_helper.appendParagraph(JSON.stringify(params));
+    ui_helper.appendSpacer();
+    ui_helper.appendHorizontalRule();
 
     // ---------- GMI Storage Example----------
 
@@ -128,8 +132,8 @@ function(gmi_platform, storage, PackageManager, ui_helper) {
     ui_helper.appendBtn("Pop", function() {
         gmi.experience.pop().catch(
             function(rejected){
-                console.log(rejected.status)
-                ui_helper.appendSpan(rejected.status+ " ", popParagraph)
+                console.log(rejected.error)
+                ui_helper.appendSpan(rejected.error+ " ", popParagraph)
             }
         );
     });
@@ -192,33 +196,26 @@ function(gmi_platform, storage, PackageManager, ui_helper) {
     }
 
     packageManager.setConnectivityCallback(connectivityCallback);
-    
-    ui_helper.appendHorizontalRule();
-
-
-
-
-    // params
-    ui_helper.appendSubtitle("Params (Optional)");
-    ui_helper.appendSpacer();
-    ui_helper.appendParagraph( JSON.stringify(gmi.experience.getParams()) );
-    ui_helper.appendSpacer();
-    ui_helper.appendHorizontalRule();
-
 
     // ---------- Menu Demo -------------
 
     ui_helper.appendSubtitle("Game menu");
 
+    var pushParams = {
+        "last_experience": "menu",
+        "method": "push",
+        "theme": "christmas"
+    };
+
     gmi.experience.getConfig().available.forEach(function(element) {
-            ui_helper.appendBtn(element.title, function(){
-                gmi.experience.push(element.key, {"foo" : "bar"}).catch(
-                    function(rejected){
-                        console.log(rejected.status)
-                        ui_helper.appendSpan(rejected.status+ " ", pushParagraph)
-                    }
-                );
-            });
+        ui_helper.appendBtn(element.title, function(){
+            gmi.experience.push(element.key, pushParams).catch(
+                function(rejected){
+                    console.log(rejected.error)
+                    ui_helper.appendSpan(rejected.error+ " ", pushParagraph)
+                }
+            );
+        });
     });
 
     ui_helper.appendHorizontalRule();
@@ -226,14 +223,14 @@ function(gmi_platform, storage, PackageManager, ui_helper) {
     ui_helper.appendBtn("Unknown", function(){
         gmi.experience.push("unknown").catch(
             function(rejected){
-                console.log(rejected.status)
-                ui_helper.appendSpan(rejected.status + " ", pushParagraph)
+                console.log(rejected.error)
+                ui_helper.appendSpan(rejected.error + " ", pushParagraph)
             }
         );
     });
 
     ui_helper.appendBtn("Root", function(){
-        gmi.experience.popToRoot();
+        gmi.experience.popToRoot({"params": "root_params"});
     });    var pushParagraph = ui_helper.appendParagraph();
     ui_helper.appendHorizontalRule();
 

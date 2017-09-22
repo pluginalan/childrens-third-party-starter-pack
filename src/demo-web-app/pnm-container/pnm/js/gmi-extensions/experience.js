@@ -2,11 +2,21 @@ define(function(require) {
     "use strict"
 
     window._experience.emptyStack = function () {
-        emptyStackReject({"status" : "errorEmptyStack"})
+        emptyStackReject(
+            {
+                "action" : "pop",
+                "error"  : "emptyStack"
+            }
+        )
     }
 
     window._experience.experienceNotFound = function () {
-        notFoundReject({"status" : "errorNotFound"})
+        notFoundReject(
+            {
+                "action" : "push",
+                "error"  : "notFound"
+            }
+        )
     }
 
     var emptyStackReject = function(){}
@@ -15,40 +25,27 @@ define(function(require) {
     var experience = {
         getConfig: function() {
             if( typeof window._experience !== 'undefined' && typeof window._experience.config !== 'undefined' ) {
-                return window._experience.config
+                return Object.freeze(window._experience.config)
             } else {
-                return undefined
+                return {}
             }
         },
-
-        getParams: function() {
-            if( typeof window._experience !== 'undefined' && typeof window._experience.params !== 'undefined' ) {
-                return window._experience.params
-            } else {
-                return undefined
-            }
-        },
-
-        //
-        // openExperience: function( experienceKey ) {
-        //     if( window.webkit ) {
-        //         window.webkit.messageHandlers.gmi.postMessage({ "name" : "openExperience",  "body" : experienceKey })
-        //     } else {
-        //         GameInterface.openExperience(experienceKey)
-        //     }
-        // },
 
         push: function(experienceKey, params) {
             return new Promise((resolve, reject) => {
                 notFoundReject = reject
                 if( window.webkit ) {
-                    var body = {
-                        "experienceKey" : experienceKey,
-                        "params" : JSON.stringify(params)
-                    }
-                    window.webkit.messageHandlers.gmi.postMessage({ "name" : "push",  "body" : body})
+                    window.webkit.messageHandlers.gmi.postMessage(
+                    {
+                        "name" : "push",
+                        "body": {
+                            "experienceKey": experienceKey,
+                            "params": JSON.stringify(params)
+                        }
+                    })
+
                 } else {
-                    GameInterface.push(experienceKey, JSON.stringify(body))
+                    GameInterface.push(experienceKey, JSON.stringify(params))
                 }
             })
         },
@@ -57,28 +54,41 @@ define(function(require) {
             return new Promise((resolve, reject) => {
                 emptyStackReject = reject
                 if( window.webkit ) {
-                    var body = {
-                        "params" : JSON.stringify(params)
-                    }
-                    window.webkit.messageHandlers.gmi.postMessage({ "name" : "pop",  "body" : body })
+                    window.webkit.messageHandlers.gmi.postMessage(
+                    {
+                        "name" : "pop",
+                        "body" : {
+                            "params": JSON.stringify(params)
+                        }
+                    })
+
                 } else {
                     GameInterface.pop(JSON.stringify(params))
                 }
             });
         },
 
-        popToRoot: function(params)
-        {
-            return new Promise((resolve, reject) => {
-                if( window.webkit ) {
-                    var body = {
-                        "params" : JSON.stringify(params)
+        popToRoot: function(params) {
+            if( window.webkit ) {
+                window.webkit.messageHandlers.gmi.popToRoot(
+                {
+                    "name" : "pop",
+                    "body" : {
+                        "params": JSON.stringify(params)
                     }
-                    window.webkit.messageHandlers.gmi.postMessage( {"name": "popToRoot", "body": body} )
-                } else {
-                    GameInterface.popToRoot(JSON.stringify(params))
-                }
-            });
+                })
+
+            } else {
+                GameInterface.popToRoot(JSON.stringify(params))
+            }
+        },
+
+        getParams: function() {
+            if( typeof window._experience !== 'undefined' && typeof window._experience.params !== 'undefined' ) {
+                return window._experience.params
+            } else {
+                return {}
+            }
         }
     }
 

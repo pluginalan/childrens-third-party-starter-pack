@@ -23,6 +23,17 @@ define(['pnm-library/gmi-mobile', '../js/ui-helper'], function(gmi_platform, ui_
     wrapper.appendChild(inner);
     ui_helper.appendTitle(gmi.gameDir, "Ponies");
 
+    // ---------- Params ----------
+
+    ui_helper.appendSubtitle("Experience params");
+    var params = gmi.experience.getParams();
+    if (Object.keys(params).length === 0 && params.constructor === Object) {
+        params = {"params": "no params defined"};
+    }
+    ui_helper.appendParagraph(JSON.stringify(params));
+    ui_helper.appendSpacer();
+    ui_helper.appendHorizontalRule();
+
     // Audio
     ui_helper.appendSubtitle("Audio");
     var audioParagraph = ui_helper.appendParagraph();
@@ -86,16 +97,34 @@ define(['pnm-library/gmi-mobile', '../js/ui-helper'], function(gmi_platform, ui_
 
     ui_helper.appendHorizontalRule();
 
+    var pushParams = {
+        "last_experience": "ponies",
+        "method": "push",
+        "points": "8000"
+    };
+
+    var popParams = {
+        "last_experience": "ponies",
+        "method": "pop",
+        "points": "1000"
+    };
+
+    var popToRootParams = {
+        "last_experience": "ponies",
+        "method": "popToRoot",
+        "points": "1500"
+    };
+
     ui_helper.appendBtn("Tanks", function(){
-        gmi.experience.push("tanks");
+        gmi.experience.push("tanks", pushParams);
     });
 
     ui_helper.appendBtn("Pop", function(){
-        gmi.experience.pop( {key1: "value1", key2: "value2"} );
+        gmi.experience.pop(popParams);
     });
 
     ui_helper.appendBtn("Root", function(){
-        gmi.experience.popToRoot();
+        gmi.experience.popToRoot(popToRootParams);
     });
 
 });

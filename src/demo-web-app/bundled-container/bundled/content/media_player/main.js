@@ -26,7 +26,7 @@ define(['pnm-library/gmi-mobile', '../js/ui-helper'], function(gmi_platform, ui_
 
     // ---------- GMI Exit Example -----------
     ui_helper.appendBtn("Pop", function() {
-      gmi.experience.pop(); 
+      gmi.experience.pop();
     });
 
     ui_helper.appendHorizontalRule();
