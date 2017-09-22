@@ -2,11 +2,21 @@ define(function(require) {
     "use strict"
 
     window._experience.emptyStack = function () {
-        emptyStackReject({"status" : "errorEmptyStack"})
+        emptyStackReject(
+            {
+                "action" : "pop",
+                "error"  : "emptyStack"
+            }
+        )
     }
 
     window._experience.experienceNotFound = function () {
-        notFoundReject({"status" : "errorNotFound"})
+        notFoundReject(
+            {
+                "action" : "push",
+                "error"  : "notFound"
+            }
+        )
     }
 
     var emptyStackReject = function(){}
