@@ -67,13 +67,16 @@ define(function(require) {
             });
         },
 
-        popToRoot: function(params) {
-
+        popToRoot: function(params)
+        {
             return new Promise((resolve, reject) => {
                 if( window.webkit ) {
-                    window.webkit.messageHandlers.gmi.postMessage({ "name" : "popToRoot",  "body" : JSON.stringify(params) });
+                    var body = {
+                        "params" : JSON.stringify(params)
+                    }
+                    window.webkit.messageHandlers.gmi.postMessage( {"name": "popToRoot", "body": body} )
                 } else {
-                    GameInterface.popToRoot(JSON.stringify(params));
+                    GameInterface.popToRoot(JSON.stringify(params))
                 }
             });
         }
