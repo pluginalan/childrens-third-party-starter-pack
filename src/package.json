@@ -1,0 +1,27 @@
+{
+  "name": "src",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "babel-polyfill": "^6.26.0"
+  },
+  "scripts": {
+    "test": "test",
+    "clean-bundled": "rm -rf demo-web-app/bundled-container-dist/",
+    "copy-bundled": "cp -R demo-web-app/bundled-container/ demo-web-app/bundled-container-dist",
+    "babel-bundled": "babel demo-web-app/bundled-container/ -d demo-web-app/bundled-container-dist/ --presets es2015,stage-2",
+    "bundled": "npm run clean-bundled && npm run copy-bundled && npm run babel-bundled",
+    "clean-pnm": "rm -rf demo-web-app/pnm-container-dist/",
+    "copy-pnm": "cp -R demo-web-app/pnm-container/ demo-web-app/pnm-container-dist",
+    "babel-pnm": "babel demo-web-app/pnm-container/ -d demo-web-app/pnm-container-dist/ --presets es2015,stage-2 --ignore '**/polyfill.min.js,**/require.js'",
+    "pnm": "npm run clean-pnm && npm run copy-pnm && npm run babel-pnm"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1"
+  }
+}

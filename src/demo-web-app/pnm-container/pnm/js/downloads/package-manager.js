@@ -69,14 +69,14 @@ define(function (require, exports, module) {
                 try {
                     var installationInfo = JSON.parse(response);
                     for (var ix = 0; ix < installationInfo.packages.length; ix++) {
-                        var package = installationInfo.packages[ix];
+                        var pkg = installationInfo.packages[ix];
 
                         // unstringify metadata
                         try {
-                            package.metadata = JSON.parse(package.metadata);
+                            pkg.metadata = JSON.parse(pkg.metadata);
                         }
                         catch(e) {
-                            package.metadata = null;
+                            pkg.metadata = null;
                         }
                     }
                 }
@@ -348,17 +348,17 @@ define(function (require, exports, module) {
      * @returns {*} - the found package or null if not found.
      */
     PackageManager.findPackage = function (responseObj, packageId) {
-        var package = null;
+        var pkg = null;
 
         for (var ix = 0; ix < responseObj.packages.length; ix++) {
 
             if (responseObj.packages[ix].packageId === packageId) {
-                package = responseObj.packages[ix];
+                pkg = responseObj.packages[ix];
                 break;
             }
         }
 
-        return package;
+        return pkg;
 
     }
     return PackageManager;

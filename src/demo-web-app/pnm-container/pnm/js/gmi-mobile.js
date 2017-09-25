@@ -11,6 +11,15 @@ define([
     var getGMI = function(options) {
 
         var BaseGMI = function(options) {
+
+
+            // App settings
+            this.debugEnabled = window.gmiSettings.debugEnabled;
+            this.options = options;
+            this.callbacks = {};
+            this.callbackCounter = 0;
+            this.muted;
+
             // OG CMS Settings
 
             Object.defineProperty(BaseGMI.prototype, 'options', {
@@ -70,12 +79,7 @@ define([
               }
             });
 
-            // App settings
-            this.debugEnabled = window.gmiSettings.debugEnabled;
-            this.options = options;
-            this.callbacks = {};
-            this.callbackCounter = 0;
-            this.muted;
+
         }
 
         BaseGMI.prototype.gameUrl = window.gmiSettings.gameUrl;
@@ -386,8 +390,8 @@ define([
             }
 
             if( options !== undefined ) {
-                for( page in options.settingsConfig.pages ) {
-                    for( setting in options.settingsConfig.pages[page].settings ) {
+                for( var page in options.settingsConfig.pages ) {
+                    for( var setting in options.settingsConfig.pages[page].settings ) {
                         var currentSetting = options.settingsConfig.pages[page].settings[setting]
 
                         if( currentSetting.hasOwnProperty( "defaultValue" ) ) {

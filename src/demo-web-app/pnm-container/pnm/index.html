@@ -4,6 +4,9 @@
         <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
         <script src="/pnm/js/require.js"></script>
         <script>
+            require(['/pnm/js/polyfill.min.js']);
+        </script>
+        <script>
             // stub functions for apps that don't support native settings
             window.gmiCallbacks = {
                 "onSettingChanged": function(){},
@@ -30,8 +33,6 @@
             // GMI *default* Game settings
             window.gmiSettings = {};
             window.gmiSettings.debugEnabled = false;  // If testing locally this will cause errors
-            
-            
 
             function launchGame() {
                 require.config({
