@@ -70,9 +70,9 @@ define(function(require) {
 
         popToRoot: function(params) {
             if( window.webkit ) {
-                window.webkit.messageHandlers.gmi.popToRoot(
+                window.webkit.messageHandlers.gmi.postMessage(
                 {
-                    "name" : "pop",
+                    "name" : "popToRoot",
                     "body" : {
                         "params": JSON.stringify(params)
                     }
