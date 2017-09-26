@@ -80,6 +80,42 @@ function(gmi_platform, storage, PackageManager, ui_helper) {
     container.appendChild(wrapper);
     ui_helper.appendTitle(gmi.gameDir, "Games Messaging Interface Examples");
 
+
+    // ---------- GMI Accelerometer Example----------
+
+    ui_helper.appendSubtitle("GMI Accelerometer Example");
+
+    ui_helper.appendSpacer();
+    ui_helper.appendBtn("Start", function() { gmi.startAccelerometer() });
+    ui_helper.appendBtn("Stop", function() { gmi.stopAccelerometer() });
+    ui_helper.appendBtn("Get", function() { gmi.getAcceleration() });
+
+    ui_helper.appendSpacer();
+
+    var outputText_x = document.createElement("accel");
+    outputText_x.id = "accel-text-x";
+    inner.appendChild(outputText_x);
+    ui_helper.appendSpacer();
+
+    var outputText_y = document.createElement("accel");
+    outputText_y.id = "accel-text-y";
+    inner.appendChild(outputText_y);
+    ui_helper.appendSpacer();
+
+    var outputText_z = document.createElement("accel");
+    outputText_z.id = "accel-text-z";
+    inner.appendChild(outputText_z);
+    ui_helper.appendSpacer();
+
+    window.gmiCallbacks.onAccelerometerInterval = function(data) {
+       outputText_x.innerHTML = "x: " + data.x
+       outputText_y.innerHTML = "y: " + data.y
+       outputText_z.innerHTML = "z: " + data.z
+    }
+
+    ui_helper.appendHorizontalRule();
+
+
     // ---------- GMI Storage Example----------
 
     ui_helper.appendSubtitle("GMI Storage Example");

@@ -16,6 +16,11 @@ define(function(require) {
        
        logAcceleration: function() {
             window.webkit.messageHandlers.gmi.postMessage({"name" : "logAcceleration"});
+       },
+       
+       addAccelerometerCallback: function( callback ) {
+            window.webkit.messageHandlers.gmi.postMessage({"name" : "registerAccelerometerListener",
+                                                           "callback" : callback });
        }
     }
 });
