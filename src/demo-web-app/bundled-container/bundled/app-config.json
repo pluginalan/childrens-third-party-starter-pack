@@ -29,6 +29,57 @@
     "terms_conditions": "https://www.bbc.co.uk/terms/",
     "contact_us": "https://www.bbc.co.uk/cbeebies/grownups/faqs"
   },
+  "availablePackages": [
+    {
+      "packageId": "package 1",
+      "basepath": "base_path",
+      "type": "type",
+      "status": "available",
+      "dependencies": [
+        "tanks",
+        "menu"
+      ],
+      "metadata": "metadata",
+      "tags": [
+        "tag1",
+        "tag2"
+      ],
+      "downloadProgress": 0,
+      "version": 1
+    },
+    {
+      "packageId": "package 2",
+      "basepath": "base_path",
+      "type": "type",
+      "status": "available",
+      "dependencies": [
+        "ponies",
+        "menu"
+      ],
+      "metadata": "metadata",
+      "tags": [
+        "tag1",
+        "tag2"
+      ],
+      "downloadProgress": 0,
+      "version": 1
+    },
+    {
+      "packageId": "package 3",
+      "basepath": "base_path",
+      "type": "type",
+      "status": "available",
+      "dependencies": [
+        "menu"
+      ],
+      "metadata": "metadata",
+      "tags": [
+        "tag1"
+      ],
+      "downloadProgress": 0,
+      "version": 2
+    }
+  ],
   "experiences": [
     {
       "key": "menu",
@@ -54,6 +105,10 @@
           {
             "title": "Media Player",
             "key": "media_player"
+          },
+          {
+            "title": "Packages Demo",
+            "key": "packages"
           }
         ]
       }
@@ -78,6 +133,18 @@
         "title": "Ponies Game",
         "description": "This is the Ponies game",
         "background": "pink",
+        "custom-config-1": "{}",
+        "custom-config-N": "{}"
+      }
+    },
+    {
+      "key": "packages",
+      "base": "/content/packages/",
+      "launch": "main",
+      "config": {
+        "title": "Packages Demo",
+        "description": "This is the Packages demo",
+        "background": "purple",
         "custom-config-1": "{}",
         "custom-config-N": "{}"
       }
