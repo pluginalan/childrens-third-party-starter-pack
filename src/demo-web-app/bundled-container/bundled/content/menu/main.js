@@ -123,6 +123,36 @@ function(gmi_platform, storage, PackageManager, ui_helper) {
 
     ui_helper.appendHorizontalRule();
 
+    // ---------- HTML5 Motion Example----------
+    ui_helper.appendSubtitle("HTML5 Motion Example");
+
+    var outputText_htmlMotion_x = document.createElement("accelHTML5");
+    outputText_htmlMotion_x.id = "accel-text-html5";
+    inner.appendChild(outputText_htmlMotion_x);
+    ui_helper.appendSpacer();
+
+    var outputText_htmlMotion_y = document.createElement("accelHTML5");
+    outputText_htmlMotion_y.id = "accel-text-html5";
+    inner.appendChild(outputText_htmlMotion_y);
+    ui_helper.appendSpacer();
+
+    var outputText_htmlMotion_z = document.createElement("accelHTML5");
+    outputText_htmlMotion_z.id = "accel-text-html5";
+    inner.appendChild(outputText_htmlMotion_z);
+    ui_helper.appendSpacer();
+
+    var handleMotion = function(DeviceMotionEvent) {
+      outputText_htmlMotion_x.innerHTML = DeviceMotionEvent.accelerationIncludingGravity.x
+      outputText_htmlMotion_y.innerHTML = DeviceMotionEvent.accelerationIncludingGravity.y
+      outputText_htmlMotion_z.innerHTML = DeviceMotionEvent.accelerationIncludingGravity.z
+    }
+
+    ui_helper.appendHorizontalRule();
+
+
+    window.addEventListener("devicemotion", handleMotion, true);
+
+
 
     // ---------- GMI Storage Example----------
 
