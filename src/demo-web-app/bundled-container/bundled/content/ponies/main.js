@@ -123,6 +123,10 @@ define(['pnm-library/gmi-mobile', '../js/ui-helper'], function(gmi_platform, ui_
         gmi.experience.pop(popParams);
     });
 
+     ui_helper.appendBtn("Pop without params", function(){
+        gmi.experience.pop();
+     });
+
     ui_helper.appendBtn("Root", function(){
         gmi.experience.popToRoot(popToRootParams);
     });
