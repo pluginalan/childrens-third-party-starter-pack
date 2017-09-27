@@ -231,7 +231,13 @@ function(gmi_platform, storage, PackageManager, ui_helper) {
 
     ui_helper.appendBtn("Root", function(){
         gmi.experience.popToRoot({"params": "root_params"});
-    });    var pushParagraph = ui_helper.appendParagraph();
+    });
+
+    ui_helper.appendBtn("Ponies without params", function(){
+        gmi.experience.push("ponies");
+    });
+
+    var pushParagraph = ui_helper.appendParagraph();
     ui_helper.appendHorizontalRule();
 
     // ---------- Notify App That Game Has Loaded And Send Stats ----------
