@@ -35,24 +35,24 @@
       "base": "/content/menu/",
       "launch": "main",
       "config": {
-        "title": "Game Menu",
+        "title": "Game Menu (Remote)",
         "description": "This is the game menu",
         "path": "menu/index.html",
         "available": [
           {
-            "title": "Tanks",
+            "title": "Tanks (Remote)",
             "key": "tanks"
           },
           {
-            "title": "Ponies",
+            "title": "Ponies (Remote)",
             "key": "ponies"
           },
            {
-            "title": "Downloads",
+            "title": "Downloads (Remote)",
             "key": "downloads"
           },
           {
-            "title": "Media Player",
+            "title": "Media Player (Remote)",
             "key": "media_player"
           }
         ]
@@ -63,7 +63,7 @@
       "base": "/content/tanks/",
       "launch": "main",
       "config": {
-        "title": "Tanks Game",
+        "title": "Tanks Game (Remote)",
         "description": "This is the Tanks game",
         "background": "lightblue",
         "custom-config-1": "{}",
@@ -75,7 +75,7 @@
       "base": "/content/ponies/",
       "launch": "main",
       "config": {
-        "title": "Ponies Game",
+        "title": "Ponies Game (Remote)",
         "description": "This is the Ponies game",
         "background": "pink",
         "custom-config-1": "{}",
@@ -111,7 +111,7 @@
       "base": "/content/downloads/",
       "launch": "main",
       "config": {
-        "title": "Downloads",
+        "title": "Downloads (Remote)",
         "description": "Demos the donwloads functionality",
         "downloadablePackages": [
           {
@@ -140,7 +140,7 @@
       "base": "/content/media_player/",
       "launch": "main",
       "config": {
-        "title": "Media Player",
+        "title": "Media Player (Remote)",
         "demo_vpid": "p02mpl5y",
         "description": "These gnomes prefer cornflowers",
         "background": "cornflowerblue",
