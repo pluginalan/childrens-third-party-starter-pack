@@ -34,7 +34,6 @@
       "packageId": "package 1",
       "basepath": "base_path",
       "type": "type",
-      "status": "available",
       "dependencies": [
         "tanks",
         "menu"
@@ -43,16 +42,12 @@
       "tags": [
         "tag1",
         "tag2"
-      ],
-      "downloadProgress": 0,
-      "version": 1,
-      "readOnly": false
+      ]
     },
     {
       "packageId": "package 2",
       "basepath": "base_path",
       "type": "type",
-      "status": "available",
       "dependencies": [
         "ponies",
         "menu"
@@ -61,26 +56,19 @@
       "tags": [
         "tag1",
         "tag2"
-      ],
-      "downloadProgress": 0,
-      "version": 1,
-      "readOnly": false
+      ]
     },
     {
       "packageId": "package 3",
       "basepath": "base_path",
       "type": "type",
-      "status": "available",
       "dependencies": [
         "menu"
       ],
       "metadata": "metadata",
       "tags": [
         "tag1"
-      ],
-      "downloadProgress": 0,
-      "version": 2,
-      "readOnly": true
+      ]
     }
   ],
   "experiences": [
