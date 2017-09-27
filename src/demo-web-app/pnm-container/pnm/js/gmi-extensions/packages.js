@@ -3,11 +3,20 @@ define(function(require) {
 
     var packages = {
         list: function() {
-        return new Promise((resolve, reject) =>{
-                if(window._packages.availablePackages){
-                    resolve(window._packages.availablePackages);
+        return new Promise((resolve, reject) => {
+                if(!window._packages.availablePackages) {
+                    var packages = window._packages.availablePackages;
+                    packages.forEach((aPackage) => {
+                        aPackage.status = "available"
+                        aPackage.downloadProgress = 0
+                        aPackage.readOnly = false
+                    });
+                    resolve(packages);
                 } else {
-                    reject("unknown")
+                    reject({
+                        "action"    : "list",
+                        "error"     : "unknown"
+                    })
                 }
             })
         }
