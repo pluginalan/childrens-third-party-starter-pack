@@ -92,19 +92,6 @@ function(gmi_platform, storage, PackageManager, ui_helper) {
     ui_helper.appendHorizontalRule();
 
 
-    // ---------- Available packages ----------
-
-    ui_helper.appendSubtitle("Available packages");
-    var packagesParagraph = ui_helper.appendParagraph();
-
-    gmi.packages.list().then((result) => {
-        result.forEach((aPackage) => {
-            packagesParagraph.appendChild(ui_helper.appendParagraph(JSON.stringify(aPackage)));
-        })
-    })
-
-    ui_helper.appendHorizontalRule();
-
     // ---------- GMI Storage Example----------
 
     ui_helper.appendSubtitle("GMI Storage Example");
