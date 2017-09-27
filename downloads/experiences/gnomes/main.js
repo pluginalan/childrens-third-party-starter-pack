@@ -218,11 +218,11 @@ define(['pnm-library/gmi-mobile'], function(gmi_platform) {
     });
 
     appendBtn("open tanks", function(){
-        gmi.experience.openExperience("tanks");
+        gmi.experience.push("tanks");
     });
 
     appendBtn("open ponies", function(){
-        gmi.experience.openExperience("ponies");
+        gmi.experience.push("ponies");
     });
 
     // Game loaded
