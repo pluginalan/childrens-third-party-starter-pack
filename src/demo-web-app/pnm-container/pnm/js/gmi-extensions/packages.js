@@ -3,7 +3,13 @@ define(function(require) {
 
     var packages = {
         list: function() {
-            return window._packages.availablePackages;
+        return new Promise((resolve, reject) =>{
+                if(window._packages.availablePackages){
+                    resolve(window._packages.availablePackages);
+                } else {
+                    reject("unknown")
+                }
+            })
         }
     }
 
