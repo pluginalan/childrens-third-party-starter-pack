@@ -83,13 +83,23 @@ function(gmi_platform, storage, PackageManager, ui_helper) {
 
     // ---------- GMI Accelerometer Example----------
 
+    var mikesCallback = function(data) {
+       outputText_x.innerHTML = "x: " + data.x
+       outputText_y.innerHTML = "y: " + data.y
+       outputText_z.innerHTML = "z: " + data.z
+    }
+
     ui_helper.appendSubtitle("GMI Accelerometer Example");
+    ui_helper.appendBtn("Start", function() { gmi.startAccelerometer() });
+    ui_helper.appendBtn("Stop", function() { gmi.stopAccelerometer()
+                                            outputText_x.innerHTML = ""
+                                            outputText_y.innerHTML = ""
+                                            outputText_z.innerHTML = ""
+                                            });
+    ui_helper.appendBtn("Poll", function() { gmi.getAcceleration(mikesCallback) });
+    ui_helper.appendBtn("Stream", function() { gmi.watchAcceleration(mikesCallback) });
 
     ui_helper.appendSpacer();
-    ui_helper.appendBtn("Start", function() { gmi.startAccelerometer() });
-    ui_helper.appendBtn("Stop", function() { gmi.stopAccelerometer() });
-    ui_helper.appendBtn("Get", function() { gmi.getAcceleration() });
-
     ui_helper.appendSpacer();
 
     var outputText_x = document.createElement("accel");
@@ -107,11 +117,9 @@ function(gmi_platform, storage, PackageManager, ui_helper) {
     inner.appendChild(outputText_z);
     ui_helper.appendSpacer();
 
-    window.gmiCallbacks.onAccelerometerInterval = function(data) {
-       outputText_x.innerHTML = "x: " + data.x
-       outputText_y.innerHTML = "y: " + data.y
-       outputText_z.innerHTML = "z: " + data.z
-    }
+    outputText_x.innerHTML = ""
+    outputText_y.innerHTML = ""
+    outputText_z.innerHTML = ""
 
     ui_helper.appendHorizontalRule();
 
