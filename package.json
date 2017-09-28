@@ -1,0 +1,28 @@
+{
+  "name": "childrens-third-party-starter-pack",
+  "version": "1.0.0",
+  "description": "Documentation, code examples, tips and tricks and background for agencies who will be producing Games, Mobile Apps and other experiences for us.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "dependencies": {
+    "amd-loader": "0.0.8"
+  },
+  "devDependencies": {
+    "mocha": "^3.5.3"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bbc/childrens-third-party-starter-pack.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bbc/childrens-third-party-starter-pack/issues"
+  },
+  "homepage": "https://github.com/bbc/childrens-third-party-starter-pack#readme"
+}
