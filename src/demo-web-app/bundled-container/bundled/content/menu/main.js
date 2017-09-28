@@ -91,6 +91,7 @@ function(gmi_platform, storage, PackageManager, ui_helper) {
     ui_helper.appendSpacer();
     ui_helper.appendHorizontalRule();
 
+
     // ---------- GMI Storage Example----------
 
     ui_helper.appendSubtitle("GMI Storage Example");
