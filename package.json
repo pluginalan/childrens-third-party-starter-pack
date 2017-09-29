@@ -13,7 +13,8 @@
     "mocha": "^3.5.3"
   },
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "testWithBreak": "mocha --debug-brk"
   },
   "repository": {
     "type": "git",

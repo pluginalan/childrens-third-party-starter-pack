@@ -1,0 +1,14 @@
+{
+  "packageId": "poniesPackageId",
+  "basepath": "/content/ponies/",
+  "type": "type",
+  "dependencies": [
+    "tanks",
+    "menu"
+  ],
+  "metadata": "",
+  "tags": [
+    "tag1",
+    "tag2"
+  ]
+}
