@@ -23,6 +23,9 @@ describe('available packages', function() {
     beforeEach(function(done) {
         window = {};
         window._packages = {};
+        window._packages.availablePackages = [];
+        window._packages.bundledPackages = [];
+
         done()
     });
 
