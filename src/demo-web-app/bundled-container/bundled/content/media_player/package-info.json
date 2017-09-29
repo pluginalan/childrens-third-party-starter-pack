@@ -1,0 +1,14 @@
+{
+    "packageId": "package 1",
+    "basepath": "base_path",
+    "type": "type",
+    "dependencies": [
+                     "tanks",
+                     "menu"
+                     ],
+    "metadata": "metadata",
+    "tags": [
+             "tag1",
+             "tag2"
+             ]
+}
