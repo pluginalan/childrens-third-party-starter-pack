@@ -118,7 +118,7 @@
     },
     {
       "key": "ponies",
-      "base": "/packages/ponies/",
+      "base": "/content/ponies/",
       "launch": "main",
       "config": {
         "title": "Ponies Game",
@@ -130,7 +130,7 @@
     },
     {
       "key": "packages",
-      "base": "/packages/packages/",
+      "base": "/content/packages/",
       "launch": "main",
       "config": {
         "title": "Packages Demo",
@@ -166,7 +166,7 @@
     },
     {
       "key": "downloads",
-      "base": "/packages/downloads/",
+      "base": "/content/downloads/",
       "launch": "main",
       "config": {
         "title": "Downloads",
@@ -195,7 +195,7 @@
     },
     {
       "key": "media_player",
-      "base": "/packages/mediaplayer/",
+      "base": "/content/media_player/",
       "launch": "main",
       "config": {
         "title": "Media Player",

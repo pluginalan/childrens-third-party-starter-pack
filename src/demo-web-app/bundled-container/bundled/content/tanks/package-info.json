@@ -2,7 +2,7 @@
     "packageId": "tanks",
     "basepath": "content/tanks/",
     "type": "type",
-    "dependencies": [ "uihelper" ],
+    "dependencies": [ "jsutility" ],
     "metadata": "metadata",
     "tags": [
              "tag1",

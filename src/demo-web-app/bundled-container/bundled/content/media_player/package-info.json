@@ -2,7 +2,7 @@
     "packageId": "mediaplayer",
     "basepath": "content/media_player/",
     "type": "type",
-    "dependencies": [ "uihelper" ],
+    "dependencies": [],
     "metadata": "metadata",
     "tags": [
              "tag1",

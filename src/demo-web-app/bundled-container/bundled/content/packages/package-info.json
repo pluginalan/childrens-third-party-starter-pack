@@ -2,7 +2,7 @@
     "packageId": "packages",
     "basepath": "content/packages/",
     "type": "type",
-    "dependencies": [ "uihelper" ],
+    "dependencies": ["bundledcontentpack"],
     "metadata": "metadata",
     "tags": [
              "tag1",

@@ -2,7 +2,7 @@
   "packageId": "ponies",
   "basepath": "content/ponies/",
   "type": "type",
-  "dependencies": [ "uihelper" ],
+  "dependencies": [],
   "metadata": "",
   "tags": [
     "tag1",

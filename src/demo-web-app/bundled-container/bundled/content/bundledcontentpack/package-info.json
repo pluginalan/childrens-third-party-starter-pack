@@ -1,0 +1,8 @@
+{
+    "packageId": "bundledcontentpack",
+    "basepath": "content/bundledcontentpack/",
+    "type": "content-pack",
+    "dependencies": [],
+    "metadata": "metadata",
+    "tags": []
+}

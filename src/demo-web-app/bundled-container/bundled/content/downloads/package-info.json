@@ -2,7 +2,7 @@
     "packageId": "downloads",
     "basepath": "content/downloads/",
     "type": "type",
-    "dependencies": [ "uihelper" ],
+    "dependencies": [],
     "metadata": "metadata",
     "tags": [
              "tag1",
