@@ -31,7 +31,7 @@
   },
   "availablePackages": [
     {
-      "packageId": "package 1",
+      "packageId": "package1",
       "basepath": "base_path",
       "type": "type",
       "dependencies": [
@@ -45,7 +45,7 @@
       ]
     },
     {
-      "packageId": "package 2",
+      "packageId": "package2",
       "basepath": "base_path",
       "type": "type",
       "dependencies": [
@@ -59,7 +59,7 @@
       ]
     },
     {
-      "packageId": "package 3",
+      "packageId": "package3",
       "basepath": "base_path",
       "type": "type",
       "dependencies": [
