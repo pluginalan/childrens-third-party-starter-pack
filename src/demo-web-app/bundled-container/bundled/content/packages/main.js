@@ -22,9 +22,7 @@ define(['pnm-library/gmi-mobile', '../js/ui-helper'], function(gmi_platform, ui_
     container.appendChild(wrapper);
     wrapper.appendChild(inner);
     ui_helper.appendTitle(gmi.gameDir, "Packages");
-
-
-
+    
     //packages
     ui_helper.appendSubtitle("Available packages");
     var packagesParagraph = ui_helper.appendParagraph();
@@ -41,19 +39,11 @@ define(['pnm-library/gmi-mobile', '../js/ui-helper'], function(gmi_platform, ui_
 
     gmi.gameLoaded();
 
-
-
-
-
     var popParams = {
-        "last_experience": "tanks",
+        "last_experience": "packages",
         "method": "pop",
-        "points": "1000"
+        "stars": "12345"
     };
-
-
-
-
 
     ui_helper.appendBtn("Pop", function(){
         gmi.experience.pop(popParams);
