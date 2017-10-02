@@ -106,7 +106,7 @@
     },
     {
       "key": "tanks",
-      "base": "/content/tanks/",
+      "base": "/packages/tanks/",
       "launch": "main",
       "config": {
         "title": "Tanks Game",
@@ -118,7 +118,7 @@
     },
     {
       "key": "ponies",
-      "base": "/content/ponies/",
+      "base": "/packages/ponies/",
       "launch": "main",
       "config": {
         "title": "Ponies Game",
@@ -130,7 +130,7 @@
     },
     {
       "key": "packages",
-      "base": "/content/packages/",
+      "base": "/packages/packages/",
       "launch": "main",
       "config": {
         "title": "Packages Demo",
@@ -166,7 +166,7 @@
     },
     {
       "key": "downloads",
-      "base": "/content/downloads/",
+      "base": "/packages/downloads/",
       "launch": "main",
       "config": {
         "title": "Downloads",
@@ -195,7 +195,7 @@
     },
     {
       "key": "media_player",
-      "base": "/content/media_player/",
+      "base": "/packages/mediaplayer/",
       "launch": "main",
       "config": {
         "title": "Media Player",

@@ -1,11 +1,8 @@
 {
-  "packageId": "poniesPackageId",
-  "basepath": "/content/ponies/",
+  "packageId": "ponies",
+  "basepath": "content/ponies/",
   "type": "type",
-  "dependencies": [
-    "tanks",
-    "menu"
-  ],
+  "dependencies": [ "uihelper" ],
   "metadata": "",
   "tags": [
     "tag1",

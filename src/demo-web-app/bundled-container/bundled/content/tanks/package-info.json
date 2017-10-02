@@ -1,11 +1,8 @@
 {
-    "packageId": "package 1",
-    "basepath": "base_path",
+    "packageId": "tanks",
+    "basepath": "content/tanks/",
     "type": "type",
-    "dependencies": [
-                     "tanks",
-                     "menu"
-                     ],
+    "dependencies": [ "uihelper" ],
     "metadata": "metadata",
     "tags": [
              "tag1",

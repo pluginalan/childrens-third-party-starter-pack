@@ -1,4 +1,4 @@
-define(['pnm-library/gmi-mobile', '../js/ui-helper'], function(gmi_platform, ui_helper) {
+define(['pnm-library/gmi-mobile', '/packages/uihelper/ui-helper.js'], function(gmi_platform, ui_helper) {
     "use strict";
 
     var settingsConfig = {};
@@ -22,7 +22,7 @@ define(['pnm-library/gmi-mobile', '../js/ui-helper'], function(gmi_platform, ui_
     container.appendChild(wrapper);
     wrapper.appendChild(inner);
     ui_helper.appendTitle(gmi.gameDir, "Packages");
-    
+
     //packages
     ui_helper.appendSubtitle("Available packages");
     var packagesParagraph = ui_helper.appendParagraph();

@@ -1,0 +1,8 @@
+{
+    "packageId": "uihelper",
+    "basepath": "content/js/",
+    "type": "type",
+    "dependencies": [],
+    "metadata": "",
+    "tags": ["tag1", "tag2"]
+}

@@ -1,11 +1,8 @@
 {
-    "packageId": "package 1",
-    "basepath": "base_path",
+    "packageId": "mediaplayer",
+    "basepath": "content/media_player/",
     "type": "type",
-    "dependencies": [
-                     "tanks",
-                     "menu"
-                     ],
+    "dependencies": [ "uihelper" ],
     "metadata": "metadata",
     "tags": [
              "tag1",

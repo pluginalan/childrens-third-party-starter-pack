@@ -1,11 +1,8 @@
 {
-    "packageId": "package 1",
-    "basepath": "base_path",
+    "packageId": "downloads",
+    "basepath": "content/downloads/",
     "type": "type",
-    "dependencies": [
-                     "tanks",
-                     "menu"
-                     ],
+    "dependencies": [ "uihelper" ],
     "metadata": "metadata",
     "tags": [
              "tag1",
