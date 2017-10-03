@@ -1,4 +1,4 @@
-define(['pnm-library/gmi-mobile', './storage', 'pnm-library/downloads/package-manager', '../js/ui-helper'],
+define(['pnm-library/gmi-mobile', './storage', 'pnm-library/downloads/download-manager', '../js/ui-helper'],
 function(gmi_platform, storage, PackageManager, ui_helper) {
     "use strict";
 

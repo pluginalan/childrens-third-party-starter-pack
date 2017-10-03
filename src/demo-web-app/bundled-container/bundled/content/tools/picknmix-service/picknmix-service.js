@@ -207,7 +207,7 @@ function isDownloading(packageId){
 
 
 // PACKAGE MANAGER API MIDDLEWARE
-app.get('/package-manager/download/:packageId', function (req, res) {
+app.get('/download-manager/download/:packageId', function (req, res) {
     res.setHeader('Content-Type', 'application/json')
     var jsonResponse = {}
     jsonResponse.packageId = req.params.packageId
@@ -227,7 +227,7 @@ app.get('/package-manager/download/:packageId', function (req, res) {
     })
 })
 
-app.get('/package-manager/delete/:packageId', function (req, res) {
+app.get('/download-manager/delete/:packageId', function (req, res) {
   res.setHeader('Content-Type', 'application/json')
   var jsonResponse = {}
   jsonResponse.packageId = req.params.packageId
@@ -243,12 +243,12 @@ app.get('/package-manager/delete/:packageId', function (req, res) {
   res.send(jsonResponse)
 })
 
-app.get('/package-manager/launch/:packageId', function (req, res) {
+app.get('/download-manager/launch/:packageId', function (req, res) {
   var filename='launch-' + req.params.packageId + '.json'
   sendJsonFileResponse(jsonResponseFullPath(filename), res)
 })
 
-app.get('/package-manager/installed', function (req, res) {
+app.get('/download-manager/installed', function (req, res) {
   var allFiles = fs.readdirSync(mockInstalledPackagesPath)
   var jsonResponse = {}
   var availableSpace = program.diskspace
@@ -295,19 +295,19 @@ app.get('/package-manager/installed', function (req, res) {
   res.send(jsonResponse)
 })
 
-app.get('/package-manager/downloading', function (req, res) {
+app.get('/download-manager/downloading', function (req, res) {
   res.setHeader('Content-Type', 'application/json')
   var jsonResponse = {}
   // The following assignment works because the downloadProcesses object array has the
-  // same layout as the response described in the package-manager spec.
+  // same layout as the response described in the download-manager spec.
   jsonResponse.packages = downloadTasks
-    console.log("package-manager/downloading - " + JSON.stringify(jsonResponse));
+    console.log("download-manager/downloading - " + JSON.stringify(jsonResponse));
   res.send(jsonResponse)
   // Remove any completed downloads from local list - they are only reportable once after completion
   removeCompletedDownloads()
 })
 
-app.get('/package-manager/update-metadata/:packageId', function (req, res) {
+app.get('/download-manager/update-metadata/:packageId', function (req, res) {
   res.setHeader('Content-Type', 'application/json')
   var jsonResponse = {}
   jsonResponse.packageId = req.params.packageId
@@ -330,7 +330,7 @@ app.get('/package-manager/update-metadata/:packageId', function (req, res) {
   }
 })
 
-app.get('/package-manager/cancel/:packageId', function (req, res) {
+app.get('/download-manager/cancel/:packageId', function (req, res) {
   res.setHeader('Content-Type', 'application/json')
   var jsonResponse = {}
   jsonResponse.status = "errorNotFound"
@@ -362,7 +362,7 @@ app.get('/package-manager/cancel/:packageId', function (req, res) {
 // of this service. Public methods must not be listed here. 
 
 // Allow external modification of download statuses (for example, to simulate errors)
-app.put('/package-manager-debug/download-status/:packageId/:status', function (req, res) {
+app.put('/download-manager-debug/download-status/:packageId/:status', function (req, res) {
   res.setHeader('Content-Type', 'application/json')
   var jsonResponse = {}
   jsonResponse.status = "errorNotFound"
@@ -382,7 +382,7 @@ app.put('/package-manager-debug/download-status/:packageId/:status', function (r
 })
 
 // Change the speed of the download simulation
-app.put('/package-manager-debug/increment-time/:seconds', function (req, res) {
+app.put('/download-manager-debug/increment-time/:seconds', function (req, res) {
   downloadThreadSimulator.destroy()
   var cronTabString='*/'+req.params.seconds+' * * * * *'
   downloadThreadSimulator = cron.schedule(cronTabString, downloadBehaviour);

@@ -19,10 +19,10 @@ define(function (require, exports, module) {
     PackageManager.PackageBase = "/package/";
 
     // Base URL for accessing packages. This is a pre-defined route set up via config on our local proxy
-    PackageManager.CommandBase = "/package-manager/";
+    PackageManager.CommandBase = "/download-manager/";
 
 
-    // Status values returned by various Package-Manager methods.
+    // Status values returned by various download-manager methods.
     PackageManager.Status_Ok                     = "ok";
 
     PackageManager.Status_Downloading            = "downloading";
