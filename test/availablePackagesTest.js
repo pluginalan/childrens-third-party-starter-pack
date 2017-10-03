@@ -2,7 +2,6 @@ require("amd-loader");
 var assert = require('assert');
 var Packages = require('../src/demo-web-app/pnm-container/pnm/js/gmi-extensions/packages.js');
 
-
 describe('available packages', function() {
 
     var poniesPackage = {
@@ -31,7 +30,9 @@ describe('available packages', function() {
 
     describe('#list()', function() {
 
-      it('If availablePackages is undefined then reject promise', function(done) {
+      it('If availablePackages is undefined then the promise is rejected '+
+      'and function returns correct error',
+      function(done) {
           window._packages.availablePackages = undefined;
 
           Packages.list().then(function(result){
@@ -42,7 +43,6 @@ describe('available packages', function() {
               done()
           });
       });
-
 
         it('If no available packages do not show any available packages', function(done) {
             window._packages.availablePackages = [];

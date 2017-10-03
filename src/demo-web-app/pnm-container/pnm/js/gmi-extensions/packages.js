@@ -4,7 +4,7 @@ define(function(require) {
     var packages = {
         list: function() {
         return new Promise((resolve, reject) => {
-                if(window._packages.availablePackages) {
+                if(window._packages.availablePackages && window._packages.bundledPackages) {
                     var availablePackages = window._packages.availablePackages
                     availablePackages.forEach((aPackage) => {
                         aPackage.status = "available"
