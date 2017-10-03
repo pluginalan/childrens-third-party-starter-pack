@@ -2,7 +2,6 @@ require("amd-loader");
 var assert = require('assert');
 var Packages = require('../src/demo-web-app/pnm-container/pnm/js/gmi-extensions/packages.js');
 
-
 describe('bundled packages', function() {
 
     var poniesBundledPackage = {
@@ -42,7 +41,25 @@ describe('bundled packages', function() {
     });
 
     describe('#list()', function() {
-        it('If no available packages, and one bundled package, should return bundled package', function(done) {
+
+      it('If bundledPackages is undefined then the promise is rejected'+
+      ' and function returns the correct error',
+      function(done) {
+          window._packages.availablePackages = [];
+          window._packages.bundledPackages = undefined;
+
+          Packages.list().then(function(result){
+              done(result)
+          }).catch(function(error){
+              assert.equal(error.action, "list");
+              assert.equal(error.error, "unknown");
+              done()
+          });
+      });
+
+        it('If no available packages ' +
+        'and one bundled package, list function should return the bundled package',
+        function(done) {
             window._packages.availablePackages = [];
             window._packages.bundledPackages = [poniesBundledPackage];
 
@@ -65,7 +82,9 @@ describe('bundled packages', function() {
             });
         });
 
-        it('If no available packages, and two bundled packages, should return bundled packages', function(done) {
+        it('If no available packages, and two bundled packages,' +
+        ' list function returns two bundled packages',
+        function(done) {
             window._packages.availablePackages = [];
             window._packages.bundledPackages = [poniesBundledPackage, goatsBundledPackage];
 
@@ -79,7 +98,9 @@ describe('bundled packages', function() {
             });
         });
 
-        it('If there is one available and one bundled package, should return both packages', function(done) {
+        it('If one available and one bundled package,'+
+        ' list function returns both packages',
+        function(done) {
             window._packages.availablePackages = [goatsBundledPackage];
             window._packages.bundledPackages = [poniesBundledPackage];
 
