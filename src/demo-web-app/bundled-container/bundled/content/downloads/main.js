@@ -89,7 +89,7 @@ function(gmi_platform, DownloadManager, ui_helper) {
                 installedPackagesContainer.removeChild(installedPackagesContainer.children[0]);
             }
 
-            if (response.status === downloadManager.Status_Ok) {
+            if (response.status === DownloadManager.Status_Ok) {
                 for (var ix = 0; ix < response.packages.length; ix++) {
                     var pkg = response.packages[ix];
                     addInstalledPackageUI(pkg);
@@ -127,17 +127,17 @@ function(gmi_platform, DownloadManager, ui_helper) {
                 var pkg = response.packages[ix];
 
                 switch (pkg.status) {
-                    case downloadManager.Status_Downloading:
+                    case DownloadManager.Status_Downloading:
                         // downloading, update progress indicator and check again in a second.
                         updateDownloadUI(pkg.packageId, "Downloading - " + pkg.packageId + " " + pkg.progress + "%", false);
                         break;
 
-                    case downloadManager.Status_Installing:
+                    case DownloadManager.Status_Installing:
                         // still installing, update progress indicator and check again in a second.
                         updateDownloadUI(pkg.packageId, "Installing - " + pkg.packageId + " " + pkg.progress + "%", false);
                         break;
 
-                    case downloadManager.Status_Installed:
+                    case DownloadManager.Status_Installed:
                         // The download has successfully completed download and installation.
                         // this status will only appear once when we first poll after the download has completed.
                         // from this point on the download will no longer appear in the response.
@@ -193,7 +193,7 @@ function(gmi_platform, DownloadManager, ui_helper) {
         updateDownloadUI(packageId, "starting...", false);
 
         downloadManager.download(packageId, url, metaData).then(function(response) {
-            if (response.status === downloadManager.Status_Downloading) {
+            if (response.status === DownloadManager.Status_Downloading) {
                 // successfully started, so nothing to do, the tracker will update the UI.
             }
             else {

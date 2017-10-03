@@ -69,7 +69,7 @@ function readFileAsJson(filename) {
     var contents = fs.readFileSync(filename)
     var jsonContent = JSON.parse(contents)
     return jsonContent
-  } 
+  }
 }
 
 // The following two functions are included so that the paths for responses and packages
@@ -121,7 +121,7 @@ for(i=0; i < proxyConfigs.length; i++){
   var proxyAgent = http.globalAgent
   var proxyPath = proxyConfig.path
   var targetUrl = url.parse(proxyConfig.target)
-  
+
   // Scheme is checked to work out which global agent needs to be used.
   if(targetUrl && targetUrl.protocol=="https:"){
     proxyAgent = https.globalAgent
@@ -207,17 +207,17 @@ function isDownloading(packageId){
 
 
 // PACKAGE MANAGER API MIDDLEWARE
-app.get('/download-manager/download/:packageId', function (req, res) {
+app.get('/package-manager/download/:packageId', function (req, res) {
     res.setHeader('Content-Type', 'application/json')
     var jsonResponse = {}
     jsonResponse.packageId = req.params.packageId
-    
+
     // Create a file using the 'metadata' query parameter (if present) as the content
     // Note: even though the file is created immediately, it will not be reported as
     // 'downloaded' until there is nothing in the download queue with the same package ID.
     var fileContent = req.query.metadata || ''
     fs.writeFile(installedPackageFullPath(req.params.packageId),fileContent,(err)=>{
-        if (err) { 
+        if (err) {
             jsonResponse.status = "errorUnknown"
           } else {
             initiateDownload(req.params.packageId)
@@ -227,7 +227,7 @@ app.get('/download-manager/download/:packageId', function (req, res) {
     })
 })
 
-app.get('/download-manager/delete/:packageId', function (req, res) {
+app.get('/package-manager/delete/:packageId', function (req, res) {
   res.setHeader('Content-Type', 'application/json')
   var jsonResponse = {}
   jsonResponse.packageId = req.params.packageId
@@ -243,12 +243,12 @@ app.get('/download-manager/delete/:packageId', function (req, res) {
   res.send(jsonResponse)
 })
 
-app.get('/download-manager/launch/:packageId', function (req, res) {
+app.get('/package-manager/launch/:packageId', function (req, res) {
   var filename='launch-' + req.params.packageId + '.json'
   sendJsonFileResponse(jsonResponseFullPath(filename), res)
 })
 
-app.get('/download-manager/installed', function (req, res) {
+app.get('/package-manager/installed', function (req, res) {
   var allFiles = fs.readdirSync(mockInstalledPackagesPath)
   var jsonResponse = {}
   var availableSpace = program.diskspace
@@ -295,28 +295,28 @@ app.get('/download-manager/installed', function (req, res) {
   res.send(jsonResponse)
 })
 
-app.get('/download-manager/downloading', function (req, res) {
+app.get('/package-manager/downloading', function (req, res) {
   res.setHeader('Content-Type', 'application/json')
   var jsonResponse = {}
   // The following assignment works because the downloadProcesses object array has the
-  // same layout as the response described in the download-manager spec.
+  // same layout as the response described in the package-manager spec.
   jsonResponse.packages = downloadTasks
-    console.log("download-manager/downloading - " + JSON.stringify(jsonResponse));
+    console.log("package-manager/downloading - " + JSON.stringify(jsonResponse));
   res.send(jsonResponse)
   // Remove any completed downloads from local list - they are only reportable once after completion
   removeCompletedDownloads()
 })
 
-app.get('/download-manager/update-metadata/:packageId', function (req, res) {
+app.get('/package-manager/update-metadata/:packageId', function (req, res) {
   res.setHeader('Content-Type', 'application/json')
   var jsonResponse = {}
   jsonResponse.packageId = req.params.packageId
-  
-  if(fs.existsSync(installedPackageFullPath(req.params.packageId))){    
+
+  if(fs.existsSync(installedPackageFullPath(req.params.packageId))){
     // Overwrite with new metadata
     var fileContent = req.query.metadata || ''
     fs.writeFile(installedPackageFullPath(req.params.packageId),fileContent,(err)=>{
-        if (err) { 
+        if (err) {
             jsonResponse.status = "errorUnknown"
           } else {
             jsonResponse.status = "ok"
@@ -330,7 +330,7 @@ app.get('/download-manager/update-metadata/:packageId', function (req, res) {
   }
 })
 
-app.get('/download-manager/cancel/:packageId', function (req, res) {
+app.get('/package-manager/cancel/:packageId', function (req, res) {
   res.setHeader('Content-Type', 'application/json')
   var jsonResponse = {}
   jsonResponse.status = "errorNotFound"
@@ -348,7 +348,7 @@ app.get('/download-manager/cancel/:packageId', function (req, res) {
        } else {
          // Installation has already started, or an error has already halted progress
          // Assign current status to the response
-          jsonResponse.status = downloadTasks[i].status 
+          jsonResponse.status = downloadTasks[i].status
        }
        jobFound = true
     }
@@ -359,10 +359,10 @@ app.get('/download-manager/cancel/:packageId', function (req, res) {
 
 // DEVELOPMENT-ONLY METHODS
 // Anything in this section is intended strictly for the use of app developers to change the running state
-// of this service. Public methods must not be listed here. 
+// of this service. Public methods must not be listed here.
 
 // Allow external modification of download statuses (for example, to simulate errors)
-app.put('/download-manager-debug/download-status/:packageId/:status', function (req, res) {
+app.put('/package-manager-debug/download-status/:packageId/:status', function (req, res) {
   res.setHeader('Content-Type', 'application/json')
   var jsonResponse = {}
   jsonResponse.status = "errorNotFound"
@@ -382,7 +382,7 @@ app.put('/download-manager-debug/download-status/:packageId/:status', function (
 })
 
 // Change the speed of the download simulation
-app.put('/download-manager-debug/increment-time/:seconds', function (req, res) {
+app.put('/package-manager-debug/increment-time/:seconds', function (req, res) {
   downloadThreadSimulator.destroy()
   var cronTabString='*/'+req.params.seconds+' * * * * *'
   downloadThreadSimulator = cron.schedule(cronTabString, downloadBehaviour);
