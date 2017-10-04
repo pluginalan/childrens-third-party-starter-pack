@@ -17,7 +17,7 @@ define(['pnm-library/gmi-mobile', '../js/ui-helper'], function(gmi_platform, ui_
     inner.className = "inner";
     inner.id = "inner";
 
-    wrapper.style.backgroundColor = gmi.experience.getConfig().background;
+    wrapper.style.backgroundColor = gmi.experiences.getConfig().background;
 
     container.appendChild(wrapper);
     wrapper.appendChild(inner);
@@ -26,7 +26,7 @@ define(['pnm-library/gmi-mobile', '../js/ui-helper'], function(gmi_platform, ui_
     // ---------- Params ----------
 
     ui_helper.appendSubtitle("Experience params");
-    var params = gmi.experience.getParams();
+    var params = gmi.experiences.getParams();
     if (Object.keys(params).length === 0 && params.constructor === Object) {
         params = {"params": "no params defined"};
     }
@@ -116,19 +116,19 @@ define(['pnm-library/gmi-mobile', '../js/ui-helper'], function(gmi_platform, ui_
     };
 
     ui_helper.appendBtn("Tanks", function(){
-        gmi.experience.push("tanks", pushParams);
+        gmi.experiences.push("tanks", pushParams);
     });
 
     ui_helper.appendBtn("Pop", function(){
-        gmi.experience.pop(popParams);
+        gmi.experiences.pop(popParams);
     });
 
      ui_helper.appendBtn("Pop without params", function(){
-        gmi.experience.pop();
+        gmi.experiences.pop();
      });
 
     ui_helper.appendBtn("Root", function(){
-        gmi.experience.popToRoot(popToRootParams);
+        gmi.experiences.popToRoot(popToRootParams);
     });
 
 });

@@ -17,7 +17,7 @@ define(['pnm-library/gmi-mobile', '../js/ui-helper'], function(gmi_platform, ui_
     inner.className = "inner";
     inner.id = "inner";
 
-    wrapper.style.backgroundColor = gmi.experience.getConfig().background;
+    wrapper.style.backgroundColor = gmi.experiences.getConfig().background;
 
     container.appendChild(wrapper);
     wrapper.appendChild(inner);
@@ -49,7 +49,7 @@ define(['pnm-library/gmi-mobile', '../js/ui-helper'], function(gmi_platform, ui_
     };
 
     ui_helper.appendBtn("Pop", function(){
-        gmi.experience.pop(popParams);
+        gmi.experiences.pop(popParams);
     });
 
 
