@@ -6,55 +6,55 @@ define(function (require, exports, module) {
     var Networking = require('./networking');
 
 
-    function PackageManager() {
+    function DownloadManager() {
 
     }
 
 
-    PackageManager.prototype = Object.create(Object.prototype);
-    PackageManager.prototype.constructor = PackageManager;
+    DownloadManager.prototype = Object.create(Object.prototype);
+    DownloadManager.prototype.constructor = DownloadManager;
 
 
     // Base URL for accessing packages. This is a pre-defined route set up via config on our local proxy
-    PackageManager.PackageBase = "/package/";
+    DownloadManager.PackageBase = "/package/";
 
     // Base URL for accessing packages. This is a pre-defined route set up via config on our local proxy
-    PackageManager.CommandBase = "/package-manager/";
+    DownloadManager.CommandBase = "/download-manager/";
 
 
-    // Status values returned by various Package-Manager methods.
-    PackageManager.Status_Ok                     = "ok";
+    // Status values returned by various download-manager methods.
+    DownloadManager.Status_Ok                     = "ok";
 
-    PackageManager.Status_Downloading            = "downloading";
-    PackageManager.Status_Installing             = "installing";
-    PackageManager.Status_Installed              = "installed";
-    PackageManager.Status_Cancelled              = "cancelled";
-    PackageManager.Status_Delete                 = "delete";
+    DownloadManager.Status_Downloading            = "downloading";
+    DownloadManager.Status_Installing             = "installing";
+    DownloadManager.Status_Installed              = "installed";
+    DownloadManager.Status_Cancelled              = "cancelled";
+    DownloadManager.Status_Delete                 = "delete";
 
-    PackageManager.Status_ErrorInterrupted       = "errorInterrupted";
-    PackageManager.Status_ErrorOffline           = "errorOffline";
-    PackageManager.Status_ErrorNotFound          = "errorNotFound";
-    PackageManager.Status_ErrorTimedOut          = "errorTimedOut";
-    PackageManager.Status_ErrorInsufficientSpace = "errorInsufficientSpace";
-    PackageManager.Status_ErrorUnknown           = "errorUnknown";
-    PackageManager.Status_ErrorLocked            = "errorLocked";
-    PackageManager.Status_ErrorDisallowed        = "errorDisallowed";
+    DownloadManager.Status_ErrorInterrupted       = "errorInterrupted";
+    DownloadManager.Status_ErrorOffline           = "errorOffline";
+    DownloadManager.Status_ErrorNotFound          = "errorNotFound";
+    DownloadManager.Status_ErrorTimedOut          = "errorTimedOut";
+    DownloadManager.Status_ErrorInsufficientSpace = "errorInsufficientSpace";
+    DownloadManager.Status_ErrorUnknown           = "errorUnknown";
+    DownloadManager.Status_ErrorLocked            = "errorLocked";
+    DownloadManager.Status_ErrorDisallowed        = "errorDisallowed";
 
     // Network types
-    PackageManager.NetworkType_Offline           = "offline"
-    PackageManager.NetworkType_Mobile            = "mobile"
-    PackageManager.NetworkType_Wifi              = "wifi"
+    DownloadManager.NetworkType_Offline           = "offline"
+    DownloadManager.NetworkType_Mobile            = "mobile"
+    DownloadManager.NetworkType_Wifi              = "wifi"
 
 
-    PackageManager.connectivityTimer = null;
-    PackageManager.connectivityCallback = null;
-    PackageManager.connectivityState = null;
+    DownloadManager.connectivityTimer = null;
+    DownloadManager.connectivityCallback = null;
+    DownloadManager.connectivityState = null;
 
     /**
      * Gets a list of the currently installed packages
      * @returns {Promise}
      */
-    PackageManager.prototype.installed = function() {
+    DownloadManager.prototype.installed = function() {
 
         // A safe, empty object to return in the event of a catastrophic failure
         var failureReturnObject = {
@@ -64,7 +64,7 @@ define(function (require, exports, module) {
 
         var rv = new Promise(function (resolve, reject) {
 
-            Networking.sendQuery(PackageManager.CommandBase+"installed").then(function(response) {
+            Networking.sendQuery(DownloadManager.CommandBase+"installed").then(function(response) {
 
                 try {
                     var installationInfo = JSON.parse(response);
@@ -108,16 +108,16 @@ define(function (require, exports, module) {
      * @param packageURL
      * @returns {Promise}
      */
-    PackageManager.prototype.download = function(packageId, metadataObject, packageURL) {
+    DownloadManager.prototype.download = function(packageId, metadataObject, packageURL) {
         // A safe, empty object to return in the event of a catastrophic failure
         var failureReturnObject = {
             packageId: packageId,
-            status: PackageManager.Status_ErrorUnknown
+            status: DownloadManager.Status_ErrorUnknown
         };
 
         var metadataString = JSON.stringify(metadataObject);
 
-        var requestString = PackageManager.CommandBase+"download/"
+        var requestString = DownloadManager.CommandBase+"download/"
             +packageId
             +"?metadata="+metadataString
             +"&url="+encodeURIComponent(packageURL);
@@ -151,16 +151,16 @@ define(function (require, exports, module) {
      * Gets the current download status
      * @returns {Promise}
      */
-    PackageManager.prototype.downloading = function() {
+    DownloadManager.prototype.downloading = function() {
         // A safe, empty object to return in the event of a catastrophic failure
         var failureReturnObject = {
             packageId: "unknown",
             progress: 0,
-            status: PackageManager.Status_ErrorUnknown
+            status: DownloadManager.Status_ErrorUnknown
         };
 
 
-        var requestString = PackageManager.CommandBase+"downloading";
+        var requestString = DownloadManager.CommandBase+"downloading";
 
         var rv = new Promise(function (resolve, reject) {
 
@@ -191,16 +191,16 @@ define(function (require, exports, module) {
      * Gets the current connectivity status
      * @returns {Promise}
      */
-    PackageManager.prototype.getConnectivity = function() {
+    DownloadManager.prototype.getConnectivity = function() {
         // A safe, empty object to return in the event of a catastrophic failure
         var failureReturnObject = {
-            status: PackageManager.Status_ErrorUnknown,
-            connectionType: PackageManager.NetworkType_Offline,
+            status: DownloadManager.Status_ErrorUnknown,
+            connectionType: DownloadManager.NetworkType_Offline,
             captivePortal: false
         };
 
 
-        var requestString = PackageManager.CommandBase+"connectivity";
+        var requestString = DownloadManager.CommandBase+"connectivity";
 
         var rv = new Promise(function (resolve, reject) {
 
@@ -226,28 +226,28 @@ define(function (require, exports, module) {
         return rv;
     }
 
-    PackageManager.prototype.connectivityTimerFunction = function(){
-        PackageManager.prototype.getConnectivity().then(function (response){
-            if(PackageManager.connectivityCallback){
+    DownloadManager.prototype.connectivityTimerFunction = function(){
+        DownloadManager.prototype.getConnectivity().then(function (response){
+            if(DownloadManager.connectivityCallback){
                 var nextState = JSON.stringify(response);
-                if(PackageManager.connectivityState !== nextState){
-                    PackageManager.connectivityState = nextState;
-                    PackageManager.connectivityCallback(response);
+                if(DownloadManager.connectivityState !== nextState){
+                    DownloadManager.connectivityState = nextState;
+                    DownloadManager.connectivityCallback(response);
                 }
-                PackageManager.connectivityTimer = setTimeout(PackageManager.prototype.connectivityTimerFunction,PackageManager.ConnectivityDelay);
+                DownloadManager.connectivityTimer = setTimeout(DownloadManager.prototype.connectivityTimerFunction,DownloadManager.ConnectivityDelay);
             } else{
-                PackageManager.connectivityTimer = 0;
+                DownloadManager.connectivityTimer = 0;
             }
         });
     }
 
-    PackageManager.ConnectivityDelay = 2000;
+    DownloadManager.ConnectivityDelay = 2000;
 
-    PackageManager.prototype.setConnectivityCallback = function(callback){
-        if (!PackageManager.connectivityTimer) {
-            PackageManager.connectivityTimer = setTimeout(PackageManager.prototype.connectivityTimerFunction,1000);
+    DownloadManager.prototype.setConnectivityCallback = function(callback){
+        if (!DownloadManager.connectivityTimer) {
+            DownloadManager.connectivityTimer = setTimeout(DownloadManager.prototype.connectivityTimerFunction,1000);
         }
-        PackageManager.connectivityCallback =  callback;
+        DownloadManager.connectivityCallback =  callback;
 
     }
 
@@ -260,14 +260,14 @@ define(function (require, exports, module) {
      * @param packageId
      * @returns {Promise}
      */
-    PackageManager.prototype.cancel = function(packageId) {
+    DownloadManager.prototype.cancel = function(packageId) {
         // A safe, empty object to return in the event of a catastrophic failure
         var failureReturnObject = {
             packageId: packageId,
-            status: PackageManager.Status_ErrorUnknown
+            status: DownloadManager.Status_ErrorUnknown
         };
 
-        var requestString = PackageManager.CommandBase+"cancel/"+packageId;
+        var requestString = DownloadManager.CommandBase+"cancel/"+packageId;
 
         var rv = new Promise(function (resolve, reject) {
 
@@ -300,14 +300,14 @@ define(function (require, exports, module) {
      * @param packageId
      * @returns {Promise}
      */
-    PackageManager.prototype.delete = function(packageId) {
+    DownloadManager.prototype.delete = function(packageId) {
         // A safe, empty object to return in the event of a catastrophic failure
         var unknownErrorFailureReturnObject = {
             packageId: packageId,
-            status: PackageManager.Status_ErrorUnknown
+            status: DownloadManager.Status_ErrorUnknown
         };
 
-        var requestString = PackageManager.CommandBase+"delete/"+packageId;
+        var requestString = DownloadManager.CommandBase+"delete/"+packageId;
 
         var rv = new Promise(function (resolve, reject) {
 
@@ -347,7 +347,7 @@ define(function (require, exports, module) {
      * @param packageId - the ID of the package we're looking for
      * @returns {*} - the found package or null if not found.
      */
-    PackageManager.findPackage = function (responseObj, packageId) {
+    DownloadManager.findPackage = function (responseObj, packageId) {
         var package = null;
 
         for (var ix = 0; ix < responseObj.packages.length; ix++) {
@@ -361,5 +361,5 @@ define(function (require, exports, module) {
         return package;
 
     }
-    return PackageManager;
+    return DownloadManager;
 });

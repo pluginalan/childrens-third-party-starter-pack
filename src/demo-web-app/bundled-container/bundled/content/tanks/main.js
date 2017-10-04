@@ -17,7 +17,7 @@ define(['pnm-library/gmi-mobile', '/packages/jsutility/ui-helper.js'], function(
     inner.className = "inner";
     inner.id = "inner";
 
-    wrapper.style.backgroundColor = gmi.experience.getConfig().background;
+    wrapper.style.backgroundColor = gmi.experiences.getConfig().background;
 
     container.appendChild(wrapper);
     wrapper.appendChild(inner);
@@ -26,7 +26,7 @@ define(['pnm-library/gmi-mobile', '/packages/jsutility/ui-helper.js'], function(
     // ---------- Params ----------
 
     ui_helper.appendSubtitle("Experience params");
-    var params = gmi.experience.getParams();
+    var params = gmi.experiences.getParams();
     if (Object.keys(params).length === 0 && params.constructor === Object) {
         params = {"params": "no params defined"};
     }
@@ -116,15 +116,15 @@ define(['pnm-library/gmi-mobile', '/packages/jsutility/ui-helper.js'], function(
     };
 
     ui_helper.appendBtn("Ponies", function(){
-        gmi.experience.push("ponies", pushParams);
+        gmi.experiences.push("ponies", pushParams);
     });
 
     ui_helper.appendBtn("Pop", function(){
-        gmi.experience.pop(popParams);
+        gmi.experiences.pop(popParams);
     });
 
     ui_helper.appendBtn("Root", function(){
-        gmi.experience.popToRoot(popToRootParams);
+        gmi.experiences.popToRoot(popToRootParams);
     });
 
 });

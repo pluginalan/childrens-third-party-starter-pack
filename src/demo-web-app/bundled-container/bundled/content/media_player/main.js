@@ -26,7 +26,7 @@ define(['pnm-library/gmi-mobile', '../js/ui-helper'], function(gmi_platform, ui_
 
     // ---------- GMI Exit Example -----------
     ui_helper.appendBtn("Pop", function() {
-      gmi.experience.pop();
+      gmi.experiences.pop();
     });
 
     ui_helper.appendHorizontalRule();
@@ -41,7 +41,7 @@ define(['pnm-library/gmi-mobile', '../js/ui-helper'], function(gmi_platform, ui_
     }
 
     ui_helper.appendBtn( "Play Video", function() {
-        gmi.playMedia( gmi.experience.getConfig().demo_vpid, mediaPlayerClosedCallback )
+        gmi.playMedia( gmi.experiences.getConfig().demo_vpid, mediaPlayerClosedCallback )
         ui_helper.appendSpan( "Media playback requested... ", playbackParagraph )
     })
 

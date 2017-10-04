@@ -1,4 +1,4 @@
-define(['pnm-library/gmi-mobile', './storage', 'pnm-library/downloads/package-manager', '../js/ui-helper'],
+define(['pnm-library/gmi-mobile', './storage', 'pnm-library/downloads/download-manager', '../js/ui-helper'],
 function(gmi_platform, storage, PackageManager, ui_helper) {
     "use strict";
 
@@ -83,7 +83,7 @@ function(gmi_platform, storage, PackageManager, ui_helper) {
     // ---------- Params ----------
 
     ui_helper.appendSubtitle("Experience params");
-    var params = gmi.experience.getParams();
+    var params = gmi.experiences.getParams();
     if (Object.keys(params).length === 0 && params.constructor === Object) {
         params = {"params": "no params defined"};
     }
@@ -131,7 +131,7 @@ function(gmi_platform, storage, PackageManager, ui_helper) {
 
 
     ui_helper.appendBtn("Pop", function() {
-        gmi.experience.pop().catch(
+        gmi.experiences.pop().catch(
             function(rejected){
                 console.log(rejected.error)
                 ui_helper.appendSpan(rejected.error+ " ", popParagraph)
@@ -208,9 +208,9 @@ function(gmi_platform, storage, PackageManager, ui_helper) {
         "theme": "christmas"
     };
 
-    gmi.experience.getConfig().available.forEach(function(element) {
+    gmi.experiences.getConfig().available.forEach(function(element) {
         ui_helper.appendBtn(element.title, function(){
-            gmi.experience.push(element.key, pushParams).catch(
+            gmi.experiences.push(element.key, pushParams).catch(
                 function(rejected){
                     console.log(rejected.error)
                     ui_helper.appendSpan(rejected.error+ " ", pushParagraph)
@@ -222,7 +222,7 @@ function(gmi_platform, storage, PackageManager, ui_helper) {
     ui_helper.appendHorizontalRule();
 
     ui_helper.appendBtn("Unknown", function(){
-        gmi.experience.push("unknown").catch(
+        gmi.experiences.push("unknown").catch(
             function(rejected){
                 console.log(rejected.error)
                 ui_helper.appendSpan(rejected.error + " ", pushParagraph)
@@ -231,11 +231,11 @@ function(gmi_platform, storage, PackageManager, ui_helper) {
     });
 
     ui_helper.appendBtn("Root", function(){
-        gmi.experience.popToRoot({"params": "root_params"});
+        gmi.experiences.popToRoot({"params": "root_params"});
     });
 
     ui_helper.appendBtn("Ponies without params", function(){
-        gmi.experience.push("ponies");
+        gmi.experiences.push("ponies");
     });
 
     var pushParagraph = ui_helper.appendParagraph();

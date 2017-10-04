@@ -1,5 +1,5 @@
-define(['pnm-library/gmi-mobile', 'pnm-library/downloads/package-manager', '../js/ui-helper'],
-function(gmi_platform, PackageManager, ui_helper) {
+define(['pnm-library/gmi-mobile', 'pnm-library/downloads/download-manager', '../js/ui-helper'],
+function(gmi_platform, DownloadManager, ui_helper) {
     "use strict";
 
     var settingsConfig = {};
@@ -9,9 +9,9 @@ function(gmi_platform, PackageManager, ui_helper) {
     // the local one.
     var gmi = gmi_platform.getGMI({settingsConfig: settingsConfig});
     var numberOfStatsButtonClicks = 0;
-    var packageManager = new PackageManager();
+    var downloadManager = new DownloadManager();
 
-    //PackageManager.CommandBase = "localhost:3030/"+PackageManager.CommandBase;
+    //downloadManager.CommandBase = "localhost:3030/"+downloadManager.CommandBase;
 
     ui_helper.addStylesheet(gmi.gameDir);
 
@@ -30,7 +30,7 @@ function(gmi_platform, PackageManager, ui_helper) {
 
     // ---------- GMI Exit Example -----------
     ui_helper.appendBtn("Pop", function() {
-      gmi.experience.pop();
+      gmi.experiences.pop();
     });
     ui_helper.appendHorizontalRule();
 
@@ -50,7 +50,7 @@ function(gmi_platform, PackageManager, ui_helper) {
         // Add a delete button for this package.
         // this invokes the delete API call and, upon receiving a response updates the installed packages UI.
         ui_helper.appendBtn("delete ", function (pkgInfo) {
-                packageManager.delete(pkgInfo.packageInfo.packageId).then(function(response) {
+                downloadManager.delete(pkgInfo.packageInfo.packageId).then(function(response) {
                     // In a more complete implementation, we'd check the status code and display suitable error UI
                     // if required, but for this simple example we'll just refresh the display.
                     getInstalledPackagesFn();
@@ -61,10 +61,10 @@ function(gmi_platform, PackageManager, ui_helper) {
         // Add an image for this package. This illustrates how to access content within the package.
         if(pkg.packageInfo.packageId == 'gnomes'){
             ui_helper.appendBtn("open red_gnome", function () {
-                gmi.experience.push('red_gnome')
+                gmi.experiences.push('red_gnome')
             }, div);
             ui_helper.appendBtn("open blue_gnome", function () {
-                gmi.experience.push('blue_gnome')
+                gmi.experiences.push('blue_gnome')
             }, div);
         }
         ui_helper.appendImage("/packages/"+pkg.packageInfo.packageId+"/gameLogo.png", div);
@@ -82,14 +82,14 @@ function(gmi_platform, PackageManager, ui_helper) {
     var getInstalledPackagesFn = function () {
 
         // invoke the installed API command and for each entry add some UI for it.
-        packageManager.installed().then(function (response) {
+        downloadManager.installed().then(function (response) {
 
             // clear list, delete all of the document elements within the root div of the installed packages list.
             while(installedPackagesContainer.children.length) {
                 installedPackagesContainer.removeChild(installedPackagesContainer.children[0]);
             }
 
-            if (response.status === PackageManager.Status_Ok) {
+            if (response.status === DownloadManager.Status_Ok) {
                 for (var ix = 0; ix < response.packages.length; ix++) {
                     var pkg = response.packages[ix];
                     addInstalledPackageUI(pkg);
@@ -120,24 +120,24 @@ function(gmi_platform, PackageManager, ui_helper) {
      * @param packageId
      */
     var monitorDownloadingFn = function trackDownloads() {
-        packageManager.downloading().then(function(response) {
+        downloadManager.downloading().then(function(response) {
 
             // for every package listed in the response, update our UI representation.
             for (var ix = 0; ix < response.packages.length; ix++) {
                 var pkg = response.packages[ix];
 
                 switch (pkg.status) {
-                    case PackageManager.Status_Downloading:
+                    case DownloadManager.Status_Downloading:
                         // downloading, update progress indicator and check again in a second.
                         updateDownloadUI(pkg.packageId, "Downloading - " + pkg.packageId + " " + pkg.progress + "%", false);
                         break;
 
-                    case PackageManager.Status_Installing:
+                    case DownloadManager.Status_Installing:
                         // still installing, update progress indicator and check again in a second.
                         updateDownloadUI(pkg.packageId, "Installing - " + pkg.packageId + " " + pkg.progress + "%", false);
                         break;
 
-                    case PackageManager.Status_Installed:
+                    case DownloadManager.Status_Installed:
                         // The download has successfully completed download and installation.
                         // this status will only appear once when we first poll after the download has completed.
                         // from this point on the download will no longer appear in the response.
@@ -192,8 +192,8 @@ function(gmi_platform, PackageManager, ui_helper) {
         // create a new UI to track this download
         updateDownloadUI(packageId, "starting...", false);
 
-        packageManager.download(packageId, url, metaData).then(function(response) {
-            if (response.status === PackageManager.Status_Downloading) {
+        downloadManager.download(packageId, url, metaData).then(function(response) {
+            if (response.status === DownloadManager.Status_Downloading) {
                 // successfully started, so nothing to do, the tracker will update the UI.
             }
             else {
@@ -214,8 +214,8 @@ function(gmi_platform, PackageManager, ui_helper) {
             downloadButtonsContainer.removeChild(downloadButtonsContainer.children[0]);
         }
 
-        if (gmi.experience.getConfig().downloadablePackages) {
-            gmi.experience.getConfig().downloadablePackages.forEach(function(element) {
+        if (gmi.experiences.getConfig().downloadablePackages) {
+            gmi.experiences.getConfig().downloadablePackages.forEach(function(element) {
                 ui_helper.appendBtn("Download "+element.title + " - (V"+element.version+")", downloadPackageFn.bind(null, element.packageId,element.url), "", downloadButtonsContainer);
                 ui_helper.appendBreak(downloadButtonsContainer);
                 ui_helper.appendBreak(downloadButtonsContainer);
@@ -293,7 +293,7 @@ function(gmi_platform, PackageManager, ui_helper) {
 
         var btn = ui_helper.appendBtn("cancel",
             function(packageId) {
-                packageManager.cancel(packageId);
+                downloadManager.cancel(packageId);
             }.bind(null, packageId),
             div);
 
