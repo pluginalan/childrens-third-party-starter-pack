@@ -31,17 +31,46 @@ define(function(require) {
         },
 
         download: function(packageId) {
-            downloadManager.download('pkgId', {}, 'www.someurl.com').catch( (rejected) => {
-                console.log(rejected)
-            })
+//downloadManager.download(packageId, {}, 'www.someurl.com').catch( (rejected) => {})
 
-            return Promise.reject(
-                {
-                    "packageId" : packageId,
-                    "action"    : "download",
-                    "error"     : "notFound"
+            return new Promise((resolve, reject) => {
+                var doesExist = false
+                var listPromise = packages.list()
+          
+                listPromise.then(function(pkgs) {
+                    pkgs.forEach((aPackage) => {
+                        if (aPackage.packageId == packageId) {
+                            doesExist = true
+                        }
+                    })
+                })
+    
+                if(doesExist) {
+                    let downloadPromise = downloadManager.download(packageId, {}, '')
+                    downloadPromise.then(resolveResponse => {
+                        resolve(
+                            {
+                                "packageId" : packageId,
+                                "action"    : "download"
+                            }
+                        )
+                    }, rejectResponse => {
+                        reject(
+                            {
+                                "packageId" : packageId,
+                                "action"    : "download",
+                                "error"     : "notFound"
+                            }
+                        )
+                    })
+                } else {
+                    reject({ 
+                        "packageId" : packageId, 
+                        "action"    : "download", 
+                        "error"     : "notFound" 
+                    }) 
                 }
-            )
+            })
         }
 
         // download: function(packageId) {
