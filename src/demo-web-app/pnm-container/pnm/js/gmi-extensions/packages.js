@@ -1,7 +1,8 @@
 define(function(require) {
     "use strict";
 
-    var downloadManager = require('../downloads/download-manager');
+    var DownloadManager = require('../downloads/download-manager');
+    var downloadManager = new DownloadManager();
 
     var packages = {
         list: function() {
@@ -30,11 +31,15 @@ define(function(require) {
         },
 
         download: function(packageId) {
+            downloadManager.download('pkgId', {}, 'www.someurl.com').catch( (rejected) => {
+                console.log(rejected)
+            })
+
             return Promise.reject(
                 {
                     "packageId" : packageId,
                     "action"    : "download",
-                    "error"     : "unknown"
+                    "error"     : "notFound"
                 }
             )
         }
