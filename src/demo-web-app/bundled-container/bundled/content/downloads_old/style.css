@@ -2,8 +2,6 @@
 html, body { height:100%; }
 
 body {
-    display: flex;
-    display: -webkit-flex;
     color:#404040;
     background-color:#dcdcdc;
     font:16px normal helvetica, arial, sans-serif;

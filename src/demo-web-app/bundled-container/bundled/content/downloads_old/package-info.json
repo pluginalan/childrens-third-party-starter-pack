@@ -1,0 +1,11 @@
+{
+    "packageId": "downloads_old",
+    "basepath": "content/downloads/",
+    "type": "type",
+    "dependencies": [],
+    "metadata": "metadata",
+    "tags": [
+             "tag1",
+             "tag2"
+             ]
+}
