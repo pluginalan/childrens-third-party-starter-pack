@@ -40,7 +40,7 @@ define(function(require) {
         },
 
         cancel: function(packageId) {
-            return downloadManager.cancel(packageId);
+            //todo: implement
         }
 
         // download: function(packageId) {

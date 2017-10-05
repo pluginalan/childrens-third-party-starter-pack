@@ -1,28 +1,42 @@
 require("amd-loader");
+//var assert = require('assert');
+var sinon = require('sinon');
+var chai = require('chai');
+var expect = chai.expect;
+var chaiAsPromised = require('chai-as-promised');
+chai.use(chaiAsPromised);
 
-// Chai
-var chai = require("chai");
-var spies = require("chai-spies");
-chai.use(spies);
+describe("cancel download", function () {
+    var downloadManager = require("../../src/demo-web-app/pnm-container/pnm/js/downloads/download-manager");
+    var packages = require("../../src/demo-web-app/pnm-container/pnm/js/gmi-extensions/packages");
+    var sandbox;
+    const packageId = "packageId";
 
-describe("packages",function () {
-    var DownloadManager = require("../../src/demo-web-app/pnm-container/pnm/js/downloads/download-manager")
+    describe("for valid download id", function () {
 
-    var packages = require("../../src/demo-web-app/pnm-container/pnm/js/gmi-extensions/packages")
-    var cancel = function() {};
-    var spy = null;
+        const resolvedResponse = {
+            "packageId": packageId,
+            "action": "cancel"
+        };
 
-    beforeEach(function () {
-        spy = chai.spy(cancel);
-        DownloadManager.cancel = spy;
-    });
+        beforeEach(function () {
+            sandbox = sinon.sandbox.create()
+        });
 
-    it("Should cancel a download", function () {
-        packages.cancel("somePackageId");
-        chai.expect(spy).to.have.been.called();
-    });
-    
-    afterEach(function () {
-        
+        it("should cancel with successful response", function () {
+            //given
+            downloadManager.cancel = sandbox.mock();
+
+            //when
+            var promise = packages.cancel(packageId);
+
+            //then
+            expect(downloadManager.cancel.called).to.be.true;
+            return expect(promise).to.eventually.equal(resolvedResponse);
+        });
+
+        afterEach(function () {
+            sandbox.restore()
+        })
     })
 });
