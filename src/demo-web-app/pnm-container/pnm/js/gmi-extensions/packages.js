@@ -37,6 +37,10 @@ define(function(require) {
                     "error"     : "unknown"
                 }
             )
+        },
+
+        cancel: function(packageId) {
+            return downloadManager.cancel(packageId);
         }
 
         // download: function(packageId) {

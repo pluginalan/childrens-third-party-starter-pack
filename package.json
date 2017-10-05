@@ -15,7 +15,7 @@
     "mocha": "^3.5.3"
   },
   "scripts": {
-    "test": "mocha",
+    "test": "mocha --recursive",
     "testWithBreak": "mocha --debug-brk"
   },
   "repository": {
