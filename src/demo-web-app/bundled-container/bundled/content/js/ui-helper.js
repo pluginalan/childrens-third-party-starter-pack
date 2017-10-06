@@ -54,12 +54,29 @@ define(function(){
   function appendSpan(text, div) {
       var span = document.createElement("span");
       span.innerHTML = text;
+
       if (div) {
           div.appendChild(span);
       }
       else {
           inner.appendChild(span);
       }
+
+      return span;
+  }
+
+  function appendSpan(text, div, className) {
+      var span = document.createElement("span");
+      span.innerHTML = text;
+      span.className = className;
+      if (div) {
+          div.appendChild(span);
+      }
+      else {
+          inner.appendChild(span);
+      }
+
+      return span;
   }
 
   function appendLink(linkText, link, div) {

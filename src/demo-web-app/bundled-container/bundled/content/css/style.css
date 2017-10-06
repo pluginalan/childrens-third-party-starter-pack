@@ -125,3 +125,23 @@ button:hover {
     padding-top: 10px;
     padding-bottom: 10px;
 }
+
+.label {
+    font-size: 10;
+    border-radius: 2px;
+    padding: 5px;
+    margin-left: 5px;
+    color: white;
+}
+
+.available {
+    background-color: green;
+}
+
+.installed {
+    background-color: blue;
+}
+
+.read-only {
+    background-color: red;
+}

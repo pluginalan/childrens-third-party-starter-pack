@@ -49,8 +49,12 @@ function(gmi_platform, DownloadManager, ui_helper) {
         packages.forEach((aPackage) => {
             var packageContainer = ui_helper.appendDiv()
             packageContainer.className = "package-title"
-            ui_helper.appendSpan(aPackage.packageId + " - " + aPackage.status,
-            packageContainer)
+            ui_helper.appendSpan(aPackage.packageId, packageContainer)
+            ui_helper.appendSpan(aPackage.status, packageContainer, "label " + aPackage.status)
+
+            if (aPackage.readOnly) {
+                ui_helper.appendSpan("readOnly", packageContainer, "label read-only")
+            }
 
             var buttonsContainer = ui_helper.appendDiv()
             buttonsContainer.appendChild(ui_helper.appendBtn("Download", () => {
