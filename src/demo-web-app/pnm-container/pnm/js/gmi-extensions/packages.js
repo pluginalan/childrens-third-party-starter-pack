@@ -39,8 +39,32 @@ define(function(require) {
             )
         },
 
-        cancel: function(packageId) {
-            //todo: implement
+        cancel: function (packageId) {
+
+            return packages.list().then(function (result) {
+                return new Promise(function (resolve, reject) {
+
+                    var packageInfo = result.find(i => i.packageId===packageId);
+                    if (packageInfo.status === "available") {
+                        downloadManager.cancel(packageId);
+                        resolve({
+                            "packageId": packageId,
+                            "action": "cancel"
+                        })
+                    } else {
+                        reject({
+                            "packageId": packageId,
+                            "action": "cancel",
+                            "error": "notDownloading"
+                        })
+                    }
+                })
+
+            }, function (error) {
+                //todo reject unknown error
+                return "error";
+            });
+
         }
 
         // download: function(packageId) {
