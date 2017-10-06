@@ -45,7 +45,7 @@ define(function(require) {
                 return new Promise(function (resolve, reject) {
 
                     var packageInfo = result.find(i => i.packageId===packageId);
-                    if (packageInfo.status === "available") {
+                    if (packageInfo.status === "downloading") {
                         downloadManager.cancel(packageId);
                         resolve({
                             "packageId": packageId,

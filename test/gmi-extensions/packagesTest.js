@@ -70,7 +70,24 @@ describe("packages", function () {
             //when
             let resultPromise = packages.cancel(packageId);
             //then
-            return expect(resultPromise).to.eventually.become(notDownloadingResponse);
+            return expect(resultPromise).to.be.rejectedWith(notDownloadingResponse);
+        })
+    });
+
+    describe("Canceling a download for an invalid package", function () {// jira 1681:scenario 4
+        const invalidPackageId = "notInTheList";
+        const notFoundResponse = {
+            "packageId": invalidPackageId,
+            "action": "cancel",
+            "error": "notFound"
+        };
+        it("Should return error notFound", function () {
+            //given
+            downloadManager.cancel = sandbox.mock();
+            //when
+            let resultPromise = packages.cancel(invalidPackageId);
+            //then
+            return expect(resultPromise).to.be.rejectedWith(notFoundResponse);
         })
     });
 
