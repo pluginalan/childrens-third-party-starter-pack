@@ -65,7 +65,7 @@ function(gmi_platform, storage, DownloadManager, ui_helper) {
 
     //DownloadManager.CommandBase = "localhost:3030/"+DownloadManager.CommandBase;
 
-    ui_helper.addStylesheet(gmi.gameDir);
+    ui_helper.addStylesheet();
 
     // ----- Set up container for the example --------
 

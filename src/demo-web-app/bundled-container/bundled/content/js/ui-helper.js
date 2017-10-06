@@ -5,11 +5,11 @@ define(function(){
       inner.appendChild(title);
   }
 
-  function addStylesheet(gameDir) {
+  function addStylesheet() {
       var link  = document.createElement('link');
       link.rel  = 'stylesheet';
       link.type = 'text/css';
-      link.href = gameDir + 'style.css';
+      link.href =  '/content/css/style.css';
       link.media = 'all';
       document.getElementsByTagName('head')[0].appendChild(link);
   }

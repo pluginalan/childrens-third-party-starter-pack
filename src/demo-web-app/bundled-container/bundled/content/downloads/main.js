@@ -13,7 +13,7 @@ function(gmi_platform, DownloadManager, ui_helper) {
 
     //downloadManager.CommandBase = "localhost:3030/"+downloadManager.CommandBase;
 
-    ui_helper.addStylesheet(gmi.gameDir);
+    ui_helper.addStylesheet();
 
     // ----- Set up container for the example --------
 
@@ -48,17 +48,37 @@ function(gmi_platform, DownloadManager, ui_helper) {
     function setupView(packages) {
         packages.forEach((aPackage) => {
             var packageContainer = ui_helper.appendDiv()
-            ui_helper.appendSpan(aPackage.packageId + " ", packageContainer)
+            packageContainer.className = "package-title"
+            ui_helper.appendSpan(aPackage.packageId + " - " + aPackage.status,
+            packageContainer)
 
-            packageContainer.appendChild(ui_helper.appendBtn("Download", () => {
+            var buttonsContainer = ui_helper.appendDiv()
+            buttonsContainer.appendChild(ui_helper.appendBtn("Download", () => {
                 console.log("Button clicked")
             }))
 
-            packageContainer.appendChild(ui_helper.appendBtn("Cancel", () => {
+            buttonsContainer.appendChild(ui_helper.appendBtn("Cancel", () => {
                 console.log("Button clicked")
             }))
 
-            packageContainer.appendChild(ui_helper.appendBtn("Delete", () => {
+            buttonsContainer.appendChild(ui_helper.appendBtn("Delete", () => {
+                console.log("Button clicked")
+            }))
+
+            var listenerTitle = ui_helper.appendDiv()
+            listenerTitle.className = "package-title"
+            ui_helper.appendSpan("Listeners", listenerTitle)
+
+            var listenerButtons = ui_helper.appendDiv();
+            listenerButtons.appendChild(ui_helper.appendBtn("Add", () => {
+                console.log("Button clicked")
+            }))
+
+            listenerButtons.appendChild(ui_helper.appendBtn("Remove", () => {
+                console.log("Button clicked")
+            }))
+
+            listenerButtons.appendChild(ui_helper.appendBtn("Remove all", () => {
                 console.log("Button clicked")
             }))
 

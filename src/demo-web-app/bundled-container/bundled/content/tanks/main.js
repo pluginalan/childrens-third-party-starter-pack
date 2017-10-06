@@ -5,7 +5,7 @@ define(['pnm-library/gmi-mobile', '/packages/jsutility/ui-helper.js'], function(
 
     var gmi = gmi_platform.getGMI({settingsConfig: settingsConfig});
 
-    ui_helper.addStylesheet(gmi.gameDir);
+    ui_helper.addStylesheet();
 
     // ----- Set up container for the example --------
 
