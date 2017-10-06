@@ -80,7 +80,7 @@ define(function(require) {
                   resolve(successReturnObject());
                 }
                 else {
-                  reject(parseDownloadResponseErrors());
+                  reject(parseDownloadResponseErrors(successResponse));
                 }
           }, failiureResponse => {
               // Catastrophic Failiure
