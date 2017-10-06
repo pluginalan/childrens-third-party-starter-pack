@@ -76,7 +76,8 @@ define(function(require) {
           let downloadPromise = downloadManager.download(packageId, metadataObject, downloadUrl)
 
           downloadPromise.then( successResponse => {
-                if (successResponse.packages[0].status == "downloading"){
+                if (successResponse.packages[0].status == "downloading") {
+                  thePackage.status = "downloading"
                   resolve(successReturnObject());
                 }
                 else {

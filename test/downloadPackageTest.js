@@ -20,7 +20,8 @@ describe('download package', function() {
     "tags": [
       "tag1",
       "tag2"
-    ]
+    ],
+    "status": "available"
   };
 
   beforeEach( () => {
@@ -77,23 +78,22 @@ describe('download package', function() {
       });
     })
 
+    it('should update status in list, if download was called', function(done) {
+      Packages.download('poniesPackageId').then(function(response) {
+        sinon.assert.calledWith(DownloadManager.prototype.download, 'poniesPackageId', poniesBundledPackage, 'http://www.bbc.co.uk/poniesPackageId')
+        
+        var list = window._packages.availablePackages
+        var poniesUpdatedPackage = list.find((availablePackage) => {
+          return availablePackage.packageId == 'poniesPackageId'
+        })
+
+        assert.equal('downloading', poniesUpdatedPackage.status)
+        done()
+      }).catch(function(failureResponse) {
+        done(failureResponse)
+      });
+    })
   })
-
-  /*downloading - download has been started
-  errorOffline - network is offline at point of request
-  errorNotFound - if the package-id is an empty string (zero character length or all whitespace) or consists of any characters outside of: a-z, A-Z, -, and 0-9
-  errorDisallowed - if the url does not validate against a whitelist
-  errorUnknown - some other undefined error
-  errorInUse - returned if the requested package is already in the process of being downloaded / installed (PickNMix only)
-
-  switch(response.packages[0].status) {
-    case "errorOffline": return failureReturnObject("offline")
-    case "errorNotFound": return failureReturnObject("notFound")
-    case "errorDisallowed": return failureReturnObject("notFound")
-    case "errorUnknown": return failureReturnObject("unknown")
-    case "errorInUse": return failureReturnObject("inProgress")
-    default: return failureReturnObject("unknown")
-  }*/
 
   describe('when the download manager is offline', function() {
 
