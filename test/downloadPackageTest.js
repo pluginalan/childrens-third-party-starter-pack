@@ -8,75 +8,238 @@ var sandbox = sinon.createSandbox();
 
 describe('download package', function() {
 
+  var poniesBundledPackage = {
+    "packageId": "poniesPackageId",
+    "basepath": "http://www.bbc.co.uk/",
+    "type": "type",
+    "dependencies": [
+      "tanks",
+      "menu"
+    ],
+    "metadata": "",
+    "tags": [
+      "tag1",
+      "tag2"
+    ]
+  };
 
-    var poniesBundledPackage = {
-      "packageId": "poniesPackageId",
-      "basepath": "http://www.bbc.co.uk/",
-      "type": "type",
-      "dependencies": [
-        "tanks",
-        "menu"
-      ],
-      "metadata": "",
-      "tags": [
-        "tag1",
-        "tag2"
-      ]
-    };
+  beforeEach( () => {
+    window = {};
+    window._packages = {};
+    window._packages.availablePackages = [];
+    window._packages.bundledPackages = [];
+  });
+
+  describe('when online, and there are available packages', function() {
+    var spyDownloadFn = null;
 
     beforeEach( () => {
-        window = {};
-        window._packages = {};
-        window._packages.availablePackages = [];
-        window._packages.bundledPackages = [];
-    });
+      window._packages.availablePackages = [poniesBundledPackage];
+      window._packages.bundledPackages = [];
+      spyDownloadFn = sandbox.stub(DownloadManager.prototype, 'download')
+      spyDownloadFn.resolves(
+        {
+          'packages':[
+            {
+              packageId: 'poniesPackageId',
+              status: 'downloading'
+            }
+          ]
+        }
+      )
+    })
 
     afterEach(function () {
-        sandbox.restore();
+      sandbox.restore();
+      spyDownloadFn.restore()
     });
 
-    describe('when there are available packages', function() {
-
-        var spyDownloadFn = null;
-
-        beforeEach( () => {
-            window._packages.availablePackages = [poniesBundledPackage];
-            window._packages.bundledPackages = [];
-            spyDownloadFn = sandbox.stub(DownloadManager.prototype, 'download')
-            spyDownloadFn.resolves(
-              {
-                'packages':[
-                  {
-                    packageId: 'poniesPackageId',
-                    status: 'downloading'
-                  }
-                ]
-              }
-            )
-            })
-
-        it('calls download when it is given an id which is in availablePackages', function(done) {
-          Packages.download('poniesPackageId').then(function(response) {
-            sinon.assert.calledWith(DownloadManager.prototype.download, 'poniesPackageId', poniesBundledPackage, 'http://www.bbc.co.uk/poniesPackageId')
-            assert.equal("poniesPackageId", response.packageId)
-            assert.equal("download", response.action)
-            done()
-          }).catch(function(failureResponse) {
-              done(failureResponse)
-          });
-        })
-
-        it('does not call download when it is given an id which is not in availablePackages', function(done) {
-          Packages.download('someOtherPackageId').then(function(response) {
-            done(response)
-          }).catch(function(failureResponse) {
-              sinon.assert.notCalled(DownloadManager.prototype.download)
-              assert.equal("someOtherPackageId", failureResponse.packageId)
-              assert.equal("download", failureResponse.action)
-              assert.equal("notFound", failureResponse.error)
-              done()
-          });
-        })
-
+    it('calls download when it is given an id which is in availablePackages', function(done) {
+      Packages.download('poniesPackageId').then(function(response) {
+        sinon.assert.calledWith(DownloadManager.prototype.download, 'poniesPackageId', poniesBundledPackage, 'http://www.bbc.co.uk/poniesPackageId')
+        assert.equal("poniesPackageId", response.packageId)
+        assert.equal("download", response.action)
+        done()
+      }).catch(function(failureResponse) {
+        done(failureResponse)
+      });
     })
+
+    it('does not call download when it is given an id which is not in availablePackages', function(done) {
+      Packages.download('someOtherPackageId').then(function(response) {
+        done(response)
+      }).catch(function(failureResponse) {
+        sinon.assert.notCalled(DownloadManager.prototype.download)
+        assert.equal("someOtherPackageId", failureResponse.packageId)
+        assert.equal("download", failureResponse.action)
+        assert.equal("notFound", failureResponse.error)
+        done()
+      });
+    })
+
+  })
+
+  /*downloading - download has been started
+  errorOffline - network is offline at point of request
+  errorNotFound - if the package-id is an empty string (zero character length or all whitespace) or consists of any characters outside of: a-z, A-Z, -, and 0-9
+  errorDisallowed - if the url does not validate against a whitelist
+  errorUnknown - some other undefined error
+  errorInUse - returned if the requested package is already in the process of being downloaded / installed (PickNMix only)
+
+  switch(response.packages[0].status) {
+    case "errorOffline": return failureReturnObject("offline")
+    case "errorNotFound": return failureReturnObject("notFound")
+    case "errorDisallowed": return failureReturnObject("notFound")
+    case "errorUnknown": return failureReturnObject("unknown")
+    case "errorInUse": return failureReturnObject("inProgress")
+    default: return failureReturnObject("unknown")
+  }*/
+
+  describe('when the download manager is offline', function() {
+
+    var spyingDownloadFn = null;
+
+    beforeEach( () => {
+      window._packages.availablePackages = [poniesBundledPackage];
+      window._packages.bundledPackages = [];
+      spyingDownloadFn = sandbox.stub(DownloadManager.prototype, 'download')
+      spyingDownloadFn.resolves (
+        {
+          'packages':[
+            {
+              packageId: 'poniesPackageId',
+              status: 'errorOffline'
+            }
+          ]
+        }
+      )
+    })
+
+    afterEach(function () {
+      sandbox.restore();
+    });
+
+    it('returns an error with value offline', function(done) {
+      Packages.download('poniesPackageId').then(function(response) {
+        done(response)
+      }).catch(function(failureResponse) {
+        sinon.assert.calledOnce(DownloadManager.prototype.download)
+        assert.equal("poniesPackageId", failureResponse.packageId)
+        assert.equal("download", failureResponse.action)
+        assert.equal("offline", failureResponse.error)
+        done()
+      });
+    })
+  })
+
+  describe('when the packageId or the URL generated by Packages is considered malformed by the download manager', function() {
+
+    var spyingDownloadFn = null;
+
+    beforeEach( () => {
+      window._packages.availablePackages = [poniesBundledPackage];
+      window._packages.bundledPackages = [];
+      spyingDownloadFn = sandbox.stub(DownloadManager.prototype, 'download')
+      spyingDownloadFn.resolves (
+        {
+          'packages':[
+            {
+              packageId: 'poniesPackageId',
+              status: 'errorNotFound'
+            }
+          ]
+        }
+      )
+    })
+
+    afterEach(function () {
+      sandbox.restore();
+    });
+
+    it('returns an error with value notFound', function(done) {
+      Packages.download('poniesPackageId').then(function(response) {
+        done(response)
+      }).catch(function(failureResponse) {
+        sinon.assert.calledOnce(DownloadManager.prototype.download)
+        assert.equal("poniesPackageId", failureResponse.packageId)
+        assert.equal("download", failureResponse.action)
+        assert.equal("notFound", failureResponse.error)
+        done()
+      });
+    })
+  })
+
+  describe('when the download manager throws an unknown error', function() {
+
+    var spyingDownloadFn = null;
+
+    beforeEach( () => {
+      window._packages.availablePackages = [poniesBundledPackage];
+      window._packages.bundledPackages = [];
+      spyingDownloadFn = sandbox.stub(DownloadManager.prototype, 'download')
+      spyingDownloadFn.resolves (
+        {
+          'packages':[
+            {
+              packageId: 'poniesPackageId',
+              status: 'errorUnknown'
+            }
+          ]
+        }
+      )
+    })
+
+    afterEach(function () {
+      sandbox.restore();
+    });
+
+    it('returns an error with value unknown', function(done) {
+      Packages.download('poniesPackageId').then(function(response) {
+        done(response)
+      }).catch(function(failureResponse) {
+        sinon.assert.calledOnce(DownloadManager.prototype.download)
+        assert.equal("poniesPackageId", failureResponse.packageId)
+        assert.equal("download", failureResponse.action)
+        assert.equal("unknown", failureResponse.error)
+        done()
+      });
+    })
+  })
+
+  describe('when the download manager is already downloading from the URL generated by Packages', function() {
+
+    var spyingDownloadFn = null;
+
+    beforeEach( () => {
+      window._packages.availablePackages = [poniesBundledPackage];
+      window._packages.bundledPackages = [];
+      spyingDownloadFn = sandbox.stub(DownloadManager.prototype, 'download')
+      spyingDownloadFn.resolves (
+        {
+          'packages':[
+            {
+              packageId: 'poniesPackageId',
+              status: 'errorInUse'
+            }
+          ]
+        }
+      )
+    })
+
+    afterEach(function () {
+      sandbox.restore();
+    });
+
+    it('returns an error with value inProgress', function(done) {
+      Packages.download('poniesPackageId').then(function(response) {
+        done(response)
+      }).catch(function(failureResponse) {
+        sinon.assert.calledOnce(DownloadManager.prototype.download)
+        assert.equal("poniesPackageId", failureResponse.packageId)
+        assert.equal("download", failureResponse.action)
+        assert.equal("inProgress", failureResponse.error)
+        done()
+      });
+    })
+  })
 });
