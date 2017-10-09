@@ -110,7 +110,7 @@ define(function(require) {
       })
     },
 
-      addListener: function(eventType, eventObject) {
+    addListener: function(eventType, eventObject) {
         window._packages.callback = eventHandler
         switch(eventType) {
           case "error": errorCallbacks.push(eventObject); break;
@@ -119,13 +119,11 @@ define(function(require) {
           case "installed": installedCallbacks.push(eventObject); break;
           default: return;
         }
-      }
+      },
 
-
-
-    }
-
-
-
+     removeListener: function(eventObject) {
+       errorCallbacks.splice(errorCallbacks.indexOf(eventObject),1);
+     }
+   }
     return packages
   })
