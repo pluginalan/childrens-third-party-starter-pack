@@ -21,7 +21,7 @@ describe('remove all listeners', function() {
 
   var callback = sinon.spy();
 
-  describe('On removing all listeners', function() {
+  describe('when 4 listeners are added then remove all listeners is called', function() {
     beforeEach(function () {
       Packages.addListener("error", callback);
       Packages.addListener("installing", callback);
@@ -29,7 +29,7 @@ describe('remove all listeners', function() {
       Packages.addListener("progress", callback);
     })
 
-    it('should no longer call any previous callbacks', function() {
+    it('should no longer callback on any of the listeners', function() {
       Packages.removeAllListeners()
       window._packages.callback(eventResponse)
       eventResponse.status = "installing"

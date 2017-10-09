@@ -6,13 +6,13 @@ var sandbox = sinon.createSandbox();
 var DownloadManager = require('../src/demo-web-app/pnm-container/pnm/js/downloads/download-manager.js');
 var Packages = require('../src/demo-web-app/pnm-container/pnm/js/gmi-extensions/packages.js');
 
-describe('remove listener', function() {
+describe('remove package event listener', function() {
 
   window = {};
   window._packages = {};
   window._packages.callback = function() {};
 
-  describe('Removing an event listener for error', function() {
+  describe('an error listener is added', function() {
 
     var callback = undefined;
 
@@ -31,16 +31,12 @@ describe('remove listener', function() {
       }
     }
 
-    beforeEach(function () {
-      
-    })
-
     afterEach(function () {
       sandbox.restore();
       Packages.removeAllListeners()
     });
 
-    it('the error listener does not get called', function(done) {
+    it('when it is removed it does not get called', function(done) {
       var callback = sinon.spy();
       Packages.addListener("error", callback);
       Packages.removeListener(callback);
@@ -68,13 +64,22 @@ describe('remove listener', function() {
       done();
     })
 
-    it('remove a listener that does not exist', function(done) {
+  })
+
+  describe('when there are no event listeners', function() {
+
+    afterEach(function () {
+      sandbox.restore();
+      Packages.removeAllListeners()
+    });
+
+    it('try to remove a listener that does not exist', function(done) {
       var nonExistingListener = function() { }
       Packages.removeListener(nonExistingListener)
       done()
     })
-
   })
+
 
   describe('Removing an event listener for progress', function() {
 
