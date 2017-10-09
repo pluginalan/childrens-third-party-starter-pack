@@ -70,7 +70,25 @@ describe("packages", function () {
             //when
             let resultPromise = packages.cancel(packageId);
             //then
-            return expect(resultPromise).to.be.rejectedWith(notDownloadingResponse);
+            return expect(resultPromise).to.be.rejected.and.to.eventually.deep.equal(notDownloadingResponse);
+        })
+    });
+
+    describe("Canceling an installation", function () {// jira 1681:scenario 3
+        const installingResponse = {
+            "packageId": packageId,
+            "action": "cancel",
+            "error": "installing"
+        };
+        it("Should return error installing", function () {
+            //given
+            downloadManager.cancel = sandbox.mock();
+            //when
+            let resultPromise = packages.cancel(packageId);
+            //then
+            return expect(resultPromise).to.be.rejected.then(error=>{
+                expect(error.error).to.equal("installing")
+            });
         })
     });
 
