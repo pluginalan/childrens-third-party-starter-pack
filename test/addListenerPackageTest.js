@@ -9,7 +9,8 @@ var Packages = require('../src/demo-web-app/pnm-container/pnm/js/gmi-extensions/
 describe('add listener', function() {
 
   window = {};
-  window.packageManagerCallback = function() {};
+  window._packages = {}
+  window._packages.callback = function() {};
 
   describe('When listeners are added to the error callback', function() {
 
@@ -35,7 +36,7 @@ describe('add listener', function() {
       var callback = sinon.spy();
       Packages.addListener("error", callback);
 
-      window.packageManagerCallback(eventResponse)
+      window._packages.callback(eventResponse)
       assert.equal(callback.calledOnce, true);
       assert.equal(callback.calledWith(eventResponse.data), true)
       done();
@@ -48,7 +49,7 @@ describe('add listener', function() {
 
         Packages.addListener("error", callback);
         Packages.addListener("error", otherCallback);
-        window.packageManagerCallback(eventResponse)
+        window._packages.callback(eventResponse)
         assert.equal(callback.calledOnce, true);
         assert.equal(otherCallback.calledOnce, true);
         done();
@@ -79,7 +80,7 @@ describe('add listener', function() {
       var callback = sinon.spy();
       Packages.addListener("error", callback);
 
-      window.packageManagerCallback(eventResponse)
+      window._packages.callback(eventResponse)
       assert.equal(callback.calledOnce, true);
       assert.equal(callback.calledWith(eventResponse.data), true)
       done();
@@ -92,7 +93,7 @@ describe('add listener', function() {
 
         Packages.addListener("error", callback);
         Packages.addListener("error", otherCallback);
-        window.packageManagerCallback(eventResponse)
+        window._packages.callback(eventResponse)
         assert.equal(callback.calledOnce, true);
         assert.equal(otherCallback.calledOnce, true);
         done();
@@ -123,7 +124,7 @@ describe('add listener', function() {
     it('the progress listener gets called', function(done) {
       var callback = sinon.spy();
       Packages.addListener("progress", callback);
-      window.packageManagerCallback(eventResponse)
+      window._packages.callback(eventResponse)
       assert.equal(callback.calledOnce, true);
       assert.equal(callback.calledWith(eventResponse.data), true)
 
@@ -136,7 +137,7 @@ describe('add listener', function() {
         var otherCallback = sinon.spy();
         Packages.addListener("progress", callback);
         Packages.addListener("progress", otherCallback);
-        window.packageManagerCallback(eventResponse)
+        window._packages.callback(eventResponse)
         assert.equal(callback.calledOnce, true);
         assert.equal(otherCallback.calledOnce, true);
         assert.equal(callback.calledWith(eventResponse.data), true)
@@ -166,7 +167,7 @@ describe('add listener', function() {
     it('the installed listener gets called', function(done) {
       var callback = sinon.spy();
       Packages.addListener("installed", callback);
-      window.packageManagerCallback(eventResponse)
+      window._packages.callback(eventResponse)
       assert.equal(callback.calledOnce, true);
       assert.equal(callback.calledWith(eventResponse.data), true)
 
@@ -179,7 +180,7 @@ describe('add listener', function() {
         var otherCallback = sinon.spy();
         Packages.addListener("installed", callback);
         Packages.addListener("installed", otherCallback);
-        window.packageManagerCallback(eventResponse)
+        window._packages.callback(eventResponse)
         assert.equal(callback.calledOnce, true);
         assert.equal(otherCallback.calledOnce, true);
         assert.equal(callback.calledWith(eventResponse.data), true)
@@ -210,7 +211,7 @@ describe('add listener', function() {
     it('the installing listener gets called', function(done) {
       var callback = sinon.spy();
       Packages.addListener("installing", callback);
-      window.packageManagerCallback(eventResponse)
+      window._packages.callback(eventResponse)
       assert.equal(callback.calledOnce, true);
       assert.equal(callback.calledWith(eventResponse.data), true)
 
@@ -223,7 +224,7 @@ describe('add listener', function() {
         var otherCallback = sinon.spy();
         Packages.addListener("installing", callback);
         Packages.addListener("installing", otherCallback);
-        window.packageManagerCallback(eventResponse)
+        window._packages.callback(eventResponse)
         assert.equal(callback.calledOnce, true);
         assert.equal(otherCallback.calledOnce, true);
         assert.equal(callback.calledWith(eventResponse.data), true)

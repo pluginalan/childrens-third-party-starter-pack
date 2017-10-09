@@ -111,7 +111,7 @@ define(function(require) {
     },
 
       addListener: function(eventType, eventObject) {
-        window.packageManagerCallback = eventHandler
+        window._packages.callback = eventHandler
         switch(eventType) {
           case "error": errorCallbacks.push(eventObject); break;
           case "progress": progressCallbacks.push(eventObject); break;
