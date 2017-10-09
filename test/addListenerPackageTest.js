@@ -23,7 +23,6 @@ describe('add listener', function() {
       }
     }
 
-
     beforeEach(function () {
 
     })
@@ -36,9 +35,9 @@ describe('add listener', function() {
       var callback = sinon.spy();
       Packages.addListener("error", callback);
 
-
       window.packageManagerCallback(eventResponse)
       assert.equal(callback.calledOnce, true);
+      assert.equal(callback.calledWith(eventResponse.data), true)
       done();
 
       })
@@ -55,6 +54,51 @@ describe('add listener', function() {
         done();
       })
   })
+
+  describe('When listeners are added to the error callback with insufficientSpace', function() {
+
+    var callback = undefined;
+
+    var eventResponse = {
+      "status" : "error",
+      "data" : {
+        "packageId" : "somePackageId",
+        "error"     :  "insufficientSpace"
+      }
+    }
+
+    beforeEach(function () {
+
+    })
+
+    afterEach(function () {
+      sandbox.restore();
+    });
+
+    it('the error listener gets called', function(done) {
+      var callback = sinon.spy();
+      Packages.addListener("error", callback);
+
+      window.packageManagerCallback(eventResponse)
+      assert.equal(callback.calledOnce, true);
+      assert.equal(callback.calledWith(eventResponse.data), true)
+      done();
+
+      })
+
+      it('multiple error listeners gets called', function(done) {
+        var callback = sinon.spy();
+        var otherCallback = sinon.spy();
+
+        Packages.addListener("error", callback);
+        Packages.addListener("error", otherCallback);
+        window.packageManagerCallback(eventResponse)
+        assert.equal(callback.calledOnce, true);
+        assert.equal(otherCallback.calledOnce, true);
+        done();
+      })
+  })
+
 
   describe('When listeners are added to the progress callback', function() {
 
@@ -81,6 +125,8 @@ describe('add listener', function() {
       Packages.addListener("progress", callback);
       window.packageManagerCallback(eventResponse)
       assert.equal(callback.calledOnce, true);
+      assert.equal(callback.calledWith(eventResponse.data), true)
+
       done();
 
       })
@@ -93,6 +139,7 @@ describe('add listener', function() {
         window.packageManagerCallback(eventResponse)
         assert.equal(callback.calledOnce, true);
         assert.equal(otherCallback.calledOnce, true);
+        assert.equal(callback.calledWith(eventResponse.data), true)
         done();
       })
   })
@@ -121,6 +168,8 @@ describe('add listener', function() {
       Packages.addListener("installed", callback);
       window.packageManagerCallback(eventResponse)
       assert.equal(callback.calledOnce, true);
+      assert.equal(callback.calledWith(eventResponse.data), true)
+
       done();
 
       })
@@ -133,6 +182,8 @@ describe('add listener', function() {
         window.packageManagerCallback(eventResponse)
         assert.equal(callback.calledOnce, true);
         assert.equal(otherCallback.calledOnce, true);
+        assert.equal(callback.calledWith(eventResponse.data), true)
+
         done();
       })
   })
@@ -161,6 +212,8 @@ describe('add listener', function() {
       Packages.addListener("installing", callback);
       window.packageManagerCallback(eventResponse)
       assert.equal(callback.calledOnce, true);
+      assert.equal(callback.calledWith(eventResponse.data), true)
+
       done();
 
       })
@@ -173,7 +226,10 @@ describe('add listener', function() {
         window.packageManagerCallback(eventResponse)
         assert.equal(callback.calledOnce, true);
         assert.equal(otherCallback.calledOnce, true);
+        assert.equal(callback.calledWith(eventResponse.data), true)
+
         done();
       })
+
   })
 })
