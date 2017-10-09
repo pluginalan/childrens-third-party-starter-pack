@@ -81,7 +81,7 @@ describe('download package', function() {
     it('should update status in list, if download was called', function(done) {
       Packages.download('poniesPackageId').then(function(response) {
         sinon.assert.calledWith(DownloadManager.prototype.download, 'poniesPackageId', poniesBundledPackage, 'http://www.bbc.co.uk/poniesPackageId')
-        
+
         var list = window._packages.availablePackages
         var poniesUpdatedPackage = list.find((availablePackage) => {
           return availablePackage.packageId == 'poniesPackageId'

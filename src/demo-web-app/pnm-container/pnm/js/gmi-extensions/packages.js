@@ -4,7 +4,23 @@ define(function(require) {
   var DownloadManager = require('../downloads/download-manager');
   var downloadManager = new DownloadManager();
 
+  var errorCallbacks = []
+  var progressCallbacks = []
+  var installingCallbacks = []
+  var installedCallbacks = []
+
+  var eventHandler = function(eventResponse) {
+      switch(eventResponse.status) {
+          case "error": errorCallbacks.forEach((callback)=>{callback(eventResponse.data)}); break;
+          case "progress": progressCallbacks.forEach((callback)=>{callback(eventResponse.data)}); break;
+          case "installing": installingCallbacks.forEach((callback)=>{callback(eventResponse.data)}); break;
+          case "installed": installedCallbacks.forEach((callback)=>{callback(eventResponse.data)}); break;
+          default: {}
+        }
+  };
+
   var packages = {
+
     list: function() {
       return new Promise((resolve, reject) => {
         if(window._packages.availablePackages && window._packages.bundledPackages) {
@@ -92,46 +108,24 @@ define(function(require) {
           reject(failureReturnObject("notFound"))
         }
       })
+    },
+
+      addListener: function(eventType, eventObject) {
+        window.packageManagerCallback = eventHandler
+        switch(eventType) {
+          case "error": errorCallbacks.push(eventObject); break;
+          case "progress": progressCallbacks.push(eventObject); break;
+          case "installing": installingCallbacks.push(eventObject); break;
+          case "installed": installedCallbacks.push(eventObject); break;
+          default: return;
+        }
+      }
+
+
 
     }
-  }
+
+
 
     return packages
   })
-
-  // download: function(packageId) {
-  //     // from packageId need downloadUrl, and metadata
-  //
-  //     return new Promise((resolve, reject) => {
-  //         // check packageId is in availabe packages, if not reject
-  //
-  //         // check packageId is not already currently downloading or installing, if so reject
-  //
-  //         // get download url from some place, likely basePath + packageId
-  //
-  //         // create metadata object from tags, type, dependencies, etc.
-  //
-  //         let downloadPromise = downloadManager.download(packageId, metadataObject, downloadUrl)
-  //         downloadPromise.then( successResponse => {
-  //             if (successResponse.packages[0].status == "downloading"){
-  //                 resolve(
-  //                     {
-  //                         "packageId" : packageId,
-  //                         "action"    : "download"
-  //                     }
-  //                 )
-  //             }else{
-  //                 // switch on error types, reject with correct response.
-  //             }
-  //         }, rejectResponse => {
-  //             reject(
-  //                 {
-  //                     "packageId" : packageId,
-  //                     "action"    : "download",
-  //                     "error"     : "unknown"
-  //                 }
-  //             )
-  //         }
-  //         )
-  //     }
-  // }
