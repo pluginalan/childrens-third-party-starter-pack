@@ -1,0 +1,32 @@
+[
+    {
+        "packageId": "bundledcontentpack",
+        "basepath": "content/bundledcontentpack/",
+        "type": "content-pack",
+        "dependencies": [],
+        "metadata": "metadata",
+        "tags": []
+    },
+    {
+        "packageId": "jsutility",
+        "basepath": "content/js/",
+        "type": "type",
+        "dependencies": [],
+        "metadata": "metadata",
+        "tags": [
+            "tag1",
+            "tag2"
+        ]
+    },
+    {
+        "packageId": "tanks",
+        "basepath": "content/tanks/",
+        "type": "type",
+        "dependencies": [ "jsutility" ],
+        "metadata": "metadata",
+        "tags": [
+            "tag1",
+            "tag2"
+        ]
+    }
+]
