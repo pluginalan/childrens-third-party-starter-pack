@@ -122,7 +122,34 @@ define(function(require) {
       },
 
      removeListener: function(eventObject) {
-       errorCallbacks.splice(errorCallbacks.indexOf(eventObject),1);
+
+       var errorIdx = errorCallbacks.indexOf(eventObject);
+       if(errorIdx > -1) {
+         errorCallbacks.splice(errorIdx, 1)
+       }
+       var progIdx = progressCallbacks.indexOf(eventObject);
+       if(progIdx > -1) {
+         progressCallbacks.splice(progIdx, 1)
+       }
+       var installingIdx = installingCallbacks.indexOf(eventObject);
+       if(installingIdx > -1) {
+         installingCallbacks.splice(installingIdx, 1)
+       }
+       var installIdx = installedCallbacks.indexOf(eventObject);
+       if(installIdx > -1) {
+         installedCallbacks.splice(installIdx, 1)
+       }
+       if(errorIdx == progIdx == installIdx == installingIdx == -1) {
+         console.warn("Attempted to remove a listener that doesnt exist!")
+       }
+
+     },
+
+     removeAllListeners: function() {
+       errorCallbacks = []
+       progressCallbacks = []
+       installingCallbacks = []
+       installedCallbacks = []
      }
    }
     return packages

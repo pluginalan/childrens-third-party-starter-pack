@@ -24,12 +24,9 @@ describe('add listener', function() {
       }
     }
 
-    beforeEach(function () {
-
-    })
-
     afterEach(function () {
       sandbox.restore();
+      Packages.removeAllListeners();
     });
 
     it('the error listener gets called', function(done) {
@@ -54,6 +51,19 @@ describe('add listener', function() {
         assert.equal(otherCallback.calledOnce, true);
         done();
       })
+
+      it('one error listener one progress listener - error gets called', function(done) {
+        var callback = sinon.spy();
+        var otherCallback = sinon.spy();
+
+        Packages.addListener("error", callback);
+        Packages.addListener("progress", otherCallback);
+        window._packages.callback(eventResponse)
+        assert.equal(callback.calledOnce, true);
+        assert.equal(otherCallback.notCalled, true);
+        done();
+      })
+
   })
 
   describe('When listeners are added to the error callback with insufficientSpace', function() {
@@ -79,7 +89,6 @@ describe('add listener', function() {
     it('the error listener gets called', function(done) {
       var callback = sinon.spy();
       Packages.addListener("error", callback);
-
       window._packages.callback(eventResponse)
       assert.equal(callback.calledOnce, true);
       assert.equal(callback.calledWith(eventResponse.data), true)
@@ -90,7 +99,6 @@ describe('add listener', function() {
       it('multiple error listeners gets called', function(done) {
         var callback = sinon.spy();
         var otherCallback = sinon.spy();
-
         Packages.addListener("error", callback);
         Packages.addListener("error", otherCallback);
         window._packages.callback(eventResponse)
@@ -228,7 +236,6 @@ describe('add listener', function() {
         assert.equal(callback.calledOnce, true);
         assert.equal(otherCallback.calledOnce, true);
         assert.equal(callback.calledWith(eventResponse.data), true)
-
         done();
       })
 
