@@ -167,16 +167,17 @@ define(function (require, exports, module) {
             Networking.sendQuery(requestString).then(function(response) {
                 var resultObj;
                 
-                console.log(response);
                 try {
                     resultObj = JSON.parse(response);
                     
                     resultObj.packages.forEach((pkg)=>{
                         // unstringify metadata
                         try {
+                            console.log(pkg.metadata);
                             pkg.metadata = JSON.parse(pkg.metadata);
                         }
                         catch(e) {
+                            console.error(e);
                             pkg.metadata = null;
                         }
                     })
