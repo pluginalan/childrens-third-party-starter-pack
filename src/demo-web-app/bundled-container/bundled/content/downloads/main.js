@@ -59,6 +59,22 @@ function(gmi_platform, DownloadManager, ui_helper) {
             var buttonsContainer = ui_helper.appendDiv()
             buttonsContainer.appendChild(ui_helper.appendBtn("Download", () => {
                 console.log("Button clicked")
+
+                var success = function() {
+                    console.log( "success" )
+                }
+
+                var failed = function() {
+                    console.log( "failed" )
+                }
+
+                var pid = aPackage.packageId
+                var pmd = aPackage.metadataObject
+                var purl = aPackage.basepath + aPackage.packageId
+
+                downloadManager.download( pid, pmd, purl ).then(
+                    success, failed
+                )
             }))
 
             buttonsContainer.appendChild(ui_helper.appendBtn("Cancel", () => {
