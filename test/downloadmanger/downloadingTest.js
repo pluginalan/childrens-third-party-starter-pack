@@ -50,7 +50,6 @@ describe('downloading response has metadataObject', function() {
     
         var downloadManager = new DownloadManager()
         downloadManager.downloading().then((resolvedObject)=>{
-            console.log(resolvedObject.packages[0].metadata);
             assert.ok(resolvedObject.packages[0].metadata === null);
             done()
         }).catch((rejectedResponse)=>{
