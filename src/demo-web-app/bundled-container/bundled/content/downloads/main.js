@@ -58,14 +58,13 @@ function(gmi_platform, DownloadManager, ui_helper) {
 
             var buttonsContainer = ui_helper.appendDiv()
             buttonsContainer.appendChild(ui_helper.appendBtn("Download", () => {
-                console.log("Button clicked")
 
-                var success = function() {
-                    console.log( "success" )
+                var success = function( resultObject ) {
+                    console.log( "success", resultObject )
                 }
 
-                var failed = function() {
-                    console.log( "failed" )
+                var failure = function( failureObject ) {
+                    console.log( "failed", failureObject )
                 }
 
                 var pid = aPackage.packageId
@@ -73,7 +72,7 @@ function(gmi_platform, DownloadManager, ui_helper) {
                 var purl = aPackage.basepath + aPackage.packageId
 
                 downloadManager.download( pid, pmd, purl ).then(
-                    success, failed
+                    success, failure
                 )
             }))
 
