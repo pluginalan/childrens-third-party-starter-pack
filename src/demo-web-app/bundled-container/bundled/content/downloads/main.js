@@ -26,7 +26,7 @@ function(gmi_platform, DownloadManager, ui_helper) {
     inner.id = "inner";
     container.appendChild(wrapper);
     wrapper.appendChild(inner);
-    ui_helper.appendTitle(gmi.gameDir, "Package Downloader Examples");
+    ui_helper.appendTitle(gmi.gameDir, "Package Downloader Examples - DON'T USE THIS, IT IS DEFUNCT");
 
     // ---------- GMI Exit Example -----------
     ui_helper.appendBtn("Pop", function() {
@@ -58,7 +58,23 @@ function(gmi_platform, DownloadManager, ui_helper) {
 
             var buttonsContainer = ui_helper.appendDiv()
             buttonsContainer.appendChild(ui_helper.appendBtn("Download", () => {
-                console.log("Button clicked")
+
+                var success = function( resultObject ) {
+                    console.log( "success", resultObject )
+                }
+
+                var failure = function( failureObject ) {
+                    console.log( "failed", failureObject )
+                }
+
+                var pid = aPackage.packageId
+                var pmd = aPackage.metadataObject
+                var purl = aPackage.basepath + aPackage.packageId
+                purl = 
+
+                downloadManager.download( pid, pmd, purl ).then(
+                    success, failure
+                )
             }))
 
             buttonsContainer.appendChild(ui_helper.appendBtn("Cancel", () => {
