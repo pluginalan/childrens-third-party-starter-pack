@@ -8,18 +8,22 @@ var sandbox = sinon.createSandbox();
 
 describe('downloading metadata', function() {
     
-    var networkResponse = '{"packages":[{"metadata":"{}","packageId":"somePackageId","status":"downloading","progress":50}]}'
-    
+    var emptyMetadataNetworkResponse = '{"packages":[{"metadata":"{}","packageId":"somePackageId","status":"downloading","progress":50}]}'
+    var missingMetadataNetworkResponse = '{"packages":["packageId":"somePackageId","status":"downloading","progress":50}]}'
+    var populatedMetadataNetworkResponse = '{"packages":[{"metadata":"{\\\"dependencies\\\":[\\\"a\\\",\\\"b\\\",\\\"c\\\"]}","packageId":"somePackageId","status":"downloading","progress":50}]}'
+    var spyNetworkFn
+
     beforeEach( () => {
-        var spyNetworkFn = sandbox.stub(Networking, 'sendQuery')
-        spyNetworkFn.resolves(networkResponse)
+        spyNetworkFn = sandbox.stub(Networking, 'sendQuery')
     })
     
     afterEach(function () {
       sandbox.restore();
     });
     
-    it('it parses stringified metadata into object', function(done) {
+    it('parses stringified metadata into object', function(done) {
+        spyNetworkFn.resolves(emptyMetadataNetworkResponse)
+
         var downloadManager = new DownloadManager()
         downloadManager.downloading().then((resolvedObject)=>{
             assert.deepEqual(resolvedObject.packages[0].metadata, {});
@@ -28,5 +32,30 @@ describe('downloading metadata', function() {
             done(rejectedResponse)
         })
     })
+
+    it('parses stringified metadata with dependencies into object', function(done) {
+        spyNetworkFn.resolves(populatedMetadataNetworkResponse)
+
+        var downloadManager = new DownloadManager()
+        downloadManager.downloading().then((resolvedObject)=>{
+            console.log(resolvedObject.packages[0].metadata)
+            assert.deepEqual(resolvedObject.packages[0].metadata, {"dependencies":["a","b","c"]});
+            done()
+        }).catch((rejectedResponse)=>{
+            done(rejectedResponse)
+        })
+    })
+
+    /*it('raises an error if metadata is missing', function(done) {
+        spyNetworkFn.resolves(missingMetadataNetworkResponse)
+
+        var downloadManager = new DownloadManager()
+        downloadManager.downloading().then((resolvedObject)=>{
+            //assert.deepEqual(resolvedObject.packages[0].metadata, {});
+            done()
+        }).catch((rejectedResponse)=>{
+            done(rejectedResponse)
+        })
+    })*/
     
 })
