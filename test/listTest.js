@@ -1,9 +1,9 @@
-require("amd-loader");
-var assert = require('assert');
-var Packages = require('../src/demo-web-app/pnm-container/pnm/js/gmi-extensions/packages.js');
-var DownloadManager = require('../src/demo-web-app/pnm-container/pnm/js/downloads/download-manager.js');
-var sinon = require('sinon');
-var sandbox = sinon.createSandbox();
+require("amd-loader")
+var assert = require('assert')
+var Packages = require('../src/demo-web-app/pnm-container/pnm/js/gmi-extensions/packages.js')
+var DownloadManager = require('../src/demo-web-app/pnm-container/pnm/js/downloads/download-manager.js')
+var sinon = require('sinon')
+var sandbox = sinon.createSandbox()
 
 describe('list packages', function() {
 
@@ -20,7 +20,7 @@ describe('list packages', function() {
             "tag1",
             "tag2"
         ]
-    };
+    }
 
     var poniesBundledPackage = {
         "packageId": "poniesAvailablePackageId",
@@ -35,7 +35,7 @@ describe('list packages', function() {
             "tag1",
             "tag2"
         ]
-    };
+    }
 
     var goatsBundledPackage = {
         "packageId": "goatPkgId",
@@ -50,7 +50,7 @@ describe('list packages', function() {
             "tag1",
             "tag2"
         ]
-    };
+    }
 
     var sealsInstalledPackage = {
         "packageId": "sealPkgId",
@@ -85,39 +85,68 @@ describe('list packages', function() {
         "packages" : []
     }
 
+    var dmDownloadingResponse = {
+        "packages" : [
+            {
+                "packageId" : "walkingLeafPackageId",
+                "metadata"  : { "packageId": "walkingLeafPackageId"},
+                "status"    : "downloading",
+                "progress"  : 67
+            }
+        ]
+    }
+
+    var dmDownloadingInstallingResponse_noPkgs = {
+        "packages" : []
+    }
+
+    var dmInstallingResponse = {
+        "packages" : [
+            {
+                "packageId" : "mantisShrimpPackageId",
+                "metadata"  : { "packageId": "mantisShrimpPackageId"},
+                "status"    : "installing"
+            }
+        ]
+    }
+
     beforeEach(function(done) {
-        window = {};
-        window._packages = {};
-        window._packages.availablePackages = [];
-        window._packages.bundledPackages = [];
+        window = {}
+        window._packages = {}
+        window._packages.availablePackages = []
+        window._packages.bundledPackages = []
         done()
-    });
+    })
 
     afterEach(function () {
-        sandbox.restore();
-    });
+        sandbox.restore()
+    })
 
     describe('#list()', function() {
 
         it('should return error when availablePackages is undefined',
         function(done) {
+            var downloadingInstallingFn = sandbox.stub(DownloadManager.prototype, 'downloading')
+            downloadingInstallingFn.resolves(dmDownloadingInstallingResponse_noPkgs)
             var installedFn = sandbox.stub(DownloadManager.prototype, 'installed')
             installedFn.resolves(dmInstalledResponse_noPkgs)
-            window._packages.availablePackages = undefined;
+            window._packages.availablePackages = undefined
             Packages.list().then(function(result){
                 done(result)
             }).catch(function(error){
-                assert.equal(error.action, "list");
-                assert.equal(error.error, "unknown");
+                assert.equal(error.action, "list")
+                assert.equal(error.error, "unknown")
                 done()
-            });
-        });
+            })
+        })
 
         it('should return empty array when there are no available packages',
         function(done) {
+            var downloadingInstallingFn = sandbox.stub(DownloadManager.prototype, 'downloading')
+            downloadingInstallingFn.resolves(dmDownloadingInstallingResponse_noPkgs)
             var installedFn = sandbox.stub(DownloadManager.prototype, 'installed')
             installedFn.resolves(dmInstalledResponse_noPkgs)
-            window._packages.availablePackages = [];
+            window._packages.availablePackages = []
             Packages.list().then(function(result){
                 var packages = result
                 assert.notEqual(packages, undefined, "list returns result")
@@ -125,13 +154,14 @@ describe('list packages', function() {
                 done()
             }).catch(function(error){
                 done(error)
-            });
-        });
+            })
+        })
 
         it('should return one package in array when there is one available package',
         function(done) {
-            window._packages.availablePackages = [poniesAvailablePackage];
-
+            window._packages.availablePackages = [poniesAvailablePackage]
+            var downloadingInstallingFn = sandbox.stub(DownloadManager.prototype, 'downloading')
+            downloadingInstallingFn.resolves(dmDownloadingInstallingResponse_noPkgs)
             var installedFn = sandbox.stub(DownloadManager.prototype, 'installed')
             installedFn.resolves(dmInstalledResponse_noPkgs)
 
@@ -146,32 +176,35 @@ describe('list packages', function() {
                 done()
             }).catch(function(error){
                 done(error)
-            });
-        });
+            })
+        })
 
         it('should return error when bundledPackages is undefined',
         function(done) {
+            var downloadingInstallingFn = sandbox.stub(DownloadManager.prototype, 'downloading')
+            downloadingInstallingFn.resolves(dmDownloadingInstallingResponse_noPkgs)
             var installedFn = sandbox.stub(DownloadManager.prototype, 'installed')
             installedFn.resolves(dmInstalledResponse_noPkgs)
-            window._packages.availablePackages = [];
-            window._packages.bundledPackages = undefined;
+            window._packages.availablePackages = []
+            window._packages.bundledPackages = undefined
 
             Packages.list().then(function(result){
                 done(result)
             }).catch(function(error){
-                assert.equal(error.action, "list");
-                assert.equal(error.error, "unknown");
+                assert.equal(error.action, "list")
+                assert.equal(error.error, "unknown")
                 done()
-            });
-        });
+            })
+        })
 
         it('should return one package in the array if there is one bundled package',
         function(done) {
-
+            var downloadingInstallingFn = sandbox.stub(DownloadManager.prototype, 'downloading')
+            downloadingInstallingFn.resolves(dmDownloadingInstallingResponse_noPkgs)
             var installedFn = sandbox.stub(DownloadManager.prototype, 'installed')
             installedFn.resolves(dmInstalledResponse_noPkgs)
-            window._packages.availablePackages = [];
-            window._packages.bundledPackages = [poniesBundledPackage];
+            window._packages.availablePackages = []
+            window._packages.bundledPackages = [poniesBundledPackage]
 
             Packages.list().then(function(result){
                 var packages = result
@@ -189,16 +222,17 @@ describe('list packages', function() {
                 done()
             }).catch(function(error){
                 done(error)
-            });
-        });
+            })
+        })
 
         it('should return two packages if there are two bundledPackages',
         function(done) {
-
+            var downloadingInstallingFn = sandbox.stub(DownloadManager.prototype, 'downloading')
+            downloadingInstallingFn.resolves(dmDownloadingInstallingResponse_noPkgs)
             var installedFn = sandbox.stub(DownloadManager.prototype, 'installed')
             installedFn.resolves(dmInstalledResponse_noPkgs)
-            window._packages.availablePackages = [];
-            window._packages.bundledPackages = [poniesBundledPackage, goatsBundledPackage];
+            window._packages.availablePackages = []
+            window._packages.bundledPackages = [poniesBundledPackage, goatsBundledPackage]
 
             Packages.list().then(function(result){
                 var packages = result
@@ -207,16 +241,17 @@ describe('list packages', function() {
                 done()
             }).catch(function(error){
                 done(error)
-            });
-        });
+            })
+        })
 
         it('should return two packages if there is one available and bundled package',
         function(done) {
-
+            var downloadingInstallingFn = sandbox.stub(DownloadManager.prototype, 'downloading')
+            downloadingInstallingFn.resolves(dmDownloadingInstallingResponse_noPkgs)
             var installedFn = sandbox.stub(DownloadManager.prototype, 'installed')
             installedFn.resolves(dmInstalledResponse_noPkgs)
-            window._packages.availablePackages = [goatsBundledPackage];
-            window._packages.bundledPackages = [poniesBundledPackage];
+            window._packages.availablePackages = [goatsBundledPackage]
+            window._packages.bundledPackages = [poniesBundledPackage]
 
             Packages.list().then(function(result){
                 var packages = result
@@ -237,24 +272,59 @@ describe('list packages', function() {
                 done()
             }).catch(function(error){
                 done(error)
-            });
-        });
+            })
+        })
 
         it('should return an installed package', function(done) {
-
+            var downloadingInstallingFn = sandbox.stub(DownloadManager.prototype, 'downloading')
+            downloadingInstallingFn.resolves(dmDownloadingInstallingResponse_noPkgs)
             var installedFn = sandbox.stub(DownloadManager.prototype, 'installed')
             installedFn.resolves(dmInstalledResponse)
 
             Packages.list().then(function(result){
-                assert.notEqual(result, undefined, "Result is undefined")
+                assert.notEqual(result, undefined, "Result is not undefined")
                 assert.equal(result.length, 1, "Result.length")
-                assert.equal(result[0].packageId, "sealPkgId");
+                assert.equal(result[0].packageId, "sealPkgId")
                 done()
             }).catch(function(error){
                 done(error)
-            });
+            })
 
-        });
+        })
 
-    });
-});
+        it('should return a downloading package', function(done) {
+            var downloadingInstallingFn = sandbox.stub(DownloadManager.prototype, 'downloading')
+            downloadingInstallingFn.resolves(dmDownloadingResponse)
+            var installedFn = sandbox.stub(DownloadManager.prototype, 'installed')
+            installedFn.resolves(dmInstalledResponse_noPkgs)
+            
+            Packages.list().then(function(result){
+                assert.notEqual(result, undefined, "Result is not undefined")
+                assert.equal(result.length, 1, "Result.length")
+                assert.equal(result[0].status, "downloading")
+                assert.equal(result[0].packageId, "walkingLeafPackageId")
+                done()
+            }).catch(function(error){
+                done(error)
+            })
+        })
+
+        it('should return an installing package', function(done) {
+            var downloadingInstallingFn = sandbox.stub(DownloadManager.prototype, 'downloading')
+            downloadingInstallingFn.resolves(dmInstallingResponse)
+            var installedFn = sandbox.stub(DownloadManager.prototype, 'installed')
+            installedFn.resolves(dmInstalledResponse_noPkgs)
+            
+            Packages.list().then(function(result){
+                assert.notEqual(result, undefined, "Result is not undefined")
+                assert.equal(result.length, 1, "Result.length")
+                assert.equal(result[0].status, "installing")
+                assert.equal(result[0].packageId, "mantisShrimpPackageId")
+                done()
+            }).catch(function(error){
+                done(error)
+            })
+        })
+
+    })
+})
