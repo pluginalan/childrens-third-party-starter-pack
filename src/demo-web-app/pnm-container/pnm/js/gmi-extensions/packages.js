@@ -4,7 +4,23 @@ define(function(require) {
   var DownloadManager = require('../downloads/download-manager');
   var downloadManager = new DownloadManager();
 
+  var errorCallbacks = []
+  var progressCallbacks = []
+  var installingCallbacks = []
+  var installedCallbacks = []
+
+  var eventHandler = function(eventResponse) {
+      switch(eventResponse.status) {
+          case "error": errorCallbacks.forEach((callback)=>{callback(eventResponse.data)}); break;
+          case "progress": progressCallbacks.forEach((callback)=>{callback(eventResponse.data)}); break;
+          case "installing": installingCallbacks.forEach((callback)=>{callback(eventResponse.data)}); break;
+          case "installed": installedCallbacks.forEach((callback)=>{callback(eventResponse.data)}); break;
+          default: {}
+        }
+  };
+
   var packages = {
+
     list: function() {
       return new Promise((resolve, reject) => {
         if(window._packages.availablePackages && window._packages.bundledPackages) {
@@ -71,7 +87,7 @@ define(function(require) {
           var thePackage = window._packages.availablePackages.find((availablePackage) => {
               return availablePackage.packageId == packageId
           })
-          var downloadUrl = thePackage.basepath + thePackage.packageId
+          var downloadUrl = thePackage.basepath + thePackage.packageId + ".zip"
           let metadataObject = thePackage
           let downloadPromise = downloadManager.download(packageId, metadataObject, downloadUrl)
 
@@ -92,46 +108,49 @@ define(function(require) {
           reject(failureReturnObject("notFound"))
         }
       })
+    },
 
-    }
-  }
+    addListener: function(eventType, eventObject) {
+        window._packages.callback = eventHandler
+        switch(eventType) {
+          case "error": errorCallbacks.push(eventObject); break;
+          case "progress": progressCallbacks.push(eventObject); break;
+          case "installing": installingCallbacks.push(eventObject); break;
+          case "installed": installedCallbacks.push(eventObject); break;
+          default: throw Error("Unknown EventType: " + eventType);
+        }
+      },
 
+     removeListener: function(eventObject) {
+
+       var errorIdx = errorCallbacks.indexOf(eventObject);
+       if(errorIdx > -1) {
+         errorCallbacks.splice(errorIdx, 1)
+       }
+       var progIdx = progressCallbacks.indexOf(eventObject);
+       if(progIdx > -1) {
+         progressCallbacks.splice(progIdx, 1)
+       }
+       var installingIdx = installingCallbacks.indexOf(eventObject);
+       if(installingIdx > -1) {
+         installingCallbacks.splice(installingIdx, 1)
+       }
+       var installIdx = installedCallbacks.indexOf(eventObject);
+       if(installIdx > -1) {
+         installedCallbacks.splice(installIdx, 1)
+       }
+       if(errorIdx == progIdx == installIdx == installingIdx == -1) {
+         console.warn("Attempted to remove a listener that doesnt exist!")
+       }
+
+     },
+
+     removeAllListeners: function() {
+       errorCallbacks = []
+       progressCallbacks = []
+       installingCallbacks = []
+       installedCallbacks = []
+     }
+   }
     return packages
   })
-
-  // download: function(packageId) {
-  //     // from packageId need downloadUrl, and metadata
-  //
-  //     return new Promise((resolve, reject) => {
-  //         // check packageId is in availabe packages, if not reject
-  //
-  //         // check packageId is not already currently downloading or installing, if so reject
-  //
-  //         // get download url from some place, likely basePath + packageId
-  //
-  //         // create metadata object from tags, type, dependencies, etc.
-  //
-  //         let downloadPromise = downloadManager.download(packageId, metadataObject, downloadUrl)
-  //         downloadPromise.then( successResponse => {
-  //             if (successResponse.packages[0].status == "downloading"){
-  //                 resolve(
-  //                     {
-  //                         "packageId" : packageId,
-  //                         "action"    : "download"
-  //                     }
-  //                 )
-  //             }else{
-  //                 // switch on error types, reject with correct response.
-  //             }
-  //         }, rejectResponse => {
-  //             reject(
-  //                 {
-  //                     "packageId" : packageId,
-  //                     "action"    : "download",
-  //                     "error"     : "unknown"
-  //                 }
-  //             )
-  //         }
-  //         )
-  //     }
-  // }

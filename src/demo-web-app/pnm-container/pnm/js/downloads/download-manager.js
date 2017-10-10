@@ -69,14 +69,14 @@ define(function (require, exports, module) {
                 try {
                     var installationInfo = JSON.parse(response);
                     for (var ix = 0; ix < installationInfo.packages.length; ix++) {
-                        var package = installationInfo.packages[ix];
+                        var pkg = installationInfo.packages[ix];
 
                         // unstringify metadata
                         try {
-                            package.metadata = JSON.parse(package.metadata);
+                            pkg.metadata = JSON.parse(pkg.metadata);
                         }
                         catch(e) {
-                            package.metadata = null;
+                            pkg.metadata = null;
                         }
                     }
                 }
@@ -166,13 +166,25 @@ define(function (require, exports, module) {
 
             Networking.sendQuery(requestString).then(function(response) {
                 var resultObj;
-
+                
                 try {
                     resultObj = JSON.parse(response);
+                    
+                    resultObj.packages.forEach((pkg)=>{
+                        // unstringify metadata
+                        try {
+                            pkg.metadata = JSON.parse(pkg.metadata);
+                        }
+                        catch(e) {
+                            pkg.metadata = null;
+                        }
+                    })
+                    
                     resolve(resultObj);
                 }
                 catch(e) {
                     // broken response
+                    console.error(e);
                     console.log("** Catastrophic failure: downloading - could not parse response");
                     reject(failureReturnObject);
                 }
