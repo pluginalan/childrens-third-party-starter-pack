@@ -31,8 +31,8 @@
   },
   "availablePackages": [
     {
-      "packageId": "package1",
-      "basepath": "base_path",
+      "packageId": "test-package-1",
+      "basepath": "https://s3-eu-west-1.amazonaws.com/childrens-data-public-int/apps/cbeebies-picknmix-dev/downloads/demo-examples/",
       "type": "type",
       "dependencies": [
         "tanks",
