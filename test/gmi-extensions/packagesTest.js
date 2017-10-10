@@ -22,7 +22,10 @@ describe("packages", function () {
     window._packages = {};
 
     beforeEach(function () {
-        sandbox = sinon.sandbox.create()
+        sandbox = sinon.sandbox.create();
+
+        downloadManager.prototype.cancel = sandbox.mock();
+        downloadManager.prototype.downloading = sandbox.mock();
         window._packages.availablePackages = [availablePackage];
         window._packages.bundledPackages = []
     });
@@ -35,10 +38,20 @@ describe("packages", function () {
             "action": "cancel"
         };
 
+        const downloadingPackages = {
+            "dependencies": [],
+            "metadata": "metadata",
+            "packageId": packageId,
+            "tags": [],
+            "type": "type",
+            "status": "downloading",
+            "progress": 0
+
+        };
 
         it("should cancel with successful response", function () {
             //given
-            downloadManager.cancel = sandbox.mock();
+            downloadManager.prototype.downloading = sandbox.stub().returns(Promise.resolve([downloadingPackages]));
             //when
             let resultPromise = packages.cancel(packageId);
             //then
@@ -47,10 +60,10 @@ describe("packages", function () {
 
         it("should call downloadManager cancel", function () {
             //given
-            downloadManager.cancel = sandbox.mock();
+            downloadManager.prototype.downloading = sandbox.stub().returns(Promise.resolve([downloadingPackages]));
             //when
             let result = packages.cancel(packageId).then(function (resolvedJson) {
-                expect(downloadManager.cancel.called).to.be.true;
+                expect(downloadManager.prototype.cancel.called).to.be.true;
                 return resolvedJson;
             });
             //then
@@ -66,7 +79,7 @@ describe("packages", function () {
         };
         it("Should return error notDownloading", function () {
             //given
-            downloadManager.cancel = sandbox.mock();
+            downloadManager.prototype.downloading = sandbox.stub().returns(Promise.resolve([]));
             //when
             let resultPromise = packages.cancel(packageId);
             //then
@@ -86,7 +99,7 @@ describe("packages", function () {
             //when
             let resultPromise = packages.cancel(packageId);
             //then
-            return expect(resultPromise).to.be.rejected.then(error=>{
+            return expect(resultPromise).to.be.rejected.then(error => {
                 expect(error.error).to.equal("installing")
             });
         })

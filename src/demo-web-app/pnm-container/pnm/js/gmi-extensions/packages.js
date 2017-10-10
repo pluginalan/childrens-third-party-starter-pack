@@ -41,19 +41,25 @@ define(function (require) {
         list: function () {
             return new Promise((resolve, reject) => {
                 if (window._packages.availablePackages && window._packages.bundledPackages) {
-                    var availablePackages = window._packages.availablePackages
+                    var availablePackages = window._packages.availablePackages;
                     availablePackages.forEach((aPackage) => {
-                        aPackage.status = "available"
-                        aPackage.downloadProgress = 0
+                        aPackage.status = "available";
+                        aPackage.downloadProgress = 0;
                         aPackage.readOnly = false
                     });
-                    var bundledPackages = window._packages.bundledPackages
+                    var bundledPackages = window._packages.bundledPackages;
                     bundledPackages.forEach((bPackage) => {
-                        bPackage.status = "installed"
+                        bPackage.status = "installed";
                         bPackage.readOnly = true
                     });
-                    var pkgs = availablePackages.concat(bundledPackages)
-                    resolve(pkgs);
+                    downloadManager.downloading().then(downloadingResult =>{
+                        //todo: map response to match list
+                        var pkgs = availablePackages.concat(bundledPackages,downloadingResult);
+                        resolve(pkgs);
+                    },downloadError=>{
+                        //todo reject
+                    })
+
                 } else {
                     reject({
                         "action": "list",
@@ -140,9 +146,9 @@ define(function (require) {
 
             return packages.list().then(function (result) {
                 return new Promise(function (resolve, reject) {
+                    var packageInfo = result.filter(i => i.packageId === packageId && i.status=="downloading");
 
-                    var packageInfo = result.find(i => i.packageId === packageId);
-                    if (packageInfo.status === "downloading") {
+                    if (packageInfo.length>0) {
                         downloadManager.cancel(packageId);
                         resolve({
                             "packageId": packageId,
@@ -159,7 +165,8 @@ define(function (require) {
 
             }, function (error) {
                 //todo reject unknown error
-                return "error";
+                console.log(error)
+                return "wat"
             });
         },
 
