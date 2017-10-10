@@ -13,8 +13,6 @@ describe('add package event listener', function() {
   window._packages.callback = function() {};
 
   describe('#addListener(eventType, eventResponse)', function() {
-
-
       var errorResponse = {
           "status" : "error",
           "data" : {
@@ -113,7 +111,6 @@ describe('add package event listener', function() {
           done();
       })
 
-
       it('should call a "installing" listener on a installing package event', function(done) {
           var callback = sinon.spy();
           Packages.addListener("installing", callback);
@@ -135,7 +132,7 @@ describe('add package event listener', function() {
           done();
       })
 
-      it('should call the appropriate listener once', function(done) {
+      it('should call the appropriate listener once for every event', function(done) {
         var callback = sinon.spy();
         var progCallback = sinon.spy();
         var installCallback = sinon.spy();
