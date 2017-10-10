@@ -117,7 +117,7 @@ define(function(require) {
           case "progress": progressCallbacks.push(eventObject); break;
           case "installing": installingCallbacks.push(eventObject); break;
           case "installed": installedCallbacks.push(eventObject); break;
-          default: return;
+          default: throw Error("Unknown EventType: " + eventType);
         }
       },
 
