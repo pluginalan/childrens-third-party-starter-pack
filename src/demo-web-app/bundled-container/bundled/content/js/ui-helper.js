@@ -5,11 +5,11 @@ define(function(){
       inner.appendChild(title);
   }
 
-  function addStylesheet(gameDir) {
+  function addStylesheet() {
       var link  = document.createElement('link');
       link.rel  = 'stylesheet';
       link.type = 'text/css';
-      link.href = gameDir + 'style.css';
+      link.href =  '/content/css/style.css';
       link.media = 'all';
       document.getElementsByTagName('head')[0].appendChild(link);
   }
@@ -54,12 +54,29 @@ define(function(){
   function appendSpan(text, div) {
       var span = document.createElement("span");
       span.innerHTML = text;
+
       if (div) {
           div.appendChild(span);
       }
       else {
           inner.appendChild(span);
       }
+
+      return span;
+  }
+
+  function appendSpan(text, div, className) {
+      var span = document.createElement("span");
+      span.innerHTML = text;
+      span.className = className;
+      if (div) {
+          div.appendChild(span);
+      }
+      else {
+          inner.appendChild(span);
+      }
+
+      return span;
   }
 
   function appendLink(linkText, link, div) {

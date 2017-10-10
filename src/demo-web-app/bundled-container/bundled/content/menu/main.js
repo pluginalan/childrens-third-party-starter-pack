@@ -1,5 +1,5 @@
 define(['pnm-library/gmi-mobile', './storage', 'pnm-library/downloads/download-manager', '../js/ui-helper'],
-function(gmi_platform, storage, PackageManager, ui_helper) {
+function(gmi_platform, storage, DownloadManager, ui_helper) {
     "use strict";
 
     var settingsConfig = {
@@ -61,11 +61,11 @@ function(gmi_platform, storage, PackageManager, ui_helper) {
     // the local one.
     var gmi = gmi_platform.getGMI({settingsConfig: settingsConfig});
     var numberOfStatsButtonClicks = 0;
-    var packageManager = new PackageManager();
+    var downloadManager = new DownloadManager();
 
-    //PackageManager.CommandBase = "localhost:3030/"+PackageManager.CommandBase;
+    //DownloadManager.CommandBase = "localhost:3030/"+DownloadManager.CommandBase;
 
-    ui_helper.addStylesheet(gmi.gameDir);
+    ui_helper.addStylesheet();
 
     // ----- Set up container for the example --------
 
@@ -160,25 +160,22 @@ function(gmi_platform, storage, PackageManager, ui_helper) {
     ui_helper.appendHorizontalRule();
 
     function onSettingsClosed() {
-      ui_helper.appendSpan("onSettingsClosed has been called");
+      ui_helper.appendSpan( "onSettingsClosed has been called", settingsParagraph )
     }
 
     function onSettingChanged(key, value) {
         if (key === "audio") {
-            gmi.setAudio(!gmi.getAllSettings().audio);
-            document.getElementById("audio-label").innerHTML = gmi.getAllSettings().audio;
-            // Toggle in game audio
-            ui_helper.appendSpan("Audio setting toggled. ", settingsParagraph);
+            document.getElementById("audio-label").innerHTML = gmi.getAllSettings().audio
+            ui_helper.appendSpan("Audio setting toggled. ", settingsParagraph)
         }
         if (key === "hard") {
             // The chosen value will already have been persisted, and
             // will available as gmi.getAllSettings().gameData.hard
-            ui_helper.appendSpan("Difficulty has been set to...", settingsParagraph);
+            ui_helper.appendSpan("Difficulty has been set to...", settingsParagraph)
             if (value) {
-                ui_helper.appendSpan("Hard. ", settingsParagraph); //setHardMode
-            }
-            else {
-                ui_helper.appendSpan("Easy. ", settingsParagraph); //setEasyMode
+                ui_helper.appendSpan("Hard. ", settingsParagraph) //setHardMode
+            } else {
+                ui_helper.appendSpan("Easy. ", settingsParagraph) //setEasyMode
             }
         }
     }
@@ -187,7 +184,7 @@ function(gmi_platform, storage, PackageManager, ui_helper) {
     var connectivityP = ui_helper.appendParagraph();
 
     function updateConnectivity(paragraph){
-    packageManager.getConnectivity().then(function(response){
+    downloadManager.getConnectivity().then(function(response){
         connectivityCallback(response);
             })
     }
@@ -196,7 +193,7 @@ function(gmi_platform, storage, PackageManager, ui_helper) {
         connectivityP.innerHTML = response.connectionType;
     }
 
-    packageManager.setConnectivityCallback(connectivityCallback);
+    downloadManager.setConnectivityCallback(connectivityCallback);
 
     // ---------- Menu Demo -------------
 

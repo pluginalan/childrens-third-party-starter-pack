@@ -234,19 +234,19 @@ define([
         AppleGMI.prototype.showSettings = function( onSettingChangedCb, onSettingsClosed ) {
             var self = this;
             window.gmiCallbacks = {
-                "onSettingChanged": function(key, value){
-                    if (key === "audio") {
+                "onSettingChanged": function( key, value ){
+                    if( key === "audio" ) {
                         self.settings.audio = value
-                    }else if (key === "muted") {
+                    } else if( key === "muted" ) {
                         self.settings.audio = !value
-                    }else if (key === "motion") {
+                    } else if( key === "motion" ) {
                         self.settings.motion = value
-                    }else if (key === "subtitles") {
+                    } else if( key === "subtitles" ) {
                         self.settings.subtitles = value
-                    }else{
-                        self.settings.gameData[key] = value;
+                    } else {
+                        self.settings.gameData[key] = value
                     }
-                    onSettingChangedCb(key, value)
+                    onSettingChangedCb( key, value )
                 },
                 "onSettingsClosed": onSettingsClosed
             }
