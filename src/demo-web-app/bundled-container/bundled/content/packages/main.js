@@ -1,5 +1,8 @@
-define(['pnm-library/gmi-mobile', '../js/ui-helper'], function(gmi_platform, ui_helper) {
+define(['pnm-library/gmi-mobile', '../js/ui-helper', 'pnm-library/downloads/download-manager'], function(gmi_platform, ui_helper, DownloadManager) {
     "use strict";
+
+
+    var downloadManager = new DownloadManager();
 
     var settingsConfig = {};
 
@@ -23,6 +26,18 @@ define(['pnm-library/gmi-mobile', '../js/ui-helper'], function(gmi_platform, ui_
     wrapper.appendChild(inner);
     ui_helper.appendTitle(gmi.gameDir, "Packages");
 
+    var popParams = {
+        "last_experience": "packages",
+        "method": "pop",
+        "stars": "12345"
+    };
+
+    ui_helper.appendBtn("Pop", function(){
+        gmi.experiences.pop(popParams);
+    });
+
+    ui_helper.appendHorizontalRule()
+
     ui_helper.appendSubtitle("Bundled package content");
     ui_helper.appendImage('/packages/bundledcontentpack/pnm_logo.png');
 
@@ -38,18 +53,6 @@ define(['pnm-library/gmi-mobile', '../js/ui-helper'], function(gmi_platform, ui_
     });
 
     ui_helper.appendHorizontalRule()
-
-    // Game loaded
-
-    var popParams = {
-        "last_experience": "packages",
-        "method": "pop",
-        "stars": "12345"
-    };
-
-    ui_helper.appendBtn("Pop", function(){
-        gmi.experiences.pop(popParams);
-    });
 
     gmi.gameLoaded();
 
@@ -78,7 +81,7 @@ define(['pnm-library/gmi-mobile', '../js/ui-helper'], function(gmi_platform, ui_
                 var pid = aPackage.packageId
                 var pmd = aPackage.metadataObject
                 var purl = aPackage.basepath + aPackage.packageId
-                purl = 
+                //purl = 
 
                 downloadManager.download( pid, pmd, purl ).then(
                     success, failure
