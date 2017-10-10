@@ -16,8 +16,8 @@
     "sinon": "^4.0.1"
   },
   "scripts": {
-    "test": "mocha",
-    "test": "mocha --debug-brk"
+    "test": "mocha --recursive",
+    "testWithBreak": "mocha --debug-brk --recursive"
   },
   "repository": {
     "type": "git",
