@@ -69,23 +69,12 @@ define(['pnm-library/gmi-mobile', '../js/ui-helper', 'pnm-library/downloads/down
 
             var buttonsContainer = ui_helper.appendDiv()
             buttonsContainer.appendChild(ui_helper.appendBtn("Download", () => {
-
-                var success = function( resultObject ) {
-                    console.log( "success", resultObject )
-                }
-
-                var failure = function( failureObject ) {
-                    console.log( "failed", failureObject )
-                }
-
-                var pid = aPackage.packageId
-                var pmd = aPackage.metadataObject
-                var purl = aPackage.basepath + aPackage.packageId
-                //purl = 
-
-                downloadManager.download( pid, pmd, purl ).then(
-                    success, failure
-                )
+                gmi.packages.download(aPackage.packageId).then((successResponse) => {
+                    console.log(successResponse.packageId + " - " + successResponse.action)
+                },
+                (errorResponse) => {
+                    console.log(errorResponse.error)
+                })
             }))
 
             buttonsContainer.appendChild(ui_helper.appendBtn("Cancel", () => {
