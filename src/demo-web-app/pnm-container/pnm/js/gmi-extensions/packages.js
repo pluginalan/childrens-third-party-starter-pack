@@ -146,7 +146,7 @@ define(function(require) {
                     var thePackage = window._packages.availablePackages.find((availablePackage) => {
                         return availablePackage.packageId == packageId
                     })
-                    var downloadUrl = thePackage.basepath + thePackage.packageId + ".zip"
+                    var downloadUrl = thePackage.basePath + thePackage.packageId + ".zip"
                     let metadataObject = thePackage
                     let downloadPromise = downloadManager.download(packageId, metadataObject, downloadUrl)
 
