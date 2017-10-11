@@ -57,7 +57,7 @@ describe('download package', function() {
 
         it('should download an available package', function(done) {
             Packages.download('poniesPackageId').then(function(response) {
-                sinon.assert.calledWith(DownloadManager.prototype.download, 'poniesPackageId', poniesBundledPackage, 'http://www.bbc.co.uk/poniesPackageId')
+                sinon.assert.calledWith(DownloadManager.prototype.download, 'poniesPackageId', poniesBundledPackage, 'http://www.bbc.co.uk/poniesPackageId.zip')
                 assert.equal("poniesPackageId", response.packageId)
                 assert.equal("download", response.action)
                 done()
@@ -68,7 +68,7 @@ describe('download package', function() {
 
         it('should update status in list', function(done) {
             Packages.download('poniesPackageId').then(function(response) {
-                sinon.assert.calledWith(DownloadManager.prototype.download, 'poniesPackageId', poniesBundledPackage, 'http://www.bbc.co.uk/poniesPackageId')
+                sinon.assert.calledWith(DownloadManager.prototype.download, 'poniesPackageId', poniesBundledPackage, 'http://www.bbc.co.uk/poniesPackageId.zip')
 
                 var list = window._packages.availablePackages
                 var poniesUpdatedPackage = list.find((availablePackage) => {
