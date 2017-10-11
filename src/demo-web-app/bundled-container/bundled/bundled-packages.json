@@ -1,7 +1,7 @@
 [
     {
         "packageId": "bundledcontentpack",
-        "basepath": "content/bundledcontentpack/",
+        "basePath": "content/bundledcontentpack/",
         "type": "content-pack",
         "dependencies": [],
         "metadata": "metadata",
@@ -9,7 +9,7 @@
     },
     {
         "packageId": "jsutility",
-        "basepath": "content/js/",
+        "basePath": "content/js/",
         "type": "type",
         "dependencies": [],
         "metadata": "metadata",
@@ -20,7 +20,7 @@
     },
     {
         "packageId": "tanks",
-        "basepath": "content/tanks/",
+        "basePath": "content/tanks/",
         "type": "type",
         "dependencies": [ "jsutility" ],
         "metadata": "metadata",

@@ -10,7 +10,7 @@ describe('download package', function() {
 
     var poniesBundledPackage = {
         "packageId": "poniesPackageId",
-        "basepath": "http://www.bbc.co.uk/",
+        "basePath": "http://www.bbc.co.uk/",
         "type": "type",
         "dependencies": [
             "tanks",

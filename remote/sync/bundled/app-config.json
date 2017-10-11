@@ -32,7 +32,7 @@
   "availablePackages": [
     {
       "packageId": "test-package-1",
-      "basepath": "https://s3-eu-west-1.amazonaws.com/childrens-data-public-int/apps/cbeebies-picknmix-dev/downloads/demo-examples/",
+      "basePath": "https://s3-eu-west-1.amazonaws.com/childrens-data-public-int/apps/cbeebies-picknmix-dev/downloads/demo-examples/",
       "type": "type",
       "dependencies": [
         "tanks",
@@ -46,7 +46,7 @@
     },
     {
       "packageId": "package2",
-      "basepath": "base_path",
+      "basePath": "base_path",
       "type": "type",
       "dependencies": [
         "ponies",
@@ -60,7 +60,7 @@
     },
     {
       "packageId": "package3",
-      "basepath": "base_path",
+      "basePath": "base_path",
       "type": "type",
       "dependencies": [
         "menu"
