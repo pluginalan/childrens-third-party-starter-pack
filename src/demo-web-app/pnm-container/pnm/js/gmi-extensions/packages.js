@@ -169,6 +169,55 @@ define(function(require) {
             })
         },
 
+        cancel: function (packageId) {
+
+            return packages.list().then(result => {
+                return new Promise(function (resolve, reject) {
+                    function rejectMessage(packageId, errorType) {
+                        return {
+                            "packageId": packageId,
+                            "action": "cancel",
+                            "error": errorType
+                        }
+                    }
+
+                    var packageInfo = result.filter(i => i.packageId === packageId);
+
+                    if (packageInfo.length > 1) { // a package should only have one state
+                        reject(rejectMessage(packageId, packages.ERROR_NOT_FOUND))
+                    }
+
+                    switch (packageInfo[0].status) {
+                        case "downloading":
+                            downloadManager.cancel(packageId).then(cancelResult => {
+                                resolve({
+                                    "packageId": packageId,
+                                    "action": "cancel"
+                                });
+                            }, cancelError => {
+                                console.debug("downloadManager.cancel failed with: " + cancelError);
+                                reject(rejectMessage(packageId, packages.ERROR_UNKNOWN))
+                            });
+                            break;
+                        case "installing":
+                            reject(rejectMessage(packageId, packages.ERROR_NOT_DOWNLOADING));
+                            break;
+                        case "available":
+                            reject(rejectMessage(packageId, packages.ERROR_NOT_DOWNLOADING));
+                            break;
+                        default:
+                            reject(rejectMessage(packageId, packages.ERROR_NOT_FOUND))
+                    }
+                })
+
+            }, error => {
+                //if list fail, return unknown error
+                console.debug(error);
+                reject(rejectMessage(packageId, "unknown"));
+            });
+        },
+
+
         addListener: function(eventType, eventObject) {
             window._packages.callback = eventHandler
             switch(eventType) {
@@ -211,5 +260,10 @@ define(function(require) {
             installedCallbacks = []
         }
     }
+
+    packages.ERROR_NOT_DOWNLOADING = "notDownloading";
+    packages.ERROR_UNKNOWN = "unknown";
+    packages.ERROR_NOT_FOUND = "notFound";
+
     return packages
 })
