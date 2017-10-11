@@ -146,27 +146,61 @@ define(function (require) {
 
             return packages.list().then(function (result) {
                 return new Promise(function (resolve, reject) {
-                    var packageInfo = result.filter(i => i.packageId === packageId && i.status=="downloading");
-
-                    if (packageInfo.length>0) {
-                        downloadManager.cancel(packageId);
-                        resolve({
-                            "packageId": packageId,
-                            "action": "cancel"
-                        })
-                    } else {
+                    var packageInfo = result.filter(i => i.packageId === packageId);
+                    if (packageInfo.length != 1) {
                         reject({
                             "packageId": packageId,
                             "action": "cancel",
-                            "error": "notDownloading"
+                            "error": "notFound"
                         })
+                    }
+
+                    switch (packageInfo[0].status) {
+                        case "downloading":
+                            downloadManager.cancel(packageId).then(cancelResult => {
+                                resolve({
+                                    "packageId": packageId,
+                                    "action": "cancel"
+                                });
+                            }, cancelError => {
+                                reject({
+                                    "packageId": packageId,
+                                    "action": "cancel",
+                                    "error": "unknown"
+                                })
+                            });
+                            break;
+                        case "installing":
+                            reject({
+                                "packageId": packageId,
+                                "action": "cancel",
+                                "error": "notDownloading"
+                            });
+                            break;
+                        case "available":
+                            reject({
+                                "packageId": packageId,
+                                "action": "cancel",
+                                "error": "notDownloading"
+                            });
+                            break;
+                        default:
+                            reject({
+                                "packageId": packageId,
+                                "action": "cancel",
+                                "error": "unknown"
+                            })
                     }
                 })
 
             }, function (error) {
-                //todo reject unknown error
-                console.log(error)
-                return "wat"
+                //if list fail, return unkown error
+                console.debug(error);
+                reject({
+                    "packageId": packageId,
+                    "action": "cancel",
+                    "error": "unknown"
+                });
             });
         },
 
