@@ -35,12 +35,29 @@ define(function(require) {
                         allPackages.push(aPackage)
                     });
 
-                    // Get downloading
-                    // For each, set status
+                    // Get downloading and installing
+                    // For each, set appropriate status]
+                    downloadManager.downloading().then(successResponse => {
+                        successResponse.packages.forEach((aPackage) => {
+                            var packageObject = {}
+                            packageObject.packageId = aPackage.metadata.packageId;
+                            packageObject.metadata = aPackage.metadata;
+                            switch(aPackage.status) {
+                                case "downloading":
+                                    packageObject.status = "downloading"
+                                    packageObject.progress = aPackage.progress
+                                    break
+                                case "installing":
+                                    packageObject.status = "installing"
+                                    break
+                                default:
+                                    // Behaviour undefined
+                            }
+                            allPackages.push(packageObject)
+                        })
+                    })
 
-                    // Get installing
-                    // For each, set status
-
+                    // Get installed
                     downloadManager.installed().then(successResponse => {
                         successResponse.packages.forEach((aPackage) => {
                             var packageObject = {}
@@ -55,8 +72,6 @@ define(function(require) {
                         // Get available
                         // For each, check packageId not already present in above groups
                         // If not, set status
-
-
                         var doesAllPackagesContain = function(aPackage) {
                             var idx = allPackages.findIndex(function(pkg) {
                                 pkg.packageId == aPackage.packageId
