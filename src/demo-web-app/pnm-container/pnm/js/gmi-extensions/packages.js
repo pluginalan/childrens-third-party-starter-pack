@@ -181,13 +181,13 @@ define(function(require) {
                         }
                     }
 
-                    var packageInfo = result.filter(i => i.packageId === packageId);
+                    let status = result.filter(i => i.packageId === packageId).map(i=>i.status);
 
-                    if (packageInfo.length > 1) { // a package should only have one state
+                    if (status.length !== 1) { // a package should only have one state
                         reject(rejectMessage(packageId, packages.ERROR_NOT_FOUND))
                     }
 
-                    switch (packageInfo[0].status) {
+                    switch (status[0]) {
                         case "downloading":
                             downloadManager.cancel(packageId).then(cancelResult => {
                                 resolve({
