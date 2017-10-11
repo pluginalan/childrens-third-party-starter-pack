@@ -37,7 +37,6 @@ define(function (require) {
     };
 
     var packages = {
-
         list: function () {
             return new Promise((resolve, reject) => {
                 if (window._packages.availablePackages && window._packages.bundledPackages) {
@@ -144,15 +143,20 @@ define(function (require) {
 
         cancel: function (packageId) {
 
-            return packages.list().then(function (result) {
+            return packages.list().then(result => {
                 return new Promise(function (resolve, reject) {
-                    var packageInfo = result.filter(i => i.packageId === packageId);
-                    if (packageInfo.length != 1) {
-                        reject({
+                    function rejectMessage(packageId, errorType) {
+                        return {
                             "packageId": packageId,
                             "action": "cancel",
-                            "error": "notFound"
-                        })
+                            "error": errorType
+                        }
+                    }
+
+                    var packageInfo = result.filter(i => i.packageId === packageId);
+
+                    if (packageInfo.length > 1) { // a package should only have one state
+                        reject(rejectMessage(packageId, packages.ERROR_NOT_FOUND))
                     }
 
                     switch (packageInfo[0].status) {
@@ -163,44 +167,25 @@ define(function (require) {
                                     "action": "cancel"
                                 });
                             }, cancelError => {
-                                reject({
-                                    "packageId": packageId,
-                                    "action": "cancel",
-                                    "error": "unknown"
-                                })
+                                console.debug("downloadManager.cancel failed with: " + cancelError);
+                                reject(rejectMessage(packageId, packages.ERROR_UNKNOWN))
                             });
                             break;
                         case "installing":
-                            reject({
-                                "packageId": packageId,
-                                "action": "cancel",
-                                "error": "notDownloading"
-                            });
+                            reject(rejectMessage(packageId, packages.ERROR_NOT_DOWNLOADING));
                             break;
                         case "available":
-                            reject({
-                                "packageId": packageId,
-                                "action": "cancel",
-                                "error": "notDownloading"
-                            });
+                            reject(rejectMessage(packageId, packages.ERROR_NOT_DOWNLOADING));
                             break;
                         default:
-                            reject({
-                                "packageId": packageId,
-                                "action": "cancel",
-                                "error": "unknown"
-                            })
+                            reject(rejectMessage(packageId, packages.ERROR_NOT_FOUND))
                     }
                 })
 
-            }, function (error) {
-                //if list fail, return unkown error
+            }, error => {
+                //if list fail, return unknown error
                 console.debug(error);
-                reject({
-                    "packageId": packageId,
-                    "action": "cancel",
-                    "error": "unknown"
-                });
+                reject(rejectMessage(packageId, "unknown"));
             });
         },
 
@@ -258,5 +243,8 @@ define(function (require) {
             installedCallbacks = []
         }
     }
+    packages.ERROR_NOT_DOWNLOADING = "notDownloading";
+    packages.ERROR_UNKNOWN = "unknown";
+    packages.ERROR_NOT_FOUND = "notFound";
     return packages
 })
