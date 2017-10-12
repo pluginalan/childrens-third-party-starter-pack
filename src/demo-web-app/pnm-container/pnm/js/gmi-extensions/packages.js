@@ -31,7 +31,7 @@ define(function(require) {
                         var bundledToAdd = []
                         // Give suitable status and add to array
                         bundled.forEach(pkg => {
-                            pkg.status = "bundled"
+                            pkg.status = "installed"
                             pkg.readOnly = true
                             bundledToAdd.push(pkg)
                         })
@@ -101,8 +101,7 @@ define(function(require) {
                             }
                         })
 
-                        console.log("Final")
-                        console.log(allPackages.concat(availableToAdd))
+                        resolve(allPackages.concat(availableToAdd))
                     }).catch(error => {
                         console.warn(error)
                         // Reject with unknown error status
