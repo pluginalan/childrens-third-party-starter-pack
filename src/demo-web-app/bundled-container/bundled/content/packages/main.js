@@ -109,7 +109,7 @@ define(['pnm-library/gmi-mobile', '../js/ui-helper', 'pnm-library/downloads/down
                 (errorResponse) => {
                     console.log(errorResponse.error)
                     var element = document.getElementById(aPackage.packageId)
-                    ui_helper.appendParagraph("Downloading error", element)
+                    ui_helper.appendParagraph("Downloading error - " + errorResponse.error, element)
                 })
             }))
 

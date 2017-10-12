@@ -127,7 +127,7 @@ define(function(require) {
             * "downloading" | "errorOffline" | "errorNotFound" | "errorDisallowed" | "errorUnknown" | "errorInUse"
             */
             var parseDownloadResponseErrors = function(response) {
-                switch(response.error) {
+                switch(response.status) {
                     case "errorOffline": return failureReturnObject("offline")
                     case "errorNotFound": return failureReturnObject("notFound")
                     case "errorDisallowed": return failureReturnObject("notFound")
