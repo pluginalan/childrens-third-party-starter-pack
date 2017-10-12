@@ -37,30 +37,14 @@ define(function(require) {
                         })
                         return bundledToAdd
                     }).then(allPackages => {
-                        // Get installed
-                        
-                        var installedToAdd = []
-                        return downloadManager.installed().then(successResponse => {
-                            successResponse.packages.forEach(pkg => {
-                                pkg = pkg.metadata
-                                pkg.status = "installed" 
-                                pkg.downloadProgress = 0 
-                                pkg.readOnly = false 
-                                
-                                installedToAdd.push(pkg)
-                            })
-                            
-                            return allPackages.concat(installedToAdd)
-                        }, failureResponse => {
-                            console.warn("Download manager returned failure for installed()")
-                        })
-                    }).then(allPackages => {
                         // Get downloading and installing
-                        
                         var downloadingInstallingToAdd = []
                         return downloadManager.downloading().then(successResponse => {
-                            successResponse.packages.forEach(pkg => {
-                                pkg.packageId = pkg.metadata.packageId;
+                            successResponse.packages.filter((pkg)=>{
+                                return allPackages.every((existingPackage) => {
+                                    return existingPackage.packageId !== pkg.metadata.packageId
+                                })
+                            }).forEach(pkg => {
                                 switch(pkg.status) {
                                     case "downloading":
                                     var progress = pkg.progress
@@ -83,6 +67,36 @@ define(function(require) {
                             return allPackages.concat(downloadingInstallingToAdd)
                         }, failureResponse => {
                             console.warn("Download manager returned failure for downloading()")
+                            reject({
+                                "action"    : "list",
+                                "error"     : "unknown"
+                            })
+                        })
+                    }).then(allPackages => {
+                        // Get installed
+                        
+                        var installedToAdd = []
+                        return downloadManager.installed().then(successResponse => {
+                            successResponse.packages.filter((pkg)=>{
+                                return allPackages.every((existingPackage) => {
+                                    return existingPackage.packageId !== pkg.metadata.packageId
+                                })
+                            }).forEach(pkg => {
+                                pkg = pkg.metadata
+                                pkg.status = "installed" 
+                                pkg.downloadProgress = 0 
+                                pkg.readOnly = false 
+                                
+                                installedToAdd.push(pkg)
+                            })
+                            
+                            return allPackages.concat(installedToAdd)
+                        }, failureResponse => {
+                            console.warn("Download manager returned failure for installed()")
+                            reject({
+                                "action"    : "list",
+                                "error"     : "unknown"
+                            })
                         })
                     }).then(allPackages => {
                         // Get available
@@ -104,7 +118,10 @@ define(function(require) {
                         resolve(allPackages.concat(availableToAdd))
                     }).catch(error => {
                         console.warn(error)
-                        // Reject with unknown error status
+                        reject({
+                            "action"    : "list",
+                            "error"     : "unknown"
+                        })
                     })
                     
                     

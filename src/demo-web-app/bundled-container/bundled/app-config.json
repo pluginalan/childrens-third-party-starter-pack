@@ -59,6 +59,14 @@
       ]
     },
     {
+      "packageId": "test-package-2",
+      "basePath": "https://s3-eu-west-1.amazonaws.com/childrens-data-public-int/apps/cbeebies-picknmix-dev/downloads/demo-examples/",
+      "type": "content-pack",
+      "dependencies": [],
+      "metadata": "gameLogo.png",
+      "tags": []
+    },
+    {
       "packageId": "test-package-3",
       "basePath": "https://s3-eu-west-1.amazonaws.com/childrens-data-public-int/apps/cbeebies-picknmix-dev/downloads/demo-examples/",
       "type": "type",
@@ -69,6 +77,14 @@
       "tags": [
         "tag1"
       ]
+    },
+    {
+      "packageId": "gnomes",
+      "basePath": "https://s3-eu-west-1.amazonaws.com/childrens-data-public-int/apps/cbeebies-picknmix-dev/downloads/demo-examples/",
+      "type": "experience",
+      "dependencies": [],
+      "metadata": "gameLogo.png",
+      "tags": []
     }
   ],
   "experiences": [

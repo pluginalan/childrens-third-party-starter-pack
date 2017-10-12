@@ -31,9 +31,25 @@ define(['pnm-library/gmi-mobile', '../js/ui-helper', 'pnm-library/downloads/down
         "method": "pop",
         "stars": "12345"
     };
+    
+    var unknownPackage = {
+        "packageId"        : "unknownPackageId",
+        "basepath"         : "n/a",
+        "type"             : "n/a",
+        "status"           : "available",
+        "dependencies"     : [],
+        "metadata"         : "{}",
+        "tags"             : [],
+        "downloadProgress" : 0,
+        "readOnly"         : false
+    }
 
     ui_helper.appendBtn("Pop", function(){
         gmi.experiences.pop(popParams);
+    });
+    
+    ui_helper.appendBtn("Refresh", function(){
+        updatePackages()
     });
 
     ui_helper.appendHorizontalRule()
@@ -44,7 +60,7 @@ define(['pnm-library/gmi-mobile', '../js/ui-helper', 'pnm-library/downloads/down
     function updatePackages() {
         gmi.packages.list().then((packages) => {
             console.log(packages)
-            setupView(packages)
+            setupView(packages.concat(unknownPackage))
         }, (error) => {
             console.log("Error: " + error)
         });
@@ -53,27 +69,21 @@ define(['pnm-library/gmi-mobile', '../js/ui-helper', 'pnm-library/downloads/down
     updatePackages();
 
     gmi.gameLoaded();
-
+    
     gmi.packages.addListener("progress", (callback) => {
             console.log(callback.packageId + " - progress")
-            var element = document.getElementById(callback.packageId)
-            //ui_helper.appendParagraph("progress", element)
-            // updatePackages();
     })
+    
     gmi.packages.addListener("installing", (callback) => {
             console.log(callback.packageId + " - installing")
-            var element = document.getElementById(callback.packageId)
-            //ui_helper.appendParagraph("installing", element)
             updatePackages();
     })
     gmi.packages.addListener("installed", (callback) => {
             console.log(callback.packageId + " - installed")
-            var element = document.getElementById(callback.packageId)
-            //ui_helper.appendParagraph("installed", element)
-             updatePackages();
+            updatePackages();
     })
     gmi.packages.addListener("error", (callback) => {
-            console.log(callback.packageId + " - error")
+            console.log(callback.packageId + " - error: " + callback.error)
             var element = document.getElementById(callback.packageId)
             //ui_helper.appendParagraph("error", element)
              updatePackages();
@@ -89,8 +99,9 @@ define(['pnm-library/gmi-mobile', '../js/ui-helper', 'pnm-library/downloads/down
             var packageSubcontainer = ui_helper.appendDiv(packagesContainer)
             packageSubcontainer.className = "package-title"
             packageSubcontainer.id = aPackage.packageId
+            
             ui_helper.appendSpan(aPackage.packageId, packageSubcontainer)
-            ui_helper.appendSpan(aPackage.status, packageSubcontainer, "label " + aPackage.status)
+            var statusLabel = ui_helper.appendSpan(aPackage.status, packageSubcontainer, "label " + aPackage.status)
 
             if (aPackage.readOnly) {
                 ui_helper.appendSpan("readOnly", packageSubcontainer, "label read-only")
@@ -104,6 +115,8 @@ define(['pnm-library/gmi-mobile', '../js/ui-helper', 'pnm-library/downloads/down
                 gmi.packages.download(aPackage.packageId).then((successResponse) => {
                     console.log(successResponse.packageId + " - " + successResponse.action)
                     var element = document.getElementById(aPackage.packageId)
+                    statusLabel.innerHTML = "downloading";
+                    statusLabel.className = "label downloading"
                     ui_helper.appendParagraph("Downloading", element)
                 },
                 (errorResponse) => {
@@ -120,6 +133,22 @@ define(['pnm-library/gmi-mobile', '../js/ui-helper', 'pnm-library/downloads/down
             buttonsContainer.appendChild(ui_helper.appendBtn("Delete", () => {
                 console.log("Button clicked")
             }))
+            
+            ui_helper.appendBreak(packageSubcontainer)
+            
+            if (aPackage.type == "content-pack" && aPackage.status == "installed"){
+                ui_helper.appendImage('/packages/'+aPackage.packageId+'/'+aPackage.metadata, packageSubcontainer);
+            }
+            
+            if (aPackage.type == "experience" && aPackage.status == "installed"){
+                buttonsContainer.appendChild(ui_helper.appendBtn("Open Red", () => {
+                    gmi.experiences.push('red_gnome')
+                }))
+                buttonsContainer.appendChild(ui_helper.appendBtn("Open Blue", () => {
+                    gmi.experiences.push('blue_gnome')
+                }))
+                ui_helper.appendImage('/packages/'+aPackage.packageId+'/'+aPackage.metadata, packageSubcontainer);
+            }
 
             document.getElementById("packagesContainer").append(document.createElement("hr"))
 

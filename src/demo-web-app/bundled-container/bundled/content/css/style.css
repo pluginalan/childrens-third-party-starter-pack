@@ -134,6 +134,10 @@ button:hover {
     color: white;
 }
 
+.downloading {
+    background-color: purple;
+}
+
 .available {
     background-color: green;
 }
