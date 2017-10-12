@@ -74,13 +74,10 @@ define(function(require) {
                         // If not, set status
                         var doesAllPackagesContain = function(aPackage) {
                             var idx = allPackages.findIndex(function(pkg) {
-                                pkg.packageId == aPackage.packageId
+                                return pkg.packageId == aPackage.packageId
                             })
-                            if(idx == -1) {
-                                return false
-                            } else {
-                                return true
-                            }
+
+                            return idx != -1                            
                         }
 
                         var availablePackages = window._packages.availablePackages
