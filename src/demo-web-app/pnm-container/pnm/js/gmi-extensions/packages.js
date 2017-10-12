@@ -77,7 +77,7 @@ define(function(require) {
                                 return pkg.packageId == aPackage.packageId
                             })
 
-                            return idx != -1                            
+                            return idx != -1
                         }
 
                         var availablePackages = window._packages.availablePackages
@@ -127,7 +127,7 @@ define(function(require) {
             * "downloading" | "errorOffline" | "errorNotFound" | "errorDisallowed" | "errorUnknown" | "errorInUse"
             */
             var parseDownloadResponseErrors = function(response) {
-                switch(response.packages[0].status) {
+                switch(response.error) {
                     case "errorOffline": return failureReturnObject("offline")
                     case "errorNotFound": return failureReturnObject("notFound")
                     case "errorDisallowed": return failureReturnObject("notFound")
