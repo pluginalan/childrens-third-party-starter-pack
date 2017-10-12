@@ -4,9 +4,9 @@ const chai = require('chai');
 const expect = chai.expect;
 chai.use(require('chai-as-promised'));
 
-describe("packages", function () {
-    let DownloadManager = require("../../src/demo-web-app/pnm-container/pnm/js/downloads/download-manager");
-    const packages = require("../../src/demo-web-app/pnm-container/pnm/js/gmi-extensions/packages");
+describe("cancel packages", function () {
+    let DownloadManager = require("../../../src/demo-web-app/pnm-container/pnm/js/downloads/download-manager");
+    const packages = require("../../../src/demo-web-app/pnm-container/pnm/js/gmi-extensions/packages");
     let sandbox;
     const packageId = "packageId";
 
@@ -52,7 +52,7 @@ describe("packages", function () {
 
     const noPackages = {
         "packages": []
-    }
+    };
 
     let errorResponse;
 
@@ -60,23 +60,24 @@ describe("packages", function () {
     window._packages = {};
 
     beforeEach(function () {
-        sandbox = sinon.sandbox.create();
+        sandbox = sinon.createSandbox();
         window._packages.availablePackages = [];
         window._packages.bundledPackages = [];
         errorResponse = {
             "packageId": packageId,
             "action": "cancel",
         };
-        DownloadManager.prototype.installed = sandbox.stub().returns(Promise.resolve({"packages":[]}));
+
     });
 
-    describe("Cancelling a new download", function () { // jira 1681:scenario 1
+    describe("#cancel()", function () { // jira 1681:scenario 1
         const packageManagerResolvedResponse = "resolved";
         const packageManagerRejectedResponse = "rejected";
-        it("should cancel with successful response", function () {
+        it("should cancel a download with successful response", function () {
             //given
-            DownloadManager.prototype.cancel = sandbox.stub().returns(Promise.resolve(packageManagerResolvedResponse));
-            DownloadManager.prototype.downloading = sandbox.stub().returns(Promise.resolve(downloadingPackage));
+            sandbox.stub(DownloadManager.prototype, 'installed').resolves(noPackages);
+            sandbox.stub(DownloadManager.prototype, 'cancel').resolves(packageManagerResolvedResponse);
+            sandbox.stub(DownloadManager.prototype, 'downloading').resolves(downloadingPackage);
             //when
             let resultPromise = packages.cancel(packageId);
             //then
@@ -85,8 +86,9 @@ describe("packages", function () {
 
         it("should call DownloadManager cancel", function () {
             //given
-            DownloadManager.prototype.cancel = sandbox.stub().returns(Promise.resolve(packageManagerResolvedResponse));
-            DownloadManager.prototype.downloading = sandbox.stub().returns(Promise.resolve(downloadingPackage));
+            sandbox.stub(DownloadManager.prototype, 'installed').resolves(noPackages);
+            sandbox.stub(DownloadManager.prototype, 'cancel').resolves(packageManagerResolvedResponse);
+            sandbox.stub(DownloadManager.prototype, 'downloading').resolves(downloadingPackage);
             //when
             let result = packages.cancel(packageId).then(function (resolvedJson) {
                 expect(DownloadManager.prototype.cancel.called).to.be.true;
@@ -99,8 +101,9 @@ describe("packages", function () {
         it("should return unknown error on package-manager.cancel fail", function () {
             //given
             errorResponse.error = "unknown";
-            DownloadManager.prototype.cancel = sandbox.stub().returns(Promise.reject(packageManagerRejectedResponse));
-            DownloadManager.prototype.downloading = sandbox.stub().returns(Promise.resolve(downloadingPackage));
+            sandbox.stub(DownloadManager.prototype, 'installed').resolves(noPackages);
+            sandbox.stub(DownloadManager.prototype, 'cancel').rejects(packageManagerRejectedResponse);
+            sandbox.stub(DownloadManager.prototype, 'downloading').resolves(downloadingPackage);
             //when
             let resultPromise = packages.cancel(packageId);
             //then
@@ -108,14 +111,15 @@ describe("packages", function () {
         });
 
     });
-    describe("Cancel a download that has not begun", function () {// jira 1681:scenario 2
+    describe("#cancel()", function () {// jira 1681:scenario 2
 
 
-        it("Should return error notDownloading", function () {
+        it("should return error notDownloading when download not started", function () {
             //given
             errorResponse.error = "notDownloading";
+            sandbox.stub(DownloadManager.prototype, 'installed').resolves(noPackages);
             window._packages.availablePackages = [availablePackage];
-            DownloadManager.prototype.downloading = sandbox.stub().returns(Promise.resolve(noPackages));
+            sandbox.stub(DownloadManager.prototype, 'downloading').resolves(noPackages);
             //when
             let resultPromise = packages.cancel(packageId);
             //then
@@ -123,12 +127,13 @@ describe("packages", function () {
         })
     });
 
-    describe("Canceling an installation", function () {// jira 1681:scenario 3
+    describe("cancel()", function () {// jira 1681:scenario 3
 
-        it("Should return error installing", function () {
+        it("Should return error when package is installing", function () {
             //given
             errorResponse.error = "notDownloading";
-            DownloadManager.prototype.downloading = sandbox.stub().returns(Promise.resolve(installingPackage));
+            sandbox.stub(DownloadManager.prototype, 'installed').resolves(noPackages);
+            sandbox.stub(DownloadManager.prototype, 'downloading').resolves(installingPackage);
             //when
             let resultPromise = packages.cancel(packageId);
             //then
@@ -136,14 +141,15 @@ describe("packages", function () {
         })
     });
 
-    describe("Canceling a download for an invalid package", function () {// jira 1681:scenario 4
+    describe("#cancel()", function () {// jira 1681:scenario 4
         const invalidPackageId = "notInTheList";
 
-        it("Should return error notFound", function () {
+        it("Should return error notFound when cancel invalid package", function () {
             //given
             errorResponse.packageId = invalidPackageId;
             errorResponse.error = "notFound";
-            DownloadManager.prototype.downloading = sandbox.stub().returns(Promise.resolve(noPackages));
+            sandbox.stub(DownloadManager.prototype, 'installed').resolves(noPackages);
+            sandbox.stub(DownloadManager.prototype, 'downloading').resolves(noPackages);
             //when
             let resultPromise = packages.cancel(invalidPackageId);
             //then
