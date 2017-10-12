@@ -24,75 +24,100 @@ define(function(require) {
         list: function() {            
             return new Promise((resolve, reject) => {
                 if(window._packages.availablePackages && window._packages.bundledPackages) {
-                    var allPackages = []
-                    var doesAllPackagesContain = function(aPackage) {
-                        var idx = allPackages.findIndex(function(pkg) {
-                            return pkg.packageId == aPackage.packageId
-                        })
-                        return idx != -1
-                    }
-                    
+                    // Logic: Going in reverse-lifecycle order allows us to assume that anything already in the list should not be added with the state being currently evaluated
+                    // Starting from available would mean you have to remove available to make way for installing/downloading.
                     // Get bundled
-                    // For each, set status
-                    var bundledPackages = window._packages.bundledPackages
-                    bundledPackages.forEach((aPackage) => {
-                        aPackage.status = "installed"
-                        aPackage.readOnly = true
-                        allPackages.push(aPackage)
-                    });
-                    
-                    // Get downloading and installing
-                    // For each, set appropriate status
-                    downloadManager.downloading().then(successResponse => {
-                        successResponse.packages.forEach((aPackage) => {
-                            var packageObject = {}
-                            packageObject.packageId = aPackage.metadata.packageId;
-                            packageObject.metadata = aPackage.metadata;
-                            switch(aPackage.status) {
-                                case "downloading":
-                                packageObject.status = "downloading"
-                                packageObject.progress = aPackage.progress
-                                allPackages.push(packageObject)
-                                break
-                                case "installing":
-                                packageObject.status = "installing"
-                                allPackages.push(packageObject)
-                                break
-                                default:
-                                // Behaviour undefined
+                    Promise.resolve(window._packages.bundledPackages).then(bundled => {
+                        var bundledToAdd = []
+                        // Give suitable status and add to array
+                        bundled.forEach(pkg => {
+                            pkg.status = "bundled"
+                            pkg.readOnly = true
+                            bundledToAdd.push(pkg)
+                        })
+                        console.log(bundledToAdd)
+                        return bundledToAdd
+                    }).then(allPackages => {
+                        // Get installed
+                        
+                        var installedToAdd = []
+                        return downloadManager.installed().then(successResponse => {
+                            successResponse.packages.forEach(pkg => {
+                                pkg = pkg.metadata
+                                pkg.status = "installed" 
+                                pkg.downloadProgress = 0 
+                                pkg.readOnly = false 
+                                
+                                installedToAdd.push(pkg)
+                            })
+                            
+                            return allPackages.concat(installedToAdd)
+                        }, failureResponse => {
+                            console.log("Download manager returned failure for installed()")
+                        })
+                    }).then(allPackages => {
+                        // Get downloading and installing
+                        
+                        var downloadingInstallingToAdd = []
+                        return downloadManager.downloading().then(successResponse => {
+                            successResponse.packages.forEach(pkg => {
+                                pkg.packageId = pkg.metadata.packageId;
+                                switch(pkg.status) {
+                                    case "downloading":
+                                    var progress = pkg.progress
+                                    pkg = pkg.metadata
+                                    pkg.status = "downloading"
+                                    pkg.progress = progress
+                                    downloadingInstallingToAdd.push(pkg)
+                                    break
+                                    case "installing":
+                                    pkg = pkg.metadata
+                                    pkg.status = "installing"
+                                    downloadingInstallingToAdd.push(pkg)
+                                    break
+                                    default:
+                                    // Undefined behaviour, do not add to list.
+                                    break
+                                }
+                            })
+                            
+                            return allPackages.concat(downloadingInstallingToAdd)
+                        }, failureResponse => {
+                            console.log("Download manager returned failure for downloading()")
+                        })
+                    }).then(allPackages => {
+                        // Get available
+                        
+                        console.log(allPackages)
+                        var availableToAdd = []
+                        var available = window._packages.availablePackages
+                        
+                        available.forEach(pkg => {
+                            if(allPackages.findIndex(itrPkg => {
+                                return itrPkg.packageId == pkg.packageId
+                            }) == -1) {
+                                pkg.status = "available"
+                                pkg.downloadProgress = 0
+                                pkg.readOnly = false
+                                availableToAdd.push(pkg)
                             }
                         })
 
-                        return undefined
-                    }).then(unused => {
-                        // Get installed
-                        downloadManager.installed().then(successResponse => {
-                            successResponse.packages.forEach((aPackage) => {
-                                var packageObject = {}
-                                packageObject.packageId = aPackage.metadata.packageId;
-                                packageObject.metadata = aPackage.metadata;
-                                packageObject.status = "installed"
-                                packageObject.downloadProgress = 0
-                                packageObject.readOnly = false
-                                allPackages.push(packageObject)
-                            })
-                            
-                            // Get available
-                            // For each, check packageId not already present in above groups
-                            // If not, set status
-                            var availablePackages = window._packages.availablePackages
-                            availablePackages.forEach((aPackage) => {
-                                if(!doesAllPackagesContain(aPackage)) {
-                                    aPackage.status = "available"
-                                    aPackage.downloadProgress = 0
-                                    aPackage.readOnly = false
-                                    allPackages.push(aPackage)
-                                }
-                            });
-                        })
-                        
-                        resolve(allPackages)
+                        console.log("Final")
+                        console.log(allPackages.concat(availableToAdd))
+                    }).catch(error => {
+                        console.warn(error)
+                        // Reject with unknown error status
                     })
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    // Get available
                 } else {
                     reject({
                         "action"    : "list",
