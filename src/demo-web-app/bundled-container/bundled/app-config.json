@@ -59,8 +59,8 @@
       ]
     },
     {
-      "packageId": "package3",
-      "basePath": "base_path",
+      "packageId": "test-package-3",
+      "basePath": "https://s3-eu-west-1.amazonaws.com/childrens-data-public-int/apps/cbeebies-picknmix-dev/downloads/demo-examples/",
       "type": "type",
       "dependencies": [
         "menu"

@@ -56,10 +56,26 @@ define(['pnm-library/gmi-mobile', '../js/ui-helper', 'pnm-library/downloads/down
 
     gmi.gameLoaded();
 
+    gmi.packages.addListener("progress", (callback) => {
+            console.log(callback.packageId + " - progress")
+    })
+    gmi.packages.addListener("installing", (callback) => {
+            console.log(callback.packageId + " - installing")
+    })
+    gmi.packages.addListener("installed", (callback) => {
+            console.log(callback.packageId + " - installed")
+            var element = document.getElementById(callback.packageId)
+            ui_helper.appendParagraph("test", element)
+    })
+    gmi.packages.addListener("error", (callback) => {
+            console.log(callback.packageId + " - error")
+    })
+
     function setupView(packages) {
         packages.forEach((aPackage) => {
             var packageContainer = ui_helper.appendDiv()
             packageContainer.className = "package-title"
+            packageContainer.id = aPackage.packageId
             ui_helper.appendSpan(aPackage.packageId, packageContainer)
             ui_helper.appendSpan(aPackage.status, packageContainer, "label " + aPackage.status)
 
