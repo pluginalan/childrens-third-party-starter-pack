@@ -9,7 +9,7 @@ describe('list packages', function() {
 
     var poniesAvailablePackage = {
         "packageId": "poniesAvailablePackageId",
-        "basepath": "/content/ponies/",
+        "basePath": "/content/ponies/",
         "type": "type",
         "dependencies": [
             "tanks",
@@ -24,7 +24,7 @@ describe('list packages', function() {
 
     var poniesBundledPackage = {
         "packageId": "poniesAvailablePackageId",
-        "basepath": "/content/ponies/",
+        "basePath": "/content/ponies/",
         "type": "type",
         "dependencies": [
             "tanks",
@@ -39,7 +39,7 @@ describe('list packages', function() {
 
     var goatsBundledPackage = {
         "packageId": "goatPkgId",
-        "basepath": "/content/goats/",
+        "basePath": "/content/goats/",
         "type": "type",
         "dependencies": [
             "tanks",
@@ -54,7 +54,7 @@ describe('list packages', function() {
 
     var sealsInstalledPackage = {
         "packageId": "sealPkgId",
-        "basepath": "/content/seals/",
+        "basePath": "/content/seals/",
         "type": "type",
         "dependencies": [
             "ponies",
@@ -212,7 +212,7 @@ describe('list packages', function() {
                 assert.equal(packages.length, 1, "1 package in list")
                 assert.equal(packages[0].readOnly, true)
                 assert.equal(packages[0].packageId, "poniesAvailablePackageId")
-                assert.equal(packages[0].basepath, "/content/ponies/")
+                assert.equal(packages[0].basePath, "/content/ponies/")
                 assert.equal(packages[0].type, "type")
                 assert.equal(packages[0].dependencies[0], "tanks")
                 assert.equal(packages[0].dependencies[1], "menu")

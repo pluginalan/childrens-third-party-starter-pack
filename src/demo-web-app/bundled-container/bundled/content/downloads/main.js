@@ -69,7 +69,7 @@ function(gmi_platform, DownloadManager, ui_helper) {
 
                 var pid = aPackage.packageId
                 var pmd = aPackage.metadataObject
-                var purl = aPackage.basepath + aPackage.packageId
+                var purl = aPackage.basePath + aPackage.packageId
                 purl = 
 
                 downloadManager.download( pid, pmd, purl ).then(

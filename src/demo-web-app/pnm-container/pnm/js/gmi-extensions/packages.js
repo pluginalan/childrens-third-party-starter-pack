@@ -74,13 +74,10 @@ define(function(require) {
                         // If not, set status
                         var doesAllPackagesContain = function(aPackage) {
                             var idx = allPackages.findIndex(function(pkg) {
-                                pkg.packageId == aPackage.packageId
+                                return pkg.packageId == aPackage.packageId
                             })
-                            if(idx == -1) {
-                                return false
-                            } else {
-                                return true
-                            }
+
+                            return idx != -1                            
                         }
 
                         var availablePackages = window._packages.availablePackages
@@ -146,12 +143,12 @@ define(function(require) {
                     var thePackage = window._packages.availablePackages.find((availablePackage) => {
                         return availablePackage.packageId == packageId
                     })
-                    var downloadUrl = thePackage.basepath + thePackage.packageId + ".zip"
+                    var downloadUrl = thePackage.basePath + thePackage.packageId + ".zip"
                     let metadataObject = thePackage
                     let downloadPromise = downloadManager.download(packageId, metadataObject, downloadUrl)
 
                     downloadPromise.then( successResponse => {
-                        if (successResponse.packages[0].status == "downloading") {
+                        if (successResponse.status == "downloading") {
                             thePackage.status = "downloading"
                             resolve(successReturnObject());
                         }
