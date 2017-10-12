@@ -37,59 +37,79 @@ define(['pnm-library/gmi-mobile', '../js/ui-helper', 'pnm-library/downloads/down
     });
 
     ui_helper.appendHorizontalRule()
-
-    ui_helper.appendSubtitle("Bundled package content");
     ui_helper.appendImage('/packages/bundledcontentpack/pnm_logo.png');
 
     //packages
-    ui_helper.appendSubtitle("Available packages");
-    var packagesParagraph = ui_helper.appendParagraph();
 
+    function updatePackages() {
+        gmi.packages.list().then((packages) => {
+            console.log(packages)
+            setupView(packages)
+        }, (error) => {
+            console.log("Error: " + error)
+        });
+    }
 
-    gmi.packages.list().then((packages) => {
-        setupView(packages)
-    }, (error) => {
-        console.log("Error: " + error)
-    });
-
-    ui_helper.appendHorizontalRule()
+    updatePackages();
 
     gmi.gameLoaded();
 
     gmi.packages.addListener("progress", (callback) => {
             console.log(callback.packageId + " - progress")
+            var element = document.getElementById(callback.packageId)
+            //ui_helper.appendParagraph("progress", element)
+            // updatePackages();
     })
     gmi.packages.addListener("installing", (callback) => {
             console.log(callback.packageId + " - installing")
+            var element = document.getElementById(callback.packageId)
+            //ui_helper.appendParagraph("installing", element)
+            updatePackages();
     })
     gmi.packages.addListener("installed", (callback) => {
             console.log(callback.packageId + " - installed")
             var element = document.getElementById(callback.packageId)
-            ui_helper.appendParagraph("test", element)
+            //ui_helper.appendParagraph("installed", element)
+             updatePackages();
     })
     gmi.packages.addListener("error", (callback) => {
             console.log(callback.packageId + " - error")
+            var element = document.getElementById(callback.packageId)
+            //ui_helper.appendParagraph("error", element)
+             updatePackages();
     })
 
+    var packagesContainer = ui_helper.appendDiv();
+    packagesContainer.id = "packagesContainer"
+
     function setupView(packages) {
+        document.getElementById("packagesContainer").innerHTML = ""
+
         packages.forEach((aPackage) => {
-            var packageContainer = ui_helper.appendDiv()
-            packageContainer.className = "package-title"
-            packageContainer.id = aPackage.packageId
-            ui_helper.appendSpan(aPackage.packageId, packageContainer)
-            ui_helper.appendSpan(aPackage.status, packageContainer, "label " + aPackage.status)
+            var packageSubcontainer = ui_helper.appendDiv(packagesContainer)
+            packageSubcontainer.className = "package-title"
+            packageSubcontainer.id = aPackage.packageId
+            ui_helper.appendSpan(aPackage.packageId, packageSubcontainer)
+            ui_helper.appendSpan(aPackage.status, packageSubcontainer, "label " + aPackage.status)
 
             if (aPackage.readOnly) {
-                ui_helper.appendSpan("readOnly", packageContainer, "label read-only")
+                ui_helper.appendSpan("readOnly", packageSubcontainer, "label read-only")
             }
 
-            var buttonsContainer = ui_helper.appendDiv()
+            ui_helper.appendBreak(packageSubcontainer)
+            ui_helper.appendBreak(packageSubcontainer)
+
+            var buttonsContainer = ui_helper.appendDiv(packageSubcontainer)
             buttonsContainer.appendChild(ui_helper.appendBtn("Download", () => {
                 gmi.packages.download(aPackage.packageId).then((successResponse) => {
                     console.log(successResponse.packageId + " - " + successResponse.action)
+                    var element = document.getElementById(aPackage.packageId)
+                    ui_helper.appendParagraph("Downloading", element)
                 },
                 (errorResponse) => {
                     console.log(errorResponse.error)
+                    var element = document.getElementById(callback.packageId)
+                    ui_helper.appendParagraph("Downloading error", element)
                 })
             }))
 
@@ -101,24 +121,8 @@ define(['pnm-library/gmi-mobile', '../js/ui-helper', 'pnm-library/downloads/down
                 console.log("Button clicked")
             }))
 
-            var listenerTitle = ui_helper.appendDiv()
-            listenerTitle.className = "package-title"
-            ui_helper.appendSpan("Listeners", listenerTitle)
+            document.getElementById("packagesContainer").append(document.createElement("hr"))
 
-            var listenerButtons = ui_helper.appendDiv();
-            listenerButtons.appendChild(ui_helper.appendBtn("Add", () => {
-                console.log("Button clicked")
-            }))
-
-            listenerButtons.appendChild(ui_helper.appendBtn("Remove", () => {
-                console.log("Button clicked")
-            }))
-
-            listenerButtons.appendChild(ui_helper.appendBtn("Remove all", () => {
-                console.log("Button clicked")
-            }))
-
-            ui_helper.appendHorizontalRule()
         })
     }
 });
