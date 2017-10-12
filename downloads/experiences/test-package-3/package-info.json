@@ -1,0 +1,8 @@
+{
+  "packageId": "test-package-3",
+  "version": 1,
+  "spaceRequired": 1024,
+  "userData": {
+    "title": "Test Package 3 Title"
+  }
+}

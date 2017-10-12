@@ -10,8 +10,6 @@
     "amd-loader": "0.0.8"
   },
   "devDependencies": {
-    "jsdom": "11.3.0",
-    "jsdom-global": "3.0.2",
     "mocha": "^3.5.3",
     "sinon": "^4.0.1"
   },
