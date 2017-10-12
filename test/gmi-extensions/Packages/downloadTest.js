@@ -82,36 +82,20 @@ describe('download package', function() {
 
             var spyingDownloadFn = null;
             var errorUnknownResolve = {
-                'packages':[
-                    {
-                        packageId: 'poniesPackageId',
-                        status: 'errorUnknown'
-                    }
-                ]
+                packageId: 'poniesPackageId',
+                status: 'errorUnknown'
             }
             var errorOfflineResolve = {
-                'packages':[
-                    {
-                        packageId: 'poniesPackageId',
-                        status: 'errorOffline'
-                    }
-                ]
+                packageId: 'poniesPackageId',
+                status: 'errorOffline'
             }
             var errorNotFoundResolve = {
-                'packages':[
-                    {
-                        packageId: 'poniesPackageId',
-                        status: 'errorNotFound'
-                    }
-                ]
+                packageId: 'poniesPackageId',
+                status: 'errorNotFound'
             }
             var errorInUseResolve = {
-                'packages':[
-                    {
-                        packageId: 'poniesPackageId',
-                        status: 'errorInUse'
-                    }
-                ]
+                packageId: 'poniesPackageId',
+                status: 'errorInUse'
             }
 
             beforeEach( () => {
@@ -136,7 +120,7 @@ describe('download package', function() {
                 });
             })
 
-            it('should return an error whe offline', function(done) {
+            it('should return an error when offline', function(done) {
                 spyingDownloadFn.resolves(errorOfflineResolve)
                 Packages.download('poniesPackageId').then(function(response) {
                     done(response)
