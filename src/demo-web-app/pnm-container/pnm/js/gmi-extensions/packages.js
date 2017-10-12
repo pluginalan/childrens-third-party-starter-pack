@@ -35,7 +35,6 @@ define(function(require) {
                             pkg.readOnly = true
                             bundledToAdd.push(pkg)
                         })
-                        console.log(bundledToAdd)
                         return bundledToAdd
                     }).then(allPackages => {
                         // Get installed
@@ -53,7 +52,7 @@ define(function(require) {
                             
                             return allPackages.concat(installedToAdd)
                         }, failureResponse => {
-                            console.log("Download manager returned failure for installed()")
+                            console.warn("Download manager returned failure for installed()")
                         })
                     }).then(allPackages => {
                         // Get downloading and installing
@@ -83,12 +82,11 @@ define(function(require) {
                             
                             return allPackages.concat(downloadingInstallingToAdd)
                         }, failureResponse => {
-                            console.log("Download manager returned failure for downloading()")
+                            console.warn("Download manager returned failure for downloading()")
                         })
                     }).then(allPackages => {
                         // Get available
                         
-                        console.log(allPackages)
                         var availableToAdd = []
                         var available = window._packages.availablePackages
                         
